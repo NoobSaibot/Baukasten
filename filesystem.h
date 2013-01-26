@@ -10,6 +10,8 @@
 class Filesystem {
 public:
 	virtual ~Filesystem();
+
+	static bool  exists( const string& );
 	static char* readAll( const string& path, int* size = 0 );
 };
 

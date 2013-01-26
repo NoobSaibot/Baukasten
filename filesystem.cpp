@@ -1,6 +1,16 @@
 #include "filesystem.h"
 
+#include <sys/stat.h>
 #include <fstream>
+
+bool Filesystem::exists( const string& path )
+{
+	struct stat buf;
+	if (stat(path.c_str(), &buf) != -1) {
+		return true;
+	}
+	return false;
+}
 
 char* Filesystem::readAll( const string& path, int* size )
 {

@@ -3,6 +3,8 @@
 #define STBI_FAILURE_USERMSG
 #include "stb_image.c"
 
+#include "filesystem.h"
+
 inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width, unsigned height, Bitmap::Format format) {
 	return (row*width + col)*format;
 }
@@ -19,6 +21,7 @@ Bitmap::~Bitmap()
 
 Bitmap* Bitmap::fromFile(const string& path)
 {
+	BK_ASSERT(Filesystem::exists(path));
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 	Bitmap *bmp = new Bitmap(pixels, (Bitmap::Format)channels, width, height);
