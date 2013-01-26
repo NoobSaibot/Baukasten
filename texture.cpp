@@ -2,7 +2,7 @@
 
 #include "bitmap.h"
 
-static GLenum TextureFormatForBitmapFormat(Bitmap::Format format)
+static GLenum _opengl_format(Bitmap::Format format)
 {
 	switch (format) {
 		case Bitmap::Format_Grayscale: return GL_LUMINANCE;
@@ -27,16 +27,11 @@ Texture::Texture(Bitmap& bitmap) :
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	BK_GL_ASSERT(
-		glTexImage2D(
-			GL_TEXTURE_2D, 0, GL_RGBA,
-			(GLsizei)bitmap.width(),
-			(GLsizei)bitmap.height(),
-			0, GL_RGBA,
-			GL_UNSIGNED_BYTE,
-			bitmap.pixels()
-		)
-	);
+	BK_GL_ASSERT(glTexImage2D(
+		GL_TEXTURE_2D, 0, _opengl_format(bitmap.format()),
+		(GLsizei)bitmap.width(), (GLsizei)bitmap.height(),
+		0, _opengl_format(bitmap.format()), GL_UNSIGNED_BYTE, bitmap.pixels()
+	));
 	BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, 0));
 	BK_ASSERT(id != 0);
 	setId(id);
