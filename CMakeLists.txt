@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 2.8)
+
+project("Baukasten")
+
+add_definitions( -std=gnu++0x -Wall -ggdb )
+
+set(graphics_SRCS
+  bitmap.cpp
+  filesystem.cpp
+  main.cpp
+  managed.cpp
+  mesh.cpp
+  model.cpp
+  program.cpp
+  shader.cpp
+  texture.cpp
+  vertex_format.cpp
+)
+
+add_executable(test ${graphics_SRCS})
+target_link_libraries( test GL GLEW GLU glfw )
