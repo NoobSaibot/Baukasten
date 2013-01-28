@@ -6,12 +6,14 @@ add_definitions( -std=gnu++0x -Wall -ggdb )
 
 set(graphics_SRCS
   bitmap.cpp
+  camera.cpp
   filesystem.cpp
   main.cpp
   managed.cpp
   mesh.cpp
   model.cpp
   program.cpp
+  scene.cpp
   shader.cpp
   texture.cpp
   vertex_format.cpp
