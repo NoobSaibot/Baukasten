@@ -6,13 +6,16 @@
 #include <GL/gl.h>
 #include <GL/glfw.h>
 #include <cassert>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <list>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 using namespace std;
+using namespace glm;
 
 class Shader;
 typedef vector<Shader*> Shaders;
