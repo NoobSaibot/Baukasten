@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "drawable.h"
+#include "imesh.h"
 #include "vertex_format.h"
 
 /*!
@@ -10,26 +11,11 @@
  */
 class Mesh : public Drawable {
 public:
-	enum UsageHint {
-		DYNAMIC, STATIC, STREAM
-	};
-
-	static Mesh* createMesh(const float*, const UsageHint, const VertexFormat, const int);
-
-	VertexFormat format() const;
-	int count() const;
-
-	void activate() const;
-	void deactivate() const;
+	static IMesh* create(const float*, const IMesh::UsageHint, const VertexFormat, const int);
 
 private:
-	Mesh(const VertexFormat, const int);
+	Mesh();
 	virtual ~Mesh();
-
-	float* m_data[];
-	int m_size;
-	VertexFormat m_format;
-	GLint m_vao;
 };
 
 #endif /* end of include guard: MESH_H_1SNIHXRL */

@@ -13,6 +13,7 @@ set(graphics_SRCS
   managed.cpp
   mesh.cpp
   model.cpp
+  opengl/mesh_opengl.cpp
   program.cpp
   scene.cpp
   shader.cpp

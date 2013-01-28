@@ -37,11 +37,14 @@ public:
 		int padding;
 	};
 
+	VertexFormat();
 	VertexFormat(initializer_list<Data>);
 	virtual ~VertexFormat();
 
 	int size() const;
 	vector<Data> elements() const;
+
+	void operator=(const VertexFormat&);
 
 private:
 	vector<Data> m_elements;

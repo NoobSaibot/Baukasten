@@ -5,7 +5,7 @@
 #include "drawable.h"
 
 class Camera;
-class Mesh;
+class IMesh;
 class Program;
 class Texture;
 
@@ -14,7 +14,7 @@ class Texture;
  */
 class Model : public Drawable {
 public:
-	static Model* createModel(Mesh*, Program*, Texture*);
+	static Model* createModel(IMesh*, Program*, Texture*);
 
 	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
@@ -22,10 +22,10 @@ public:
 	void translate(const mat4&);
 
 private:
-	Model(Mesh*, Program*, Texture*);
+	Model(IMesh*, Program*, Texture*);
 	virtual ~Model();
 
-	Mesh*    m_mesh;
+	IMesh*   m_mesh;
 	Program* m_program;
 	Texture* m_texture;
 	mat4     m_translation;

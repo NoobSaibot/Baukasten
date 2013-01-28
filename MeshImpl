@@ -1,0 +1,3 @@
+#include "opengl/mesh_opengl.h"
+
+typedef MeshOpengl MeshImpl;

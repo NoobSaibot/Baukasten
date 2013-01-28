@@ -1,7 +1,7 @@
 #include "model.h"
 
 #include "camera.h"
-#include "mesh.h"
+#include "imesh.h"
 #include "program.h"
 #include "texture.h"
 #include "vertex_format.h"
@@ -17,7 +17,7 @@ _set_attrib(Program* program, VertexFormat::Data d, VertexFormat f, const string
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }
 
-Model::Model(Mesh* mesh, Program* program, Texture* texture) :
+Model::Model(IMesh* mesh, Program* program, Texture* texture) :
 	Drawable(), m_mesh(mesh), m_program(program), m_texture(texture)
 {
 }
@@ -29,7 +29,7 @@ Model::~Model()
 	//m_texture->release();
 }
 
-Model* Model::createModel(Mesh* mesh, Program* program, Texture* texture )
+Model* Model::createModel(IMesh* mesh, Program* program, Texture* texture )
 {
 	return new Model(mesh, program, texture);
 }

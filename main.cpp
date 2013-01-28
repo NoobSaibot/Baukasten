@@ -90,6 +90,7 @@ int main(int argc, char const *argv[])
 
 	Model *model = Model::createModel(
 		Mesh::createMesh(vertices, Mesh::STATIC, format, sizeof(vertices)),
+		Mesh::create(vertices, IMesh::STATIC, format, sizeof(vertices)),
 		p,
 		Texture::fromBitmap(bitmap)
 	);
