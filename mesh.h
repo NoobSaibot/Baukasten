@@ -19,6 +19,9 @@ public:
 	VertexFormat format() const;
 	int count() const;
 
+	void activate() const;
+	void deactivate() const;
+
 private:
 	Mesh(const VertexFormat, const int);
 	virtual ~Mesh();
@@ -26,6 +29,7 @@ private:
 	float* m_data[];
 	int m_size;
 	VertexFormat m_format;
+	GLint m_vao;
 };
 
 #endif /* end of include guard: MESH_H_1SNIHXRL */
