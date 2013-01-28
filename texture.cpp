@@ -16,13 +16,12 @@ Texture::Texture(Bitmap& bitmap) :
 	Drawable()
 {
 	GLuint id;
-	BK_GL_ASSERT(glEnable(GL_TEXTURE_2D));
 	BK_GL_ASSERT(glGenTextures(1, &id));
 	BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, id));
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-	glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-	glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+	BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+	BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ROW_LENGTH, 0));
+	BK_GL_ASSERT(glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0));
+	BK_GL_ASSERT(glPixelStorei(GL_UNPACK_SKIP_ROWS, 0));
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));

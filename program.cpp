@@ -49,10 +49,27 @@ GLint Program::attrib(const string& attrib) const
 	return pos;
 }
 
-GLint Program::uniform(const string& uni) const
+GLint Program::constant(const string& uni) const
 {
 	GLint pos;
 	BK_GL_ASSERT(pos = glGetUniformLocation(id(), uni.c_str()));
 	return pos;
+}
+
+void Program::setConstant(const string& name, const mat4& matrix)
+{
+	BK_GL_ASSERT(glUniformMatrix4fv(
+		constant(name.c_str()), 1, GL_FALSE, value_ptr(matrix)
+	));
+}
+
+void Program::activate() const
+{
+	BK_GL_ASSERT(glUseProgram(id()));
+}
+
+void Program::deactivate() const
+{
+	BK_GL_ASSERT(glUseProgram(0));
 }
 

@@ -14,7 +14,13 @@ public:
 	static Program* createProgram(const Shaders&);
 
 	GLint attrib(const string&) const;
-	GLint uniform(const string&) const;
+	void setAttrib(const string&, const mat4);
+
+	GLint constant(const string&) const;
+	void setConstant(const string&, const mat4&);
+
+	void activate() const;
+	void deactivate() const;
 
 private:
 	Program(const Shaders&);
