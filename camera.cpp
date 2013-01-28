@@ -46,6 +46,17 @@ Camera* Camera::create(
 			horizontalAngle, verticalAngle, position);
 }
 
+float Camera::fieldOfView() const
+{
+	return m_fieldOfView;
+}
+
+void Camera::setFieldOfView(const float fieldOfView)
+{
+	BK_ASSERT(fieldOfView > 0.0f && fieldOfView < 180.0f);
+	m_fieldOfView = fieldOfView;
+}
+
 float Camera::aspectRatio() const
 {
 	return m_aspectRatio;

@@ -12,6 +12,9 @@ public:
 	static Camera* create(const float, const float, const float,
 			const float, const float, const float, const vec3);
 
+	float fieldOfView() const;
+	void setFieldOfView(const float);
+
 	float aspectRatio() const;
 	void setAspectRatio(const float);
 
