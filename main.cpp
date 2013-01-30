@@ -33,9 +33,52 @@ int main(int argc, char const *argv[])
 	Program *p = Program::createProgram(shader);
 
 	float vertices[] = {
-		 0.0f, 0.8f, 0.0f, 0.5f, 0.0f,
-		-0.8f,-0.8f, 0.0f, 0.0f, 1.0f,
-		 0.8f,-0.8f, 0.0f, 1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
+	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
+	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
+	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
+	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
+
+	// top
+	-1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
+	 1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
+	 1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
+	 1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
+
+	// front
+	-1.0f,-1.0f, 1.0f,   1.0f, 1.0f,
+	 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
+	 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
+	 1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
+	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
+
+	// back
+	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,   0.0f, 0.0f,
+	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
+	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,   0.0f, 0.0f,
+	 1.0f, 1.0f,-1.0f,   1.0f, 0.0f,
+
+	// left
+	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
+	-1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
+	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
+	-1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
+
+	// right
+	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
+	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
+	 1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
+	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
+	 1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
+	 1.0f, 1.0f, 1.0f,   0.0f, 0.0f
 	};
 
 	VertexFormat format = {
@@ -51,13 +94,72 @@ int main(int argc, char const *argv[])
 		Texture::fromBitmap(bitmap)
 	);
 
-	while(glfwGetWindowParam(GLFW_OPENED)) {
-		BK_GL_ASSERT(glClearColor(0, 0, 0, 1)); // black
-		BK_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	Camera* cam = Camera::create();
+	Scene *scene = Scene::createScene({cam}, {model});
 
-		model->render(0);
+	cam->setPosition(vec3(0,0,4));
+	cam->setAspectRatio(800.0f/640.0f);
 
-		BK_GL_ASSERT(glfwSwapBuffers());
+	GLfloat rotationY = 0.0f;
+	GLfloat rotationX = 0.0f;
+	const float moveSpeed = 0.05f;
+	double lastTime = glfwGetTime();
+
+	const float mouseSensitivity = 0.05f;
+	int mouseX, mouseY;
+
+	const float zoomSensitivity = -2.0;
+
+	while (glfwGetWindowParam(GLFW_OPENED)) {
+		double thisTime = glfwGetTime();
+		float secondsElapsed = thisTime - lastTime;
+
+		if(glfwGetKey('S')) {
+			cam->move(secondsElapsed * moveSpeed * cam->back());
+		} else if(glfwGetKey('W')) {
+			cam->move(secondsElapsed * moveSpeed * cam->forward());
+		}
+
+		if(glfwGetKey('A')) {
+			cam->move(secondsElapsed * moveSpeed * cam->left());
+		} else if(glfwGetKey('D')) {
+			cam->move(secondsElapsed * moveSpeed * cam->right());
+		}
+
+		if(glfwGetKey('Y')) {
+			cam->move(secondsElapsed * moveSpeed * -vec3(0,1,0));
+		} else if(glfwGetKey('X')) {
+			cam->move(secondsElapsed * moveSpeed * vec3(0,1,0));
+		}
+
+		if(glfwGetKey(GLFW_KEY_ESC))
+			glfwCloseWindow();
+
+		glfwGetMousePos(&mouseX, &mouseY);
+		cam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
+		glfwSetMousePos(0, 0);
+
+		float fieldOfView = cam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
+		if(fieldOfView < 5.0f) fieldOfView = 5.0f;
+		if(fieldOfView > 130.0f) fieldOfView = 130.0f;
+		cam->setFieldOfView(fieldOfView);
+		glfwSetMouseWheel(0);
+
+		if(glfwGetKey('K'))
+			rotationY += 0.5f;
+		if(glfwGetKey('J'))
+			rotationY -= 0.5f;
+		if(glfwGetKey('U'))
+			rotationX += 0.5f;
+		if(glfwGetKey('M'))
+			rotationX -= 0.5f;
+
+		model->setTranslation(model->translation() * rotate(mat4(), rotationY, vec3(0,1,0)));
+		model->setTranslation(model->translation() * rotate(mat4(), rotationX, vec3(1,0,0)));
+
+		scene->render(secondsElapsed);
+
+		rotationX = rotationY = 0.0f;
 	}
 
 	glfwTerminate();
