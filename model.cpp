@@ -96,3 +96,8 @@ mat4 Model::translation() const
 	return m_translation;
 }
 
+void Model::translate(const mat4& translationOffset)
+{
+	m_translation *= translationOffset;
+}
+

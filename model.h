@@ -19,6 +19,7 @@ public:
 	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
 	mat4 translation() const;
+	void translate(const mat4&);
 
 private:
 	Model(Mesh*, Program*, Texture*);

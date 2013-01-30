@@ -154,8 +154,9 @@ int main(int argc, char const *argv[])
 		if(glfwGetKey('M'))
 			rotationX -= 0.5f;
 
-		model->setTranslation(model->translation() * rotate(mat4(), rotationY, vec3(0,1,0)));
-		model->setTranslation(model->translation() * rotate(mat4(), rotationX, vec3(1,0,0)));
+		model->translate(
+			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
+		);
 
 		scene->render(secondsElapsed);
 
