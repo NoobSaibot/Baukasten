@@ -1,5 +1,7 @@
 #include "base.h"
 #include "bitmap.h"
+#include "camera.h"
+#include "scene.h"
 #include "shader.h"
 #include "program.h"
 #include "filesystem.h"
@@ -14,9 +16,15 @@ int main(int argc, char const *argv[])
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
 	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-	glfwOpenWindow(640, 480, 8, 8, 8, 8, 0, 0, GLFW_WINDOW);
+	glfwOpenWindow(800, 600, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
 
 	glewInit();
+	BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
+	BK_GL_ASSERT(glDepthFunc(GL_LESS));
+
+	glfwDisable(GLFW_MOUSE_CURSOR);
+	glfwSetMousePos(0, 0);
+	glfwSetMouseWheel(0);
 
 	Shaders shader;
 	shader.push_back( Shader::fromFile("default.vert", GL_VERTEX_SHADER) );
@@ -35,8 +43,7 @@ int main(int argc, char const *argv[])
 		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, 3)
 	};
 
-	Bitmap *bitmap = Bitmap::fromFile("hazard.png");
-	bitmap->flip(Bitmap::VERTICALLY);
+	Bitmap *bitmap = Bitmap::fromFile("wooden-crate.jpg");
 
 	Model *model = Model::createModel(
 		Mesh::createMesh(vertices, Mesh::STATIC, format, sizeof(vertices)),
