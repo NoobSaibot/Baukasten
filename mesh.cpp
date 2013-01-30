@@ -14,7 +14,8 @@ Mesh* Mesh::createMesh(const float* data, const UsageHint hint,
 {
 	BK_ASSERT(data != 0);
 	GLuint vbo, vao;
-	GLint gl_hint = (hint == STATIC) ? GL_STATIC_DRAW : ( (hint == DYNAMIC) ? GL_DYNAMIC_DRAW : GL_STREAM_DRAW );
+	GLint gl_hint = (hint == STATIC) ? GL_STATIC_DRAW :
+		( (hint == DYNAMIC) ? GL_DYNAMIC_DRAW : GL_STREAM_DRAW );
 
 	BK_GL_ASSERT( glGenVertexArrays(1, &vao) );
 	BK_GL_ASSERT( glBindVertexArray(vao) );
@@ -22,10 +23,8 @@ Mesh* Mesh::createMesh(const float* data, const UsageHint hint,
 	BK_GL_ASSERT( glGenBuffers(1, &vbo) );
 	BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
 	BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, NULL, gl_hint) );
-
-	BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vbo));
-	BK_GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, size, data, gl_hint));
-	BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, data, gl_hint) );
+	BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
 
 	Mesh* mesh = new Mesh(format, size);
 	mesh->setId(vbo);

@@ -36,11 +36,11 @@ Model* Model::createModel(Mesh* mesh, Program* program, Texture* texture )
 
 void Model::render(const Camera* cam, const float timeInterval) const
 {
+	BK_ASSERT(cam != 0);
+
 	m_program->activate();
 	m_mesh->activate();
 	VertexFormat f = m_mesh->format();
-
-	BK_ASSERT(cam != 0);
 
 	// set camera matrix
 	m_program->setConstant("camera", cam->matrix());
