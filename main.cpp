@@ -26,12 +26,6 @@ int main(int argc, char const *argv[])
 	glfwSetMousePos(0, 0);
 	glfwSetMouseWheel(0);
 
-	Shaders shader;
-	shader.push_back( Shader::fromFile("default.vert", GL_VERTEX_SHADER) );
-	shader.push_back( Shader::fromFile("default.frag", GL_FRAGMENT_SHADER) );
-
-	Program *p = Program::createProgram(shader);
-
 	float vertices[] = {
 	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
 	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
@@ -88,10 +82,13 @@ int main(int argc, char const *argv[])
 
 	Bitmap *bitmap = Bitmap::fromFile("wooden-crate.jpg");
 
+	Shaders shader;
+	shader.push_back( Shader::fromFile("default.vert", GL_VERTEX_SHADER) );
+	shader.push_back( Shader::fromFile("default.frag", GL_FRAGMENT_SHADER) );
+
 	Model *model = Model::createModel(
-		Mesh::createMesh(vertices, Mesh::STATIC, format, sizeof(vertices)),
 		Mesh::create(vertices, IMesh::STATIC, format, sizeof(vertices)),
-		p,
+		Program::createProgram(shader),
 		Texture::fromBitmap(bitmap)
 	);
 
