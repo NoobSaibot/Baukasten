@@ -42,7 +42,6 @@ public:
 
 	int count() const
 	{
-		// 60 bytes / 4 bytes / 5
 		return m_size / sizeof(float) / m_format.size();
 	}
 
