@@ -19,6 +19,7 @@ public:
 			const VertexFormat format, const int size)
 	{
 		m_format = format;
+		m_size = size;
 
 		GLint gl_hint = (hint == IMesh::STATIC) ? GL_STATIC_DRAW :
 			( (hint == IMesh::DYNAMIC) ? GL_DYNAMIC_DRAW : GL_STREAM_DRAW );
