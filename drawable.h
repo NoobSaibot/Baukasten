@@ -5,13 +5,14 @@
 
 class Drawable {
 public:
-	Drawable() {}
-	virtual ~Drawable() {}
+	Drawable();
+	virtual ~Drawable();
 
-	void setId(const GLuint id) { m_id = id; }
-	GLuint id() const { return m_id; }
+	void setId(const int id);
+	int id() const;
 private:
-	GLuint m_id;
+	int m_id;
+	static int m_nextId;
 };
 
 #endif /* end of include guard: OBJECT_H_DPFT5OLZ */
