@@ -7,14 +7,14 @@
 class Camera;
 class IMesh;
 class Program;
-class Texture;
+class ITexture;
 
 /*!
  * \brief Model class declaration.
  */
 class Model : public Drawable {
 public:
-	static Model* createModel(IMesh*, Program*, Texture*);
+	static Model* createModel(IMesh*, Program*, ITexture*);
 
 	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
@@ -22,7 +22,7 @@ public:
 	void translate(const mat4&);
 
 private:
-	Model(IMesh*, Program*, Texture*);
+	Model(IMesh*, Program*, ITexture*);
 	virtual ~Model();
 
 	IMesh*   m_mesh;

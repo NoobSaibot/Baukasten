@@ -14,6 +14,7 @@ set(graphics_SRCS
   mesh.cpp
   model.cpp
   opengl/mesh_opengl.cpp
+  opengl/texture_opengl.cpp
   program.cpp
   scene.cpp
   shader.cpp

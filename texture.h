@@ -5,18 +5,15 @@
 #include "drawable.h"
 
 class Bitmap;
+class ITexture;
 
 /*!
  * \brief Texture class declaration.
  */
-class Texture : public Drawable {
+class Texture {
 public:
-	static Texture* fromFile(const string&);
-	static Texture* fromBitmap(Bitmap*);
-
-private:
-	Texture(Bitmap&);
-	virtual ~Texture();
+	static ITexture* fromFile(const string&);
+	static ITexture* fromBitmap(Bitmap*);
 };
 
 #endif /* end of include guard: TEXTURE_H_RIWRFHAD */
