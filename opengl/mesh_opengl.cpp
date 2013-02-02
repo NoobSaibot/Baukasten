@@ -1,6 +1,18 @@
 #include "mesh_opengl.h"
 
 #include "../vertex_format.h"
+#include "../program.h"
+
+static void
+_set_attrib(const Program* program, VertexFormat::Data d, const int size, const string& attrib)
+{
+	GLint pos;
+	pos = program->attrib(attrib.c_str());
+	BK_GL_ASSERT(glVertexAttribPointer(
+		pos, d.size, GL_FLOAT, GL_FALSE, size * sizeof(GLfloat), (const GLvoid*)(d.padding * sizeof(GLfloat))
+	));
+	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
+}
 
 /*!
  * \brief MeshOpenglPrivate class declaration.
@@ -31,9 +43,9 @@ public:
 		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
 		BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, NULL, gl_hint) );
 
-		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
-		BK_GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, size, data, gl_hint));
-		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
+		BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, data, gl_hint) );
+		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
 	}
 
 	VertexFormat format() const
@@ -46,10 +58,35 @@ public:
 		return m_size / sizeof(float) / m_format.size();
 	}
 
-	void activate() const
+	void activate(const Program& program) const
 	{
 		BK_GL_ASSERT(glBindVertexArray(m_vao));
 		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
+
+		for ( VertexFormat::Data d: m_format.elements() ) {
+			switch ( d.type ) {
+			case VertexFormat::COLOR:
+			case VertexFormat::NORMAL:
+			case VertexFormat::TANGENT:
+			case VertexFormat::BINORMAL:
+			case VertexFormat::BLENDWEIGHTS:
+			case VertexFormat::BLENDINDICES:
+			case VertexFormat::TEXCOORD1:
+			case VertexFormat::TEXCOORD2:
+			case VertexFormat::TEXCOORD3:
+			case VertexFormat::TEXCOORD4:
+			case VertexFormat::TEXCOORD5:
+			case VertexFormat::TEXCOORD6:
+			case VertexFormat::TEXCOORD7:
+				break;
+			case VertexFormat::POSITION:
+				_set_attrib(&program, d, m_format.size(), "vert");
+				break;
+			case VertexFormat::TEXCOORD0:
+				_set_attrib(&program, d, m_format.size(), "vertTexCoord");
+				break;
+			}
+		}
 	}
 
 	void deactivate() const
@@ -91,9 +128,9 @@ int MeshOpengl::count() const
 	return m_impl->count();
 }
 
-void MeshOpengl::activate() const
+void MeshOpengl::activate(const Program& program) const
 {
-	m_impl->activate();
+	m_impl->activate(program);
 }
 
 void MeshOpengl::deactivate() const

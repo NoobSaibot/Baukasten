@@ -3,6 +3,7 @@
 
 #include "base.h"
 
+class Program;
 class VertexFormat;
 
 /*!
@@ -14,11 +15,11 @@ public:
 		DYNAMIC, STATIC, STREAM
 	};
 
-	virtual void init(const float*, const UsageHint, const VertexFormat, const int) = 0;
-	virtual VertexFormat format() const = 0;
+	virtual void activate(const Program&) const = 0;
 	virtual int count() const = 0;
-	virtual void activate() const = 0;
 	virtual void deactivate() const = 0;
+	virtual VertexFormat format() const = 0;
+	virtual void init(const float*, const UsageHint, const VertexFormat, const int) = 0;
 };
 
 #endif /* end of include guard: IMESH_H_W4FDKTY7 */

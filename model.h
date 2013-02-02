@@ -25,10 +25,10 @@ private:
 	Model(IMesh*, Program*, ITexture*);
 	virtual ~Model();
 
-	IMesh*   m_mesh;
-	Program* m_program;
-	Texture* m_texture;
-	mat4     m_translation;
+	IMesh*    m_mesh;
+	Program*  m_program;
+	ITexture* m_texture;
+	mat4      m_translation;
 };
 
 #endif /* end of include guard: MODEL_H_IZNSJVOY */
