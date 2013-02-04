@@ -15,7 +15,7 @@ public:
 	TextureOpenGL(const Bitmap&);
 	virtual ~TextureOpenGL();
 
-	void activate(const Program&) const;
+	void activate(const IProgram&) const;
 	void deactivate() const;
 	void setWrapping(const ITexture::Wrapping);
 	void setFiltering(const ITexture::Filtering);

@@ -1,10 +1,10 @@
 #include "mesh_opengl.h"
 
 #include "../vertex_format.h"
-#include "../program.h"
+#include "../iprogram.h"
 
 static void
-_set_attrib(const Program* program, VertexFormat::Data d, const int size, const string& attrib)
+_set_attrib(const IProgram* program, VertexFormat::Data d, const int size, const string& attrib)
 {
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
@@ -58,7 +58,7 @@ public:
 		return m_size / sizeof(float) / m_format.size();
 	}
 
-	void activate(const Program& program) const
+	void activate(const IProgram& program) const
 	{
 		BK_GL_ASSERT(glBindVertexArray(m_vao));
 		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
@@ -128,7 +128,7 @@ int MeshOpengl::count() const
 	return m_impl->count();
 }
 
-void MeshOpengl::activate(const Program& program) const
+void MeshOpengl::activate(const IProgram& program) const
 {
 	m_impl->activate(program);
 }

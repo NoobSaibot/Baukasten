@@ -17,7 +17,7 @@ public:
 	void init(const float*, const UsageHint, const VertexFormat, const int);
 	VertexFormat format() const;
 	int count() const;
-	void activate(const Program&) const;
+	void activate(const IProgram&) const;
 	void deactivate() const;
 
 private:

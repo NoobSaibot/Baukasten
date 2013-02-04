@@ -2,11 +2,11 @@
 
 #include "camera.h"
 #include "imesh.h"
-#include "program.h"
+#include "iprogram.h"
 #include "itexture.h"
 #include "vertex_format.h"
 
-Model::Model(IMesh* mesh, Program* program, ITexture* texture) :
+Model::Model(IMesh* mesh, IProgram* program, ITexture* texture) :
 	Drawable(), m_mesh(mesh), m_program(program), m_texture(texture)
 {
 }
@@ -18,7 +18,7 @@ Model::~Model()
 	//m_texture->release();
 }
 
-Model* Model::createModel(IMesh* mesh, Program* program, ITexture* texture )
+Model* Model::createModel(IMesh* mesh, IProgram* program, ITexture* texture )
 {
 	return new Model(mesh, program, texture);
 }

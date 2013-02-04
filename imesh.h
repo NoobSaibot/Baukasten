@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-class Program;
+class IProgram;
 class VertexFormat;
 
 /*!
@@ -15,7 +15,7 @@ public:
 		DYNAMIC, STATIC, STREAM
 	};
 
-	virtual void activate(const Program&) const = 0;
+	virtual void activate(const IProgram&) const = 0;
 	virtual int count() const = 0;
 	virtual void deactivate() const = 0;
 	virtual VertexFormat format() const = 0;

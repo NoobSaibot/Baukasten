@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-class Program;
+class IProgram;
 
 /*!
  * \brief ITexture class declaration.
@@ -21,7 +21,7 @@ public:
 		LINEAR_MIPMAP_LINEAR
 	};
 
-	virtual void activate(const Program&) const = 0;
+	virtual void activate(const IProgram&) const = 0;
 	virtual void deactivate() const = 0;
 	virtual void setFiltering(const Filtering) = 0;
 	virtual void setWrapping(const Wrapping) = 0;

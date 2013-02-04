@@ -1,7 +1,7 @@
 #include "texture_opengl.h"
 
 #include "../bitmap.h"
-#include "../program.h"
+#include "../iprogram.h"
 
 static GLenum _opengl_format(Bitmap::Format format)
 {
@@ -43,7 +43,7 @@ public:
 		// TODO destroy texture
 	}
 
-	void activate(const Program& program) const
+	void activate(const IProgram& program) const
 	{
 		GLint location = program.constant("tex");
 		BK_GL_ASSERT(glActiveTexture(GL_TEXTURE0));
@@ -71,7 +71,7 @@ TextureOpenGL::~TextureOpenGL()
 	m_impl = 0;
 }
 
-void TextureOpenGL::activate(const Program& program) const
+void TextureOpenGL::activate(const IProgram& program) const
 {
 	m_impl->activate(program);
 }
