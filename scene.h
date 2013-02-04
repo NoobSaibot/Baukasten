@@ -2,7 +2,7 @@
 #define SCENE_H_WQK5IRHV
 
 #include "base.h"
-#include "drawable.h"
+#include "managed.h"
 
 class Camera;
 class Model;
@@ -10,7 +10,7 @@ class Model;
 /*!
  * \brief Scene class declaration.
  */
-class Scene : public Drawable {
+class Scene : public Managed {
 public:
 	static Scene* createScene(initializer_list<Camera*>, initializer_list<Model*>);
 

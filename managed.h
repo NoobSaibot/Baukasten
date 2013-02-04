@@ -2,12 +2,12 @@
 #define MANAGED_H_V6R2GJOK
 
 #include "base.h"
-#include "drawable.h"
+#include "identity.h"
 
 /*!
  * \brief Managed class declaration.
  */
-class Managed : public Drawable {
+class Managed : public Identity {
 public:
 	void add();
 	void release();

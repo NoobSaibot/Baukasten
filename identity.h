@@ -3,13 +3,13 @@
 
 #include "base.h"
 
-class Drawable {
+class Identity {
 public:
-	Drawable();
-	virtual ~Drawable();
+	Identity();
+	virtual ~Identity();
 
-	void setId(const int id);
 	int id() const;
+	void setId(const int);
 private:
 	int m_id;
 	static int m_nextId;

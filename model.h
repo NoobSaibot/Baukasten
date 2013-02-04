@@ -2,7 +2,7 @@
 #define MODEL_H_IZNSJVOY
 
 #include "base.h"
-#include "drawable.h"
+#include "identity.h"
 
 class Camera;
 class IMesh;
@@ -12,7 +12,7 @@ class ITexture;
 /*!
  * \brief Model class declaration.
  */
-class Model : public Drawable {
+class Model : public Identity {
 public:
 	static Model* createModel(IMesh*, IProgram*, ITexture*);
 

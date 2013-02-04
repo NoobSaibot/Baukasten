@@ -2,7 +2,6 @@
 #define TEXTURE_H_RIWRFHAD
 
 #include "base.h"
-#include "drawable.h"
 
 class Bitmap;
 class ITexture;

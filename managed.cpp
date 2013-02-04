@@ -1,13 +1,11 @@
 #include "managed.h"
 
 Managed::Managed() :
-	Drawable(),
 	m_refCount(1)
 {
 }
 
 Managed::Managed(const Managed& other) :
-	Drawable(),
 	m_refCount(1)
 {
 }

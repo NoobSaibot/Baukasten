@@ -7,7 +7,7 @@
 #include "vertex_format.h"
 
 Model::Model(IMesh* mesh, IProgram* program, ITexture* texture) :
-	Drawable(), m_mesh(mesh), m_program(program), m_texture(texture)
+	m_mesh(mesh), m_program(program), m_texture(texture)
 {
 }
 

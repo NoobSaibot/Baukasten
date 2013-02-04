@@ -3,7 +3,6 @@
 #include "model.h"
 
 Scene::Scene(initializer_list<Camera*> cams, initializer_list<Model*> models) :
-	Drawable(),
 	m_cams(cams), m_activeCam(0), m_models(models)
 {
 }
