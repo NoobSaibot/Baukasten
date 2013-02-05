@@ -1,24 +1,13 @@
 #ifndef SHADER_H_UEZJIHHF
 #define SHADER_H_UEZJIHHF
 
-#include "managed.h"
+#include "base.h"
+#include "ishader.h"
 
-#include <string>
-
-class Shader : public Managed {
+class Shader {
 public:
-	static Shader* fromFile( const string&, const GLuint );
-	static Shader* fromSource( const string&, const GLuint );
-
-	GLuint type() const;
-
-protected:
-	Shader(const string&, const GLuint);
-	Shader(const Shader& other);
-	virtual ~Shader();
-
-private:
-	GLuint m_type;
+	static IShader* fromFile( const string&, const IShader::Type );
+	static IShader* fromSource( const string&, const IShader::Type );
 };
 
 #endif /* end of include guard: SHADER_H_UEZJIHHF */

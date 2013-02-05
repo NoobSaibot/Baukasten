@@ -2,7 +2,7 @@
 
 #include "ProgramImpl"
 
-IProgram* Program::createProgram(const Shaders& shader)
+IProgram* Program::createProgram(const ShaderList& shader)
 {
 	return new ProgramImpl(shader);
 }

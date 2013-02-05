@@ -17,8 +17,8 @@
 using namespace std;
 using namespace glm;
 
-class Shader;
-typedef vector<Shader*> Shaders;
+class IShader;
+typedef vector<IShader*> ShaderList;
 
 class Vertex;
 typedef vector<Vertex*> Vertices;

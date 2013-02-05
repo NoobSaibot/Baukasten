@@ -1,15 +1,15 @@
 #include "program_opengl.h"
 
-#include "../shader.h"
+#include "../ishader.h"
 
 class ProgramOpenGLPrivate {
 public:
-	ProgramOpenGLPrivate(const Shaders& shader)
+	ProgramOpenGLPrivate(const ShaderList& shader)
 	{
 		BK_GL_ASSERT(m_program = (glCreateProgram()));
-		for( Shader* s: shader ) {
-			BK_ASSERT(s->id() != 0);
-			BK_GL_ASSERT(glAttachShader(m_program, s->id()));
+		for( IShader* s: shader ) {
+			BK_ASSERT(s->handler() != 0);
+			BK_GL_ASSERT(glAttachShader(m_program, s->handler()));
 		}
 		BK_GL_ASSERT(glLinkProgram(m_program));
 		GLint status;
@@ -30,8 +30,8 @@ public:
 		}
 
 		BK_ASSERT(status == GL_TRUE);
-		for( Shader* s: shader ) {
-			BK_GL_ASSERT(glDetachShader(m_program, s->id()));
+		for( IShader* s: shader ) {
+			BK_GL_ASSERT(glDetachShader(m_program, s->handler()));
 		}
 	}
 
@@ -79,7 +79,7 @@ private:
 	GLuint m_program;
 };
 
-ProgramOpenGL::ProgramOpenGL(const Shaders& shader) :
+ProgramOpenGL::ProgramOpenGL(const ShaderList& shader) :
 	m_impl(new ProgramOpenGLPrivate(shader))
 {
 }

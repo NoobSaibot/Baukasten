@@ -82,9 +82,9 @@ int main(int argc, char const *argv[])
 
 	Bitmap *bitmap = Bitmap::fromFile("wooden-crate.jpg");
 
-	Shaders shader;
-	shader.push_back( Shader::fromFile("default.vert", GL_VERTEX_SHADER) );
-	shader.push_back( Shader::fromFile("default.frag", GL_FRAGMENT_SHADER) );
+	ShaderList shader;
+	shader.push_back( Shader::fromFile("default.vert", IShader::VERTEX) );
+	shader.push_back( Shader::fromFile("default.frag", IShader::FRAGMENT) );
 
 	Model *model = Model::createModel(
 		Mesh::create(vertices, IMesh::STATIC, format, sizeof(vertices)),

@@ -12,7 +12,7 @@ class ProgramOpenGLPrivate;
  */
 class ProgramOpenGL : public IProgram {
 public:
-	ProgramOpenGL(const Shaders&);
+	ProgramOpenGL(const ShaderList&);
 	virtual ~ProgramOpenGL();
 
 	int attrib(const string&) const;
