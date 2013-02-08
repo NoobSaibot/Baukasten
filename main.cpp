@@ -86,9 +86,11 @@ int main(int argc, char const *argv[])
 	shader.push_back( Shader::fromFile("default.vert", IShader::VERTEX) );
 	shader.push_back( Shader::fromFile("default.frag", IShader::FRAGMENT) );
 
+	IProgram *program = Program::createProgram(shader);
+
 	Model *model = Model::createModel(
-		Mesh::create(vertices, IMesh::STATIC, format, sizeof(vertices)),
-		Program::createProgram(shader),
+		Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices)),
+		program,
 		Texture::fromBitmap(*bitmap)
 	);
 

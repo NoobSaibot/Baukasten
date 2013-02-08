@@ -14,10 +14,10 @@ public:
 	MeshOpengl();
 	virtual ~MeshOpengl();
 
-	void init(const float*, const UsageHint, const VertexFormat, const int);
+	void init(const IProgram&, const float*, const UsageHint, const VertexFormat, const int);
 	VertexFormat format() const;
 	int count() const;
-	void activate(const IProgram&) const;
+	void activate() const;
 	void deactivate() const;
 
 private:

@@ -24,7 +24,7 @@ public:
 	{
 	}
 
-	void init(const float* data, const IMesh::UsageHint hint,
+	void init(const IProgram& program, const float* data, const IMesh::UsageHint hint,
 			const VertexFormat format, const int size)
 	{
 		m_format = format;
@@ -38,27 +38,7 @@ public:
 
 		BK_GL_ASSERT( glGenBuffers(1, &m_vbo) );
 		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
-		BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, NULL, gl_hint) );
-
-		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
 		BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, data, gl_hint) );
-		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
-	}
-
-	VertexFormat format() const
-	{
-		return m_format;
-	}
-
-	int count() const
-	{
-		return m_size / sizeof(float) / m_format.size();
-	}
-
-	void activate(const IProgram& program) const
-	{
-		BK_GL_ASSERT(glBindVertexArray(m_vao));
-		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
 
 		for ( VertexFormat::Data d: m_format.elements() ) {
 			switch ( d.type ) {
@@ -84,6 +64,23 @@ public:
 				break;
 			}
 		}
+
+		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
+	}
+
+	VertexFormat format() const
+	{
+		return m_format;
+	}
+
+	int count() const
+	{
+		return m_size / sizeof(float) / m_format.size();
+	}
+
+	void activate() const
+	{
+		BK_GL_ASSERT(glBindVertexArray(m_vao));
 	}
 
 	void deactivate() const
@@ -108,10 +105,10 @@ MeshOpengl::~MeshOpengl()
 	SAFE_DELETE(m_impl);
 }
 
-void MeshOpengl::init(const float* data, const UsageHint hint,
+void MeshOpengl::init(const IProgram& program, const float* data, const UsageHint hint,
 		const VertexFormat format, const int size)
 {
-	m_impl->init(data, hint, format, size);
+	m_impl->init(program, data, hint, format, size);
 }
 
 VertexFormat MeshOpengl::format() const
@@ -124,9 +121,9 @@ int MeshOpengl::count() const
 	return m_impl->count();
 }
 
-void MeshOpengl::activate(const IProgram& program) const
+void MeshOpengl::activate() const
 {
-	m_impl->activate(program);
+	m_impl->activate();
 }
 
 void MeshOpengl::deactivate() const

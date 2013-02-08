@@ -16,7 +16,7 @@ class Model : public Managed {
 public:
 	static Model* createModel(IMesh*, IProgram*, ITexture*);
 
-	void render(const Camera*, const float) const;
+	void render(const Camera&, const float) const;
 	void setTranslation(const mat4&);
 	mat4 translation() const;
 	void translate(const mat4&);

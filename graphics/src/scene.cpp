@@ -27,7 +27,7 @@ void Scene::render(const int time)
 	BK_GL_ASSERT(glClearColor(0, 0, 0, 1));
 	BK_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	for ( Model* m: m_models ) {
-		m->render(m_activeCam, time);
+		m->render(*m_activeCam, time);
 	}
 	BK_GL_ASSERT(glfwSwapBuffers());
 }

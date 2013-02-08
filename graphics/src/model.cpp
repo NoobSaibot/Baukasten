@@ -23,14 +23,12 @@ Model* Model::createModel(IMesh* mesh, IProgram* program, ITexture* texture )
 	return new Model(mesh, program, texture);
 }
 
-void Model::render(const Camera* cam, const float timeInterval) const
+void Model::render(const Camera& cam, const float timeInterval) const
 {
-	BK_ASSERT(cam != 0);
-
 	m_program->activate();
 
 	if ( m_mesh ) {
-		m_mesh->activate(*m_program);
+		m_mesh->activate();
 	}
 
 	if ( m_texture ) {
@@ -38,7 +36,7 @@ void Model::render(const Camera* cam, const float timeInterval) const
 	}
 
 	// set camera matrix
-	m_program->setConstant("camera", cam->matrix());
+	m_program->setConstant("camera", cam.matrix());
 	m_program->setConstant("translation", m_translation);
 
 	// draw the mesh
