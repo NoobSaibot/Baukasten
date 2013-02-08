@@ -1,3 +1,0 @@
-#include "opengl/texture_opengl.h"
-
-typedef TextureOpenGL TextureImpl;

@@ -1,13 +1,13 @@
 #include "base.h"
-#include "bitmap.h"
-#include "camera.h"
-#include "scene.h"
-#include "shader.h"
-#include "program.h"
-#include "filesystem.h"
-#include "mesh.h"
-#include "model.h"
-#include "texture.h"
+#include "graphics/Bitmap"
+#include "graphics/Camera"
+#include "graphics/Mesh"
+#include "graphics/Model"
+#include "graphics/Program"
+#include "graphics/Scene"
+#include "graphics/Shader"
+#include "graphics/Texture"
+#include "io/Filesystem"
 
 int main(int argc, char const *argv[])
 {
@@ -89,7 +89,7 @@ int main(int argc, char const *argv[])
 	Model *model = Model::createModel(
 		Mesh::create(vertices, IMesh::STATIC, format, sizeof(vertices)),
 		Program::createProgram(shader),
-		Texture::fromBitmap(bitmap)
+		Texture::fromBitmap(*bitmap)
 	);
 
 	Camera* cam = Camera::create();

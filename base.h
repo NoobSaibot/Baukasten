@@ -17,11 +17,7 @@
 using namespace std;
 using namespace glm;
 
-class IShader;
-typedef vector<IShader*> ShaderList;
-
-class Vertex;
-typedef vector<Vertex*> Vertices;
+#define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
 #include "debug.h"
 

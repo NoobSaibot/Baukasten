@@ -4,25 +4,11 @@ project("Baukasten")
 
 add_definitions( -std=gnu++0x -Wall -ggdb )
 
-set(graphics_SRCS
-  bitmap.cpp
-  camera.cpp
-  identity.cpp
-  filesystem.cpp
-  main.cpp
-  managed.cpp
-  mesh.cpp
-  model.cpp
-  opengl/mesh_opengl.cpp
-  opengl/program_opengl.cpp
-  opengl/shader_opengl.cpp
-  opengl/texture_opengl.cpp
-  program.cpp
-  scene.cpp
-  shader.cpp
-  texture.cpp
-  vertex_format.cpp
-)
+include( core/CMakeLists.txt )
+include( graphics/CMakeLists.txt )
+include( io/CMakeLists.txt )
 
-add_executable(test ${graphics_SRCS})
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+
+add_executable(test main.cpp ${core_SRCS} ${io_SRCS} ${graphics_SRCS})
 target_link_libraries( test GL GLEW GLU glfw )

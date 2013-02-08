@@ -1,0 +1,3 @@
+#include "inc/opengl/program_opengl.h"
+
+typedef ProgramOpenGL ProgramImpl;

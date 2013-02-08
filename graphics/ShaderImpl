@@ -1,0 +1,3 @@
+#include "inc/opengl/shader_opengl.h"
+
+typedef ShaderOpenGL ShaderImpl;

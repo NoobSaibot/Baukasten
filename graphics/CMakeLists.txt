@@ -1,0 +1,16 @@
+set(graphics_SRCS
+  graphics/src/bitmap.cpp
+  graphics/src/camera.cpp
+  graphics/src/identity.cpp
+  graphics/src/mesh.cpp
+  graphics/src/model.cpp
+  graphics/src/opengl/mesh_opengl.cpp
+  graphics/src/opengl/program_opengl.cpp
+  graphics/src/opengl/shader_opengl.cpp
+  graphics/src/opengl/texture_opengl.cpp
+  graphics/src/program.cpp
+  graphics/src/scene.cpp
+  graphics/src/shader.cpp
+  graphics/src/texture.cpp
+  graphics/src/vertex_format.cpp
+)
