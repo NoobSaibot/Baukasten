@@ -1,7 +1,6 @@
 set(graphics_SRCS
   graphics/src/bitmap.cpp
   graphics/src/camera.cpp
-  graphics/src/identity.cpp
   graphics/src/mesh.cpp
   graphics/src/model.cpp
   graphics/src/opengl/mesh_opengl.cpp

@@ -63,3 +63,13 @@ void Model::translate(const mat4& translationOffset)
 	m_translation *= translationOffset;
 }
 
+void Model::translate(const float x, const float y, const float z)
+{
+    m_translation *= glm::translate(mat4(), vec3(x,y,z));
+}
+
+void Model::scale(const float x, const float y, const float z)
+{
+    m_translation *= glm::scale(mat4(), vec3(x,y,z));
+}
+

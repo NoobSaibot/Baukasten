@@ -20,6 +20,9 @@ public:
 	void setTranslation(const mat4&);
 	mat4 translation() const;
 	void translate(const mat4&);
+	void translate(const float, const float, const float);
+	void scale(const mat4&);
+	void scale(const float, const float, const float);
 
 private:
 	Model(IMesh*, IProgram*, ITexture*);

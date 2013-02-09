@@ -87,15 +87,17 @@ int main(int argc, char const *argv[])
 	shader.push_back( Shader::fromFile("default.frag", IShader::FRAGMENT) );
 
 	IProgram *program = Program::createProgram(shader);
+	IMesh *mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
+	ITexture *tex = Texture::fromBitmap(*bitmap);
 
-	Model *model = Model::createModel(
-		Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices)),
-		program,
-		Texture::fromBitmap(*bitmap)
-	);
+	Model *dot = Model::createModel( mesh, program, tex );
+
+	Model *i = Model::createModel( mesh, program, tex );
+	i->translate(0, -4, 0);
+	i->scale(1, 2, 1);
 
 	Camera* cam = Camera::create();
-	Scene *scene = Scene::createScene({cam}, {model});
+	Scene *scene = Scene::createScene({cam}, {dot, i});
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
@@ -154,7 +156,7 @@ int main(int argc, char const *argv[])
 		if(glfwGetKey('M'))
 			rotationX -= 0.5f;
 
-		model->translate(
+		dot->translate(
 			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
 		);
 
