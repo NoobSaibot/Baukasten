@@ -5,11 +5,13 @@
 #define STBI_FAILURE_USERMSG
 #include "3rdparty/stb_image.c"
 
-inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width, unsigned height, Bitmap::Format format) {
-	return (row*width + col)*format;
+inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width,
+		unsigned height, BitmapFormat format) {
+	return (row*width + col)* static_cast<int>(format);
 }
 
-Bitmap::Bitmap(unsigned char* pixels, const Bitmap::Format format, const int width, const int height) :
+Bitmap::Bitmap(unsigned char* pixels, const BitmapFormat format,
+		const int width, const int height) :
 	m_pixels(pixels), m_format(format), m_width(width), m_height(height)
 {
 }
@@ -24,11 +26,11 @@ Bitmap* Bitmap::fromFile(const string& path)
 	BK_ASSERT(Filesystem::exists(path));
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	Bitmap *bmp = new Bitmap(pixels, (Bitmap::Format)channels, width, height);
+	Bitmap *bmp = new Bitmap(pixels, (BitmapFormat)channels, width, height);
 	return bmp;
 }
 
-Bitmap::Format Bitmap::format() const
+BitmapFormat Bitmap::format() const
 {
 	return m_format;
 }
@@ -48,7 +50,7 @@ unsigned char* Bitmap::pixels() const
 	return m_pixels;
 }
 
-void Bitmap::flip(const Bitmap::FlipMode mode)
+void Bitmap::flip(const BitmapFlipMode mode)
 {
 	// flip vertikal für den anfang
 	//unsigned long rowSize = m_format * m_width;

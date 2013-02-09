@@ -17,6 +17,18 @@
 using namespace std;
 using namespace glm;
 
+enum class BitmapFormat {
+	Grayscale = 1,
+	GrayscaleAlpha = 2,
+	RGB = 3,
+	RGBA = 4
+};
+
+enum class BitmapFlipMode {
+	HORIZONTALLY, VERTICALLY
+};
+
+
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
 #include "debug.h"

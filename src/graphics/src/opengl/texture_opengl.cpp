@@ -3,13 +3,13 @@
 #include "graphics/Bitmap"
 #include "graphics/IProgram"
 
-static GLenum _opengl_format(Bitmap::Format format)
+static GLenum _opengl_format(BitmapFormat format)
 {
 	switch (format) {
-		case Bitmap::Format_Grayscale: return GL_LUMINANCE;
-		case Bitmap::Format_GrayscaleAlpha: return GL_LUMINANCE_ALPHA;
-		case Bitmap::Format_RGB: return GL_RGB;
-		case Bitmap::Format_RGBA: return GL_RGBA;
+		case BitmapFormat::Grayscale: return GL_LUMINANCE;
+		case BitmapFormat::GrayscaleAlpha: return GL_LUMINANCE_ALPHA;
+		case BitmapFormat::RGB: return GL_RGB;
+		case BitmapFormat::RGBA: return GL_RGBA;
 		default: return GL_RGB;
 	}
 }
