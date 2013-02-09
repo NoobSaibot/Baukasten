@@ -80,19 +80,28 @@ public:
 
 	void activate() const
 	{
+		if (m_active) return;
 		BK_GL_ASSERT(glBindVertexArray(m_vao));
+		m_active = true;
+	}
+
+	bool isActive() const
+	{
+		return m_active;
 	}
 
 	void deactivate() const
 	{
 		BK_GL_ASSERT(glBindVertexArray(0));
 		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		m_active = false;
 	}
 
 private:
 	GLuint m_vbo, m_vao;
 	VertexFormat m_format;
 	int m_size;
+	mutable bool m_active;
 };
 
 MeshOpenGL::MeshOpenGL() :
@@ -124,6 +133,12 @@ int MeshOpenGL::count() const
 void MeshOpenGL::activate() const
 {
 	m_impl->activate();
+}
+
+bool
+MeshOpenGL::isActive() const
+{
+	return m_impl->isActive();
 }
 
 void MeshOpenGL::deactivate() const

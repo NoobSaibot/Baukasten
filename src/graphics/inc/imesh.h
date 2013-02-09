@@ -17,6 +17,7 @@ public:
 	};
 
 	virtual void activate() const = 0;
+	virtual bool isActive() const = 0;
 	virtual int count() const = 0;
 	virtual void deactivate() const = 0;
 	virtual VertexFormat format() const = 0;

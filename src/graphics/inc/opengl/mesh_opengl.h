@@ -18,6 +18,7 @@ public:
 	VertexFormat format() const;
 	int count() const;
 	void activate() const;
+	bool isActive() const;
 	void deactivate() const;
 
 private:
