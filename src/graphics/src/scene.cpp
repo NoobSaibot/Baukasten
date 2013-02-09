@@ -11,7 +11,7 @@ Scene::~Scene()
 {
 }
 
-Scene* Scene::createScene(Camera& cam)
+Scene* Scene::create(Camera& cam)
 {
 	Scene* s = new Scene(cam);
 	return s;

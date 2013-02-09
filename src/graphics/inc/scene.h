@@ -12,7 +12,7 @@ class Model;
  */
 class Scene : public Managed {
 public:
-	static Scene* createScene(Camera&);
+	static Scene* create(Camera&);
 
 	void render(const int);
 	Camera* activeCamera() const;

@@ -86,25 +86,25 @@ int main(int argc, char const *argv[])
 	shader.push_back( Shader::fromFile("default.vert", IShader::VERTEX) );
 	shader.push_back( Shader::fromFile("default.frag", IShader::FRAGMENT) );
 
-	IProgram *program = Program::createProgram(shader);
+	IProgram *program = Program::create(shader);
 	IMesh *mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
 	ITexture *tex = Texture::fromBitmap(*bitmap);
 
-	Model *dot = Model::createModel( mesh, program, tex );
+	Model *dot = Model::create( mesh, program, tex );
 
-	Model *i = Model::createModel( mesh, program, tex );
+	Model *i = Model::create( mesh, program, tex );
 	i->translate(0, -4, 0);
 	i->scale(1, 2, 1);
 
-	Model *hLeft = Model::createModel( mesh, program, tex );
+	Model *hLeft = Model::create( mesh, program, tex );
 	hLeft->translate(-7, -2, 0);
 	hLeft->scale(1, 4, 1);
 
-	Model *hRight = Model::createModel( mesh, program, tex );
+	Model *hRight = Model::create( mesh, program, tex );
 	hRight->translate(-3, -2, 0);
 	hRight->scale(1, 4, 1);
 
-	Model *hMid = Model::createModel( mesh, program, tex );
+	Model *hMid = Model::create( mesh, program, tex );
 	hMid->translate(-5, -2, 0);
 
 	Camera* cam = Camera::create();
@@ -112,7 +112,7 @@ int main(int argc, char const *argv[])
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
 
-	Scene *scene = Scene::createScene(*cam);
+	Scene *scene = Scene::create(*cam);
 
 	scene->addModel(*dot);
 	scene->addModel(*i);

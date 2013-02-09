@@ -18,7 +18,7 @@ Model::~Model()
 	m_texture->release();
 }
 
-Model* Model::createModel(IMesh* mesh, IProgram* program, ITexture* texture )
+Model* Model::create(IMesh* mesh, IProgram* program, ITexture* texture )
 {
 	return new Model(mesh, program, texture);
 }

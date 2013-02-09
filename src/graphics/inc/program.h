@@ -11,7 +11,7 @@ class IProgram;
  */
 class Program {
 public:
-	static IProgram* createProgram(const ShaderList&);
+	static IProgram* create(const ShaderList&);
 };
 
 #endif /* end of include guard: PROGRAM_H_CYWMYDXG */
