@@ -4,15 +4,15 @@
 #include "base.h"
 #include "graphics/IMesh"
 
-class MeshOpenglPrivate;
+class MeshOpenGLPrivate;
 
 /*!
  * \brief MeshOpengl class declaration.
  */
-class MeshOpengl : public IMesh {
+class MeshOpenGL : public IMesh {
 public:
-	MeshOpengl();
-	virtual ~MeshOpengl();
+	MeshOpenGL();
+	virtual ~MeshOpenGL();
 
 	void init(const IProgram&, const float*, const UsageHint, const VertexFormat, const int);
 	VertexFormat format() const;
@@ -21,8 +21,8 @@ public:
 	void deactivate() const;
 
 private:
-	friend class MeshOpenglPrivate;
-	MeshOpenglPrivate* m_impl;
+	friend class MeshOpenGLPrivate;
+	MeshOpenGLPrivate* m_impl;
 };
 
 #endif /* end of include guard: MESH_OPENGL_H_K4YSTC7O */

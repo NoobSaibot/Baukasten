@@ -14,13 +14,13 @@ _set_attrib(const IProgram* program, VertexFormat::Data d, const int size, const
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }
 
-class MeshOpenglPrivate {
+class MeshOpenGLPrivate {
 public:
-	MeshOpenglPrivate()
+	MeshOpenGLPrivate() : m_active(false)
 	{
 	}
 
-	virtual ~MeshOpenglPrivate()
+	virtual ~MeshOpenGLPrivate()
 	{
 	}
 
@@ -95,38 +95,38 @@ private:
 	int m_size;
 };
 
-MeshOpengl::MeshOpengl() :
-	m_impl(new MeshOpenglPrivate())
+MeshOpenGL::MeshOpenGL() :
+	m_impl(new MeshOpenGLPrivate())
 {
 }
 
-MeshOpengl::~MeshOpengl()
+MeshOpenGL::~MeshOpenGL()
 {
 	SAFE_DELETE(m_impl);
 }
 
-void MeshOpengl::init(const IProgram& program, const float* data, const UsageHint hint,
+void MeshOpenGL::init(const IProgram& program, const float* data, const UsageHint hint,
 		const VertexFormat format, const int size)
 {
 	m_impl->init(program, data, hint, format, size);
 }
 
-VertexFormat MeshOpengl::format() const
+VertexFormat MeshOpenGL::format() const
 {
 	return m_impl->format();
 }
 
-int MeshOpengl::count() const
+int MeshOpenGL::count() const
 {
 	return m_impl->count();
 }
 
-void MeshOpengl::activate() const
+void MeshOpenGL::activate() const
 {
 	m_impl->activate();
 }
 
-void MeshOpengl::deactivate() const
+void MeshOpenGL::deactivate() const
 {
 	m_impl->deactivate();
 }
