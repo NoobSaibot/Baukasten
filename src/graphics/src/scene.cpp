@@ -2,8 +2,8 @@
 
 #include "graphics/Model"
 
-Scene::Scene(initializer_list<Camera*> cams, initializer_list<Model*> models) :
-	m_cams(cams), m_activeCam(0), m_models(models)
+Scene::Scene(Camera& cam) :
+	m_cams({&cam}), m_activeCam(&cam)
 {
 }
 
@@ -11,14 +11,9 @@ Scene::~Scene()
 {
 }
 
-Scene* Scene::createScene(initializer_list<Camera*> cams, initializer_list<Model*> models)
+Scene* Scene::createScene(Camera& cam)
 {
-	BK_ASSERT(cams.size() > 0);
-	BK_ASSERT(models.size() > 0);
-
-	Scene* s = new Scene(cams, models);
-	s->m_activeCam = *(cams.begin());
-
+	Scene* s = new Scene(cam);
 	return s;
 }
 
@@ -35,4 +30,19 @@ void Scene::render(const int time)
 Camera* Scene::activeCamera() const
 {
 	return m_activeCam;
+}
+
+void
+Scene::addModel(Model& model)
+{
+	m_models.push_back(&model);
+}
+
+void
+Scene::addCamera(Camera& cam, bool makeActive)
+{
+	m_cams.push_back(&cam);
+	if (makeActive) {
+		m_activeCam = &cam;
+	}
 }

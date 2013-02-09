@@ -12,13 +12,16 @@ class Model;
  */
 class Scene : public Managed {
 public:
-	static Scene* createScene(initializer_list<Camera*>, initializer_list<Model*>);
+	static Scene* createScene(Camera&);
 
 	void render(const int);
 	Camera* activeCamera() const;
 
+	void addModel(Model&);
+	void addCamera(Camera&, bool);
+
 private:
-	Scene(initializer_list<Camera*>, initializer_list<Model*>);
+	Scene(Camera&);
 	virtual ~Scene();
 
 	vector<Camera*> m_cams;

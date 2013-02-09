@@ -96,11 +96,29 @@ int main(int argc, char const *argv[])
 	i->translate(0, -4, 0);
 	i->scale(1, 2, 1);
 
+	Model *hLeft = Model::createModel( mesh, program, tex );
+	hLeft->translate(-7, -2, 0);
+	hLeft->scale(1, 4, 1);
+
+	Model *hRight = Model::createModel( mesh, program, tex );
+	hRight->translate(-3, -2, 0);
+	hRight->scale(1, 4, 1);
+
+	Model *hMid = Model::createModel( mesh, program, tex );
+	hMid->translate(-5, -2, 0);
+
 	Camera* cam = Camera::create();
-	Scene *scene = Scene::createScene({cam}, {dot, i});
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
+
+	Scene *scene = Scene::createScene(*cam);
+
+	scene->addModel(*dot);
+	scene->addModel(*i);
+	scene->addModel(*hLeft);
+	scene->addModel(*hMid);
+	scene->addModel(*hRight);
 
 	GLfloat rotationY = 0.0f;
 	GLfloat rotationX = 0.0f;
