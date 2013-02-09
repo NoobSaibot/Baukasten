@@ -6,6 +6,7 @@ class ProgramOpenGLPrivate {
 public:
 	ProgramOpenGLPrivate(const ShaderList& shader)
 	{
+		m_shader = shader;
 		BK_GL_ASSERT(m_program = (glCreateProgram()));
 		for( IShader* s: shader ) {
 			BK_ASSERT(s->handler() != 0);
@@ -37,6 +38,9 @@ public:
 
 	~ProgramOpenGLPrivate()
 	{
+		for ( IShader* s: m_shader ) {
+			s->release();
+		}
 		BK_GL_ASSERT(glDeleteProgram(m_program));
 	}
 
@@ -77,6 +81,7 @@ public:
 
 private:
 	GLuint m_program;
+	ShaderList m_shader;
 };
 
 ProgramOpenGL::ProgramOpenGL(const ShaderList& shader) :

@@ -22,6 +22,8 @@ public:
 
 	virtual ~MeshOpenGLPrivate()
 	{
+		BK_GL_ASSERT(glDeleteBuffers(1, &m_vbo));
+		BK_GL_ASSERT(glDeleteVertexArrays(1, &m_vao));
 	}
 
 	void init(const IProgram& program, const float* data, const IMesh::UsageHint hint,

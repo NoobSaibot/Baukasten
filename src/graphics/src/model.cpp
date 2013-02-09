@@ -9,6 +9,9 @@
 Model::Model(IMesh* mesh, IProgram* program, ITexture* texture) :
 	m_mesh(mesh), m_program(program), m_texture(texture)
 {
+	m_mesh->addRef();
+	m_program->addRef();
+	m_texture->addRef();
 }
 
 Model::~Model()

@@ -3,7 +3,7 @@
 int Identity::m_nextId = 0;
 
 Identity::Identity() :
-	m_id(m_nextId++)
+	m_id(++m_nextId)
 {
 }
 

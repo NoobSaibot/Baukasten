@@ -3,10 +3,12 @@
 
 #include "base.h"
 
+#include "core/Managed"
+
 /*!
  * \brief Bitmap class declaration.
  */
-class Bitmap {
+class Bitmap : public Managed {
 public:
 	static Bitmap* fromFile(const string&);
 

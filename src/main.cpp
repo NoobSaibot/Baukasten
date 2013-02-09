@@ -4,6 +4,7 @@
 #include "graphics/Mesh"
 #include "graphics/Model"
 #include "graphics/Program"
+#include "graphics/IProgram"
 #include "graphics/Scene"
 #include "graphics/Shader"
 #include "graphics/Texture"
@@ -81,6 +82,8 @@ int main(int argc, char const *argv[])
 	};
 
 	Bitmap *bitmap = Bitmap::fromFile("wooden-crate.jpg");
+	ITexture *tex = Texture::fromBitmap(*bitmap);
+	bitmap->release();
 
 	ShaderList shader;
 	shader.push_back( Shader::fromFile("default.vert", IShader::VERTEX) );
@@ -88,7 +91,6 @@ int main(int argc, char const *argv[])
 
 	IProgram *program = Program::create(shader);
 	IMesh *mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
-	ITexture *tex = Texture::fromBitmap(*bitmap);
 
 	Model *dot = Model::create( mesh, program, tex );
 
@@ -183,6 +185,7 @@ int main(int argc, char const *argv[])
 		rotationX = rotationY = 0.0f;
 	}
 
+	scene->release();
 	glfwTerminate();
 	return 0;
 }

@@ -44,7 +44,7 @@ public:
 
 	~ShaderOpenGLPrivate()
 	{
-		// glDeleteShader(m_shader);
+		BK_GL_ASSERT(glDeleteShader(m_shader));
 	}
 
 	GLuint handler()

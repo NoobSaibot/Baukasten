@@ -9,6 +9,9 @@ Scene::Scene(Camera& cam) :
 
 Scene::~Scene()
 {
+	for( Model* m: m_models ) {
+		m->release();
+	}
 }
 
 Scene* Scene::create(Camera& cam)

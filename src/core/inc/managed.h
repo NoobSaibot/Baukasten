@@ -11,7 +11,7 @@ class Managed : public Identity {
 public:
 	void addRef();
 	void release();
-	int  count() const;
+	int  refCount() const;
 
 protected:
 	Managed();
