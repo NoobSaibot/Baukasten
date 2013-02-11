@@ -11,10 +11,10 @@ class ShaderOpenGLPrivate;
  */
 class ShaderOpenGL : public IShader {
 public:
-	ShaderOpenGL(const string&, const IShader::Type);
+	ShaderOpenGL(const string&, const ShaderType);
 	virtual ~ShaderOpenGL();
 
-	IShader::Type type() const;
+	ShaderType type() const;
 	int handler() const;
 
 private:

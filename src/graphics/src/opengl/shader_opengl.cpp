@@ -1,18 +1,18 @@
 #include "graphics/inc/opengl/shader_opengl.h"
 
-static GLint _to_opengl_type(const IShader::Type type)
+static GLint _to_opengl_type(const ShaderType type)
 {
 	switch ( type ) {
-	case IShader::VERTEX:
+	case ShaderType::VERTEX:
 		return GL_VERTEX_SHADER;
-	case IShader::FRAGMENT:
+	case ShaderType::FRAGMENT:
 		return GL_FRAGMENT_SHADER;
 	}
 }
 
 class ShaderOpenGLPrivate {
 public:
-	ShaderOpenGLPrivate(const string& source, const IShader::Type type)
+	ShaderOpenGLPrivate(const string& source, const ShaderType type)
 	{
 		BK_GL_ASSERT(m_shader = glCreateShader(_to_opengl_type(type)));
 
@@ -52,17 +52,17 @@ public:
 		return m_shader;
 	}
 
-	IShader::Type type() const
+	ShaderType type() const
 	{
 		return m_type;
 	}
 
 private:
 	GLuint m_shader;
-	IShader::Type m_type;
+	ShaderType m_type;
 };
 
-ShaderOpenGL::ShaderOpenGL(const string& source, const IShader::Type type) :
+ShaderOpenGL::ShaderOpenGL(const string& source, const ShaderType type) :
 	m_impl(new ShaderOpenGLPrivate(source, type))
 {
 }
@@ -72,7 +72,7 @@ ShaderOpenGL::~ShaderOpenGL()
 	SAFE_DELETE(m_impl);
 }
 
-IShader::Type
+ShaderType
 ShaderOpenGL::type() const
 {
 	return m_impl->type();

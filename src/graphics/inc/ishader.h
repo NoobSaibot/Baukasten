@@ -9,11 +9,7 @@
  */
 class IShader : public Managed {
 public:
-	enum Type {
-		VERTEX, FRAGMENT
-	};
-
-	virtual Type type() const = 0;
+	virtual ShaderType type() const = 0;
 	virtual int handler() const = 0;
 };
 

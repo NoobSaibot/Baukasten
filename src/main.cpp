@@ -86,8 +86,8 @@ int main(int argc, char const *argv[])
 	bitmap->release();
 
 	ShaderList shader;
-	shader.push_back( Shader::fromFile("default.vert", IShader::VERTEX) );
-	shader.push_back( Shader::fromFile("default.frag", IShader::FRAGMENT) );
+	shader.push_back( Shader::fromFile("default.vert", ShaderType::VERTEX) );
+	shader.push_back( Shader::fromFile("default.frag", ShaderType::FRAGMENT) );
 
 	IProgram *program = Program::create(shader);
 	IMesh *mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));

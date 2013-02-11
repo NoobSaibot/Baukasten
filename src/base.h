@@ -28,6 +28,9 @@ enum class BitmapFlipMode {
 	HORIZONTALLY, VERTICALLY
 };
 
+enum ShaderType {
+	VERTEX, FRAGMENT
+};
 
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
