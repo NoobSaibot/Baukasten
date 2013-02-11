@@ -18,16 +18,16 @@ Bitmap::Bitmap(unsigned char* pixels, const BitmapFormat format,
 
 Bitmap::~Bitmap()
 {
-	//delete[] m_pixels;
+	delete[] m_pixels;
 }
 
-Bitmap* Bitmap::fromFile(const string& path)
+shared_ptr<Bitmap>
+Bitmap::fromFile(const string& path)
 {
 	BK_ASSERT(Filesystem::exists(path));
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	Bitmap *bmp = new Bitmap(pixels, (BitmapFormat)channels, width, height);
-	return bmp;
+	return shared_ptr<Bitmap>(new Bitmap(pixels, (BitmapFormat)channels, width, height));
 }
 
 BitmapFormat Bitmap::format() const

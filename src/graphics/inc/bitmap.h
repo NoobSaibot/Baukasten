@@ -3,14 +3,14 @@
 
 #include "base.h"
 
-#include "core/Managed"
+#include "core/Identity"
 
 /*!
  * \brief Bitmap class declaration.
  */
-class Bitmap : public Managed {
+class Bitmap : public Identity {
 public:
-	static Bitmap* fromFile(const string&);
+	static shared_ptr<Bitmap> fromFile(const string&);
 
 	BitmapFormat format() const;
 	int height() const;
@@ -18,9 +18,10 @@ public:
 	unsigned char* pixels() const;
 	void flip(const BitmapFlipMode);
 
+	virtual ~Bitmap();
+
 private:
 	Bitmap(unsigned char*, const BitmapFormat, const int, const int);
-	virtual ~Bitmap();
 
 	unsigned char* m_pixels;
 	BitmapFormat m_format;

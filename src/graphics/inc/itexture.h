@@ -2,7 +2,6 @@
 #define ITEXTURE_H_CPT5FEFW
 
 #include "base.h"
-#include "core/Managed"
 
 class Bitmap;
 class IProgram;
@@ -10,7 +9,7 @@ class IProgram;
 /*!
  * \brief ITexture class declaration.
  */
-class ITexture : public Managed {
+class ITexture {
 public:
 	enum Wrapping {
 		CLAMP_TO_EDGE, CLAMP_TO_BORDER,

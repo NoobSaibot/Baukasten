@@ -2,8 +2,9 @@
 
 #include "graphics/ProgramImpl"
 
-IProgram* Program::create(const ShaderList& shader)
+shared_ptr<IProgram>
+Program::create(const ShaderList& shader)
 {
-	return new ProgramImpl(shader);
+	return shared_ptr<ProgramImpl>(new ProgramImpl(shader));
 }
 

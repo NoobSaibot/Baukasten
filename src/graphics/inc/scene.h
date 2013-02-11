@@ -2,7 +2,7 @@
 #define SCENE_H_WQK5IRHV
 
 #include "base.h"
-#include "core/Managed"
+#include "core/Identity"
 
 class Camera;
 class Model;
@@ -10,23 +10,25 @@ class Model;
 /*!
  * \brief Scene class declaration.
  */
-class Scene : public Managed {
+class Scene : public Identity {
 public:
-	static Scene* create(Camera&);
+	static shared_ptr<Scene> create(shared_ptr<Camera>&);
 
 	void render(const int);
-	Camera* activeCamera() const;
+	shared_ptr<Camera> activeCamera() const;
+	void setActiveCamera(const int);
 
-	void addModel(Model&);
-	void addCamera(Camera&, bool);
+	void addModel(shared_ptr<Model>&);
+	void addCamera(shared_ptr<Camera>&, bool makeActive = false);
 
-private:
-	Scene(Camera&);
 	virtual ~Scene();
 
-	vector<Camera*> m_cams;
-	Camera*         m_activeCam;
-	vector<Model*>  m_models;
+private:
+	Scene(shared_ptr<Camera>&);
+
+	vector<shared_ptr<Camera>> m_cams;
+	shared_ptr<Camera>         m_activeCam;
+	vector<shared_ptr<Model>>  m_models;
 };
 
 #endif /* end of include guard: SCENE_H_WQK5IRHV */

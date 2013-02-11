@@ -2,7 +2,6 @@
 #define MODEL_H_IZNSJVOY
 
 #include "base.h"
-#include "core/Managed"
 
 class Camera;
 class IMesh;
@@ -12,9 +11,10 @@ class ITexture;
 /*!
  * \brief Model class declaration.
  */
-class Model : public Managed {
+class Model {
 public:
-	static Model* create(IMesh*, IProgram*, ITexture*);
+	static shared_ptr<Model> create(shared_ptr<IMesh>,
+			shared_ptr<IProgram>, shared_ptr<ITexture>);
 
 	void render(const Camera&, const float) const;
 	void setTranslation(const mat4&);
@@ -24,13 +24,15 @@ public:
 	void scale(const mat4&);
 	void scale(const float, const float, const float);
 
-private:
-	Model(IMesh*, IProgram*, ITexture*);
 	virtual ~Model();
 
-	IMesh*    m_mesh;
-	IProgram* m_program;
-	ITexture* m_texture;
+private:
+	Model(shared_ptr<IMesh>, shared_ptr<IProgram>, shared_ptr<ITexture>);
+
+	shared_ptr<IMesh>    m_mesh;
+	shared_ptr<IProgram> m_program;
+	shared_ptr<ITexture> m_texture;
+
 	mat4      m_translation;
 };
 

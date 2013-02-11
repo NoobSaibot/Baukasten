@@ -2,16 +2,17 @@
 #define CAMERA_H_T6GLZWCT
 
 #include "base.h"
+#include "core/Identity"
 
 class Settings;
 
 /*!
  * \brief Camera class declaration.
  */
-class Camera {
+class Camera : public Identity {
 public:
-	static Camera* create();
-	static Camera* create(const float, const float, const float,
+	static shared_ptr<Camera> create();
+	static shared_ptr<Camera> create(const float, const float, const float,
 			const float, const float, const float, const vec3);
 
 	// TODO implement settings class
@@ -41,19 +42,14 @@ public:
 	vec3 up() const;
 	vec3 down() const;
 
+	virtual ~Camera();
+
 private:
 	Camera();
 	Camera(const float, const float, const float,
 			const float, const float, const float, const vec3);
-	virtual ~Camera();
 
-	float m_fieldOfView;
-	float m_aspectRatio;
-	float m_nearPlane;
-	float m_farPlane;
-	float m_horizontalAngle;
-	float m_verticalAngle;
-	vec3  m_position;
+	BK_PIMPL(Camera);
 };
 
 #endif /* end of include guard: CAMERA_H_T6GLZWCT */

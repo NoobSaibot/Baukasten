@@ -1,51 +1,61 @@
 #include "graphics/Scene"
 
+#include "graphics/Camera"
 #include "graphics/Model"
 
-Scene::Scene(Camera& cam) :
-	m_cams({&cam}), m_activeCam(&cam)
+Scene::Scene(shared_ptr<Camera>& cam) :
+	m_cams({cam}), m_activeCam(cam)
 {
 }
 
 Scene::~Scene()
 {
-	for( Model* m: m_models ) {
-		m->release();
-	}
 }
 
-Scene* Scene::create(Camera& cam)
+shared_ptr<Scene>
+Scene::create(shared_ptr<Camera>& cam)
 {
-	Scene* s = new Scene(cam);
-	return s;
+	return shared_ptr<Scene>(new Scene(cam));
 }
 
 void Scene::render(const int time)
 {
 	BK_GL_ASSERT(glClearColor(0, 0, 0, 1));
 	BK_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	for ( Model* m: m_models ) {
+	for ( auto m: m_models ) {
 		m->render(*m_activeCam, time);
 	}
 	BK_GL_ASSERT(glfwSwapBuffers());
 }
 
-Camera* Scene::activeCamera() const
+shared_ptr<Camera>
+Scene::activeCamera() const
 {
 	return m_activeCam;
 }
 
 void
-Scene::addModel(Model& model)
+Scene::setActiveCamera(const int id)
 {
-	m_models.push_back(&model);
+	for ( auto c: m_cams ) {
+		if (c->id() == id) {
+			BK_DEBUG("set active cam to: " << id);
+			m_activeCam = c;
+		}
+	}
 }
 
 void
-Scene::addCamera(Camera& cam, bool makeActive)
+Scene::addModel(shared_ptr<Model>& model)
 {
-	m_cams.push_back(&cam);
+	m_models.push_back(model);
+}
+
+void
+Scene::addCamera(shared_ptr<Camera>& cam, bool makeActive)
+{
+	m_cams.push_back(cam);
 	if (makeActive) {
-		m_activeCam = &cam;
+		m_activeCam = cam;
 	}
 }

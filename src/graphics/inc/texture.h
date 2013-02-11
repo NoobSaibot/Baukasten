@@ -2,6 +2,7 @@
 #define TEXTURE_H_RIWRFHAD
 
 #include "base.h"
+#include "core/Identity"
 
 class Bitmap;
 class ITexture;
@@ -11,8 +12,8 @@ class ITexture;
  */
 class Texture {
 public:
-	static ITexture* fromFile(const string&);
-	static ITexture* fromBitmap(const Bitmap&);
+	static shared_ptr<ITexture> fromFile(const string&);
+	static shared_ptr<ITexture> fromBitmap(const Bitmap&);
 };
 
 #endif /* end of include guard: TEXTURE_H_RIWRFHAD */

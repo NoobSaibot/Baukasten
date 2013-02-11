@@ -2,7 +2,7 @@
 #define IMESH_H_W4FDKTY7
 
 #include "base.h"
-#include "core/Managed"
+#include "core/Identity"
 
 class IProgram;
 class VertexFormat;
@@ -10,7 +10,7 @@ class VertexFormat;
 /*!
  * \brief IMesh class declaration.
  */
-class IMesh : public Managed {
+class IMesh : public Identity {
 public:
 	enum UsageHint {
 		DYNAMIC, STATIC, STREAM

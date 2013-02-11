@@ -8,6 +8,7 @@
 #include "graphics/Scene"
 #include "graphics/Shader"
 #include "graphics/Texture"
+#include "graphics/ITexture"
 #include "io/Filesystem"
 
 int main(int argc, char const *argv[])
@@ -81,46 +82,53 @@ int main(int argc, char const *argv[])
 		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, 3)
 	};
 
-	Bitmap *bitmap = Bitmap::fromFile("wooden-crate.jpg");
-	ITexture *tex = Texture::fromBitmap(*bitmap);
-	bitmap->release();
+	auto tex = Texture::fromBitmap(
+		*Bitmap::fromFile("wooden-crate.jpg")
+	);
 
 	ShaderList shader;
 	shader.push_back( Shader::fromFile("default.vert", ShaderType::VERTEX) );
 	shader.push_back( Shader::fromFile("default.frag", ShaderType::FRAGMENT) );
 
-	IProgram *program = Program::create(shader);
-	IMesh *mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
+	auto program = Program::create(shader);
+	auto mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
 
-	Model *dot = Model::create( mesh, program, tex );
+	auto dot = Model::create( mesh, program, tex );
 
-	Model *i = Model::create( mesh, program, tex );
+	auto i = Model::create( mesh, program, tex );
 	i->translate(0, -4, 0);
 	i->scale(1, 2, 1);
 
-	Model *hLeft = Model::create( mesh, program, tex );
+	auto hLeft = Model::create( mesh, program, tex );
 	hLeft->translate(-7, -2, 0);
 	hLeft->scale(1, 4, 1);
 
-	Model *hRight = Model::create( mesh, program, tex );
+	auto hRight = Model::create( mesh, program, tex );
 	hRight->translate(-3, -2, 0);
 	hRight->scale(1, 4, 1);
 
-	Model *hMid = Model::create( mesh, program, tex );
+	auto hMid = Model::create( mesh, program, tex );
 	hMid->translate(-5, -2, 0);
 
-	Camera* cam = Camera::create();
+	auto cam = Camera::create();
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
 
-	Scene *scene = Scene::create(*cam);
+	auto cam2 = Camera::create();
 
-	scene->addModel(*dot);
-	scene->addModel(*i);
-	scene->addModel(*hLeft);
-	scene->addModel(*hMid);
-	scene->addModel(*hRight);
+	cam2->setPosition(vec3(4,0,4));
+	cam2->setAspectRatio(800.0f/640.0f);
+
+	auto scene = Scene::create(cam);
+
+	scene->addModel(dot);
+	scene->addModel(i);
+	scene->addModel(hLeft);
+	scene->addModel(hMid);
+	scene->addModel(hRight);
+
+	scene->addCamera(cam2);
 
 	GLfloat rotationY = 0.0f;
 	GLfloat rotationX = 0.0f;
@@ -132,39 +140,46 @@ int main(int argc, char const *argv[])
 
 	const float zoomSensitivity = -2.0;
 
+	auto activeCam = cam;
+
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		double thisTime = glfwGetTime();
 		float secondsElapsed = thisTime - lastTime;
 
+		if(glfwGetKey('G')) {
+			activeCam = (activeCam == cam) ? cam2 : cam;
+			scene->setActiveCamera(activeCam->id());
+		}
+
 		if(glfwGetKey('S')) {
-			cam->move(secondsElapsed * moveSpeed * cam->back());
+			activeCam->move(secondsElapsed * moveSpeed * activeCam->back());
 		} else if(glfwGetKey('W')) {
-			cam->move(secondsElapsed * moveSpeed * cam->forward());
+			activeCam->move(secondsElapsed * moveSpeed * activeCam->forward());
 		}
 
 		if(glfwGetKey('A')) {
-			cam->move(secondsElapsed * moveSpeed * cam->left());
+			activeCam->move(secondsElapsed * moveSpeed * activeCam->left());
 		} else if(glfwGetKey('D')) {
-			cam->move(secondsElapsed * moveSpeed * cam->right());
+			activeCam->move(secondsElapsed * moveSpeed * activeCam->right());
 		}
 
 		if(glfwGetKey('Y')) {
-			cam->move(secondsElapsed * moveSpeed * -vec3(0,1,0));
+			activeCam->move(secondsElapsed * moveSpeed * -vec3(0,1,0));
 		} else if(glfwGetKey('X')) {
-			cam->move(secondsElapsed * moveSpeed * vec3(0,1,0));
+			activeCam->move(secondsElapsed * moveSpeed * vec3(0,1,0));
 		}
 
 		if(glfwGetKey(GLFW_KEY_ESC))
 			glfwCloseWindow();
 
 		glfwGetMousePos(&mouseX, &mouseY);
-		cam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
+		activeCam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
 		glfwSetMousePos(0, 0);
 
-		float fieldOfView = cam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
+		float fieldOfView = activeCam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
 		if(fieldOfView < 5.0f) fieldOfView = 5.0f;
 		if(fieldOfView > 130.0f) fieldOfView = 130.0f;
-		cam->setFieldOfView(fieldOfView);
+		activeCam->setFieldOfView(fieldOfView);
 		glfwSetMouseWheel(0);
 
 		if(glfwGetKey('K'))
@@ -185,7 +200,6 @@ int main(int argc, char const *argv[])
 		rotationX = rotationY = 0.0f;
 	}
 
-	scene->release();
 	glfwTerminate();
 	return 0;
 }

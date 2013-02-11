@@ -6,24 +6,21 @@
 #include "graphics/ITexture"
 #include "graphics/VertexFormat"
 
-Model::Model(IMesh* mesh, IProgram* program, ITexture* texture) :
+Model::Model(shared_ptr<IMesh> mesh, shared_ptr<IProgram> program,
+		shared_ptr<ITexture> texture) :
 	m_mesh(mesh), m_program(program), m_texture(texture)
 {
-	m_mesh->addRef();
-	m_program->addRef();
-	m_texture->addRef();
 }
 
 Model::~Model()
 {
-	m_mesh->release();
-	m_program->release();
-	m_texture->release();
 }
 
-Model* Model::create(IMesh* mesh, IProgram* program, ITexture* texture )
+shared_ptr<Model>
+Model::create(shared_ptr<IMesh> mesh, shared_ptr<IProgram> program,
+		shared_ptr<ITexture> texture )
 {
-	return new Model(mesh, program, texture);
+	return shared_ptr<Model>(new Model(mesh, program, texture));
 }
 
 void Model::render(const Camera& cam, const float timeInterval) const
