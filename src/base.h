@@ -34,7 +34,7 @@ enum ShaderType {
 
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
-#include "debug.h"
+#include "core/Debug"
 
 #endif /* end of include guard: BASE_H_FIQRYC3F */
 
