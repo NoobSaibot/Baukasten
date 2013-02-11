@@ -33,6 +33,9 @@ enum ShaderType {
 	VERTEX, FRAGMENT
 };
 
+class IShader;
+typedef vector<IShader*> ShaderList;
+
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
 #include "core/Debug"
