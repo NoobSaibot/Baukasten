@@ -34,7 +34,10 @@ enum ShaderType {
 };
 
 class IShader;
-typedef vector<IShader*> ShaderList;
+typedef vector<shared_ptr<IShader>> ShaderList;
+
+#define BK_PIMPL(X) class X##Private* m_impl; friend class X##Private
+#define BK_STRINGIFY(X) #X
 
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
 
