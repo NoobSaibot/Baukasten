@@ -5,13 +5,17 @@
 
 class Identity {
 public:
-	Identity();
+	Identity(const string&, const string& type = "Unknown");
 	virtual ~Identity();
 
 	int id() const;
-	void setId(const int);
+	string name() const;
+	string type() const;
+
 private:
 	int m_id;
+	string m_name;
+	string m_type;
 	static int m_nextId;
 };
 

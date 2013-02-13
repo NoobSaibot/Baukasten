@@ -10,8 +10,9 @@ inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width,
 	return (row*width + col)* static_cast<int>(format);
 }
 
-Bitmap::Bitmap(unsigned char* pixels, const BitmapFormat format,
-		const int width, const int height) :
+Bitmap::Bitmap(const string& path, unsigned char* pixels,
+		const BitmapFormat format, const int width, const int height) :
+	Identity(path, "Bitmap"),
 	m_pixels(pixels), m_format(format), m_width(width), m_height(height)
 {
 }
@@ -27,7 +28,8 @@ Bitmap::fromFile(const string& path)
 	BK_ASSERT(Filesystem::exists(path));
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	return shared_ptr<Bitmap>(new Bitmap(pixels, (BitmapFormat)channels, width, height));
+
+	return shared_ptr<Bitmap>(new Bitmap(path, pixels, (BitmapFormat)channels, width, height));
 }
 
 BitmapFormat Bitmap::format() const

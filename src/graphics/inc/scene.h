@@ -12,7 +12,7 @@ class Model;
  */
 class Scene : public Identity {
 public:
-	static shared_ptr<Scene> create(shared_ptr<Camera>&);
+	static shared_ptr<Scene> create(const string&, shared_ptr<Camera>&);
 
 	void render(const int);
 	shared_ptr<Camera> activeCamera() const;
@@ -24,7 +24,7 @@ public:
 	virtual ~Scene();
 
 private:
-	Scene(shared_ptr<Camera>&);
+	Scene(const string&, shared_ptr<Camera>&);
 
 	vector<shared_ptr<Camera>> m_cams;
 	shared_ptr<Camera>         m_activeCam;

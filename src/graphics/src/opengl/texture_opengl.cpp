@@ -64,8 +64,8 @@ private:
 	GLuint m_txt;
 };
 
-TextureOpenGL::TextureOpenGL() :
-	m_impl(new TextureOpenGLPrivate())
+TextureOpenGL::TextureOpenGL(const string& name) :
+	ITexture(name), m_impl(new TextureOpenGLPrivate())
 {
 }
 

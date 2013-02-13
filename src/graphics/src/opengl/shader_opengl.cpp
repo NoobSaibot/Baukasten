@@ -62,7 +62,9 @@ private:
 	ShaderType m_type;
 };
 
-ShaderOpenGL::ShaderOpenGL(const string& source, const ShaderType type) :
+ShaderOpenGL::ShaderOpenGL(const string& name, const string& source,
+		const ShaderType type) :
+	IShader(name),
 	m_impl(new ShaderOpenGLPrivate(source, type))
 {
 }

@@ -2,6 +2,7 @@
 #define ITEXTURE_H_CPT5FEFW
 
 #include "base.h"
+#include "core/Identity"
 
 class Bitmap;
 class IProgram;
@@ -9,7 +10,7 @@ class IProgram;
 /*!
  * \brief ITexture class declaration.
  */
-class ITexture {
+class ITexture : public Identity {
 public:
 	enum Wrapping {
 		CLAMP_TO_EDGE, CLAMP_TO_BORDER,
@@ -21,6 +22,8 @@ public:
 		LINEAR_MIPMAP_NEAREST, NEAREST_MIPMAP_LINEAR,
 		LINEAR_MIPMAP_LINEAR
 	};
+
+	ITexture(const string& name) : Identity(name, "Texture") {}
 
 	virtual void activate(const IProgram&) const = 0;
 	virtual void deactivate() const = 0;

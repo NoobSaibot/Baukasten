@@ -3,8 +3,8 @@
 #include "graphics/Camera"
 #include "graphics/Model"
 
-Scene::Scene(shared_ptr<Camera>& cam) :
-	m_cams({cam}), m_activeCam(cam)
+Scene::Scene(const string& name, shared_ptr<Camera>& cam) :
+	Identity(name, "Scene"), m_cams({cam}), m_activeCam(cam)
 {
 }
 
@@ -13,9 +13,9 @@ Scene::~Scene()
 }
 
 shared_ptr<Scene>
-Scene::create(shared_ptr<Camera>& cam)
+Scene::create(const string& name, shared_ptr<Camera>& cam)
 {
-	return shared_ptr<Scene>(new Scene(cam));
+	return shared_ptr<Scene>(new Scene(name, cam));
 }
 
 void Scene::render(const int time)

@@ -3,15 +3,17 @@
 #include "graphics/ShaderImpl"
 #include "io/Filesystem"
 
-IShader*
-Shader::fromFile( const string& path, const ShaderType type )
+shared_ptr<IShader>
+Shader::fromFile( const string& name, const string& path,
+		const ShaderType type )
 {
-	return Shader::fromSource( Filesystem::readAll( path ), type );
+	return Shader::fromSource( name, Filesystem::readAll( path ), type );
 }
 
-IShader*
-Shader::fromSource( const string& source, const ShaderType type )
+shared_ptr<IShader>
+Shader::fromSource( const string& name, const string& source,
+		const ShaderType type )
 {
-	return new ShaderImpl( source, type );
+	return shared_ptr<IShader>(new ShaderImpl(name, source, type));
 }
 

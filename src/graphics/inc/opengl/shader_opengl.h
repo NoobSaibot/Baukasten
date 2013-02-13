@@ -4,22 +4,20 @@
 #include "base.h"
 #include "graphics/IShader"
 
-class ShaderOpenGLPrivate;
-
 /*!
  * \brief ShaderOpenGL class declaration.
  */
 class ShaderOpenGL : public IShader {
 public:
-	ShaderOpenGL(const string&, const ShaderType);
 	virtual ~ShaderOpenGL();
 
 	ShaderType type() const;
 	int handler() const;
 
 private:
-	friend class ShaderOpenGLPrivate;
-	ShaderOpenGLPrivate* m_impl;
+	ShaderOpenGL(const string&, const string&, const ShaderType);
+	friend class Shader;
+	BK_PIMPL(ShaderOpenGL);
 };
 
 #endif /* end of include guard: SHADER_OPENGL_H_UDEPWQPA */

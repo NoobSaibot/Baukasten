@@ -3,16 +3,12 @@
 
 #include "base.h"
 #include "graphics/IProgram"
-#include "graphics/IShader"
-
-class ProgramOpenGLPrivate;
 
 /*!
  * \brief ProgramOpenGL class declaration.
  */
 class ProgramOpenGL : public IProgram {
 public:
-	ProgramOpenGL(const ShaderList&);
 	virtual ~ProgramOpenGL();
 
 	int attrib(const string&) const;
@@ -25,8 +21,9 @@ public:
 	void deactivate() const;
 
 private:
-	friend class ProgramOpenGLPrivate;
-	ProgramOpenGLPrivate* m_impl;
+	ProgramOpenGL(const string&, const ShaderList&);
+	friend class Program;
+	BK_PIMPL(ProgramOpenGL);
 };
 
 #endif /* end of include guard: PROGRAM_OPENGL_H_8QTPJICH */

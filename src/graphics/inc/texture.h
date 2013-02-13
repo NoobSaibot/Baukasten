@@ -12,8 +12,8 @@ class ITexture;
  */
 class Texture {
 public:
-	static shared_ptr<ITexture> fromFile(const string&);
-	static shared_ptr<ITexture> fromBitmap(const Bitmap&);
+	static shared_ptr<ITexture> fromFile(const string&, const string&);
+	static shared_ptr<ITexture> fromBitmap(const string&, const Bitmap&);
 };
 
 #endif /* end of include guard: TEXTURE_H_RIWRFHAD */

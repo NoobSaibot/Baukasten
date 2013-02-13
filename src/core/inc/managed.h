@@ -4,6 +4,8 @@
 #include "base.h"
 #include "core/Identity"
 
+class ManagedPrivate;
+
 /*!
  * \brief Managed class declaration.
  */
@@ -13,13 +15,13 @@ public:
 	void release();
 	int  refCount() const;
 
-protected:
-	Managed();
+	Managed(const string&);
 	Managed(const Managed& other);
 	virtual ~Managed();
 
 private:
-	int m_refCount;
+	friend class ManagedPrivate;
+	ManagedPrivate* m_impl;
 };
 
 #endif /* end of include guard: MANAGED_H_V6R2GJOK */

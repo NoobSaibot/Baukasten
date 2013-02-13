@@ -21,7 +21,8 @@ public:
 	virtual ~Bitmap();
 
 private:
-	Bitmap(unsigned char*, const BitmapFormat, const int, const int);
+	Bitmap(const string&, unsigned char*, const BitmapFormat,
+			const int, const int);
 
 	unsigned char* m_pixels;
 	BitmapFormat m_format;

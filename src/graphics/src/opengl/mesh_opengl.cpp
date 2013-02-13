@@ -106,8 +106,8 @@ private:
 	mutable bool m_active;
 };
 
-MeshOpenGL::MeshOpenGL() :
-	m_impl(new MeshOpenGLPrivate())
+MeshOpenGL::MeshOpenGL(const string& name) :
+	IMesh(name), m_impl(new MeshOpenGLPrivate())
 {
 }
 

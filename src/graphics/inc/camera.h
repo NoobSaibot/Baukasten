@@ -11,9 +11,10 @@ class Settings;
  */
 class Camera : public Identity {
 public:
-	static shared_ptr<Camera> create();
-	static shared_ptr<Camera> create(const float, const float, const float,
-			const float, const float, const float, const vec3);
+	static shared_ptr<Camera> create(const string&);
+	static shared_ptr<Camera> create(const string&, const float,
+			const float, const float, const float, const float,
+			const float, const vec3);
 
 	// TODO implement settings class
 	void init(Settings*);
@@ -45,8 +46,8 @@ public:
 	virtual ~Camera();
 
 private:
-	Camera();
-	Camera(const float, const float, const float,
+	Camera(const string&);
+	Camera(const string&, const float, const float, const float,
 			const float, const float, const float, const vec3);
 
 	BK_PIMPL(Camera);

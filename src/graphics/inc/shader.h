@@ -7,8 +7,11 @@ class IShader;
 
 class Shader {
 public:
-	static IShader* fromFile( const string&, const ShaderType );
-	static IShader* fromSource( const string&, const ShaderType );
+	static shared_ptr<IShader> fromFile( const string&, const string&,
+			const ShaderType );
+
+	static shared_ptr<IShader> fromSource( const string&, const string&,
+			const ShaderType );
 };
 
 #endif /* end of include guard: SHADER_H_UEZJIHHF */

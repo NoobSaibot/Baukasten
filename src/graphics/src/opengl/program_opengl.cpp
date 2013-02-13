@@ -8,7 +8,7 @@ public:
 	{
 		m_shader = shader;
 		BK_GL_ASSERT(m_program = (glCreateProgram()));
-		for( IShader* s: shader ) {
+		for( auto s: shader ) {
 			BK_ASSERT(s->handler() != 0);
 			BK_GL_ASSERT(glAttachShader(m_program, s->handler()));
 		}
@@ -31,16 +31,13 @@ public:
 		}
 
 		BK_ASSERT(status == GL_TRUE);
-		for( IShader* s: shader ) {
+		for( auto s: shader ) {
 			BK_GL_ASSERT(glDetachShader(m_program, s->handler()));
 		}
 	}
 
 	~ProgramOpenGLPrivate()
 	{
-		for ( IShader* s: m_shader ) {
-			s->release();
-		}
 		BK_GL_ASSERT(glDeleteProgram(m_program));
 	}
 
@@ -84,7 +81,8 @@ private:
 	ShaderList m_shader;
 };
 
-ProgramOpenGL::ProgramOpenGL(const ShaderList& shader) :
+ProgramOpenGL::ProgramOpenGL(const string& name, const ShaderList& shader) :
+	IProgram(name),
 	m_impl(new ProgramOpenGLPrivate(shader))
 {
 }

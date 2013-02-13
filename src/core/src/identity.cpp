@@ -2,22 +2,30 @@
 
 int Identity::m_nextId = 0;
 
-Identity::Identity() :
-	m_id(++m_nextId)
+Identity::Identity(const string& name, const string& type) :
+	m_id(++m_nextId), m_name(name), m_type(type)
 {
 }
 
 Identity::~Identity()
 {
-	--m_nextId;
-}
-
-void Identity::setId(const int id)
-{
-	m_id = id;
+	BK_DEBUG("Identity::deleting (" << id() << "/" << m_nextId << ") - " << type() << " - " << name());
 }
 
 int Identity::id() const
 {
 	return m_id;
 }
+
+string
+Identity::name() const
+{
+	return m_name;
+}
+
+string
+Identity::type() const
+{
+	return m_type;
+}
+

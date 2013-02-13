@@ -16,6 +16,8 @@ public:
 		DYNAMIC, STATIC, STREAM
 	};
 
+	IMesh(const string& name) : Identity(name, "Mesh") {}
+
 	virtual void activate() const = 0;
 	virtual bool isActive() const = 0;
 	virtual int count() const = 0;

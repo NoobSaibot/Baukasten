@@ -12,7 +12,6 @@ class Bitmap;
  */
 class TextureOpenGL : public ITexture {
 public:
-	TextureOpenGL();
 	virtual ~TextureOpenGL();
 
 	void activate(const IProgram&) const;
@@ -22,9 +21,9 @@ public:
 	void init(const Bitmap&);
 
 private:
-
-	friend class TextureOpenGLPrivate;
-	TextureOpenGLPrivate* m_impl;
+	TextureOpenGL(const string&);
+	friend class Texture;
+	BK_PIMPL(TextureOpenGL);
 };
 
 #endif /* end of include guard: TEXTURE_OPENGL_H_XXM5JMKA */

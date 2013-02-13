@@ -2,12 +2,15 @@
 #define IPROGRAM_H_R9MJXBZH
 
 #include "base.h"
+#include "core/Identity"
 
 /*!
  * \brief IProgram class declaration.
  */
-class IProgram {
+class IProgram : public Identity {
 public:
+	IProgram(const string& name) : Identity(name, "Program") {}
+
 	virtual int attrib(const string&) const = 0;
 	virtual void setAttrib(const string&, const mat4&) = 0;
 

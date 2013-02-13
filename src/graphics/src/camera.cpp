@@ -139,17 +139,20 @@ private:
 	vec3  m_position;
 };
 
-Camera::Camera() :
+Camera::Camera(const string& name) :
+	Identity(name, "Camera"),
 	m_impl(new CameraPrivate())
 {
 }
 
 Camera::Camera(
+		const string& name,
 	const float fieldOfView, const float aspectRatio,
 	const float nearPlane, const float farPlane,
 	const float horizontalAngle, const float verticalAngle,
 	const vec3 position) :
 
+	Identity(name, "Camera"),
 	m_impl(new CameraPrivate(fieldOfView, aspectRatio, nearPlane,
 		farPlane, horizontalAngle, verticalAngle, position))
 {
@@ -161,19 +164,20 @@ Camera::~Camera()
 }
 
 shared_ptr<Camera>
-Camera::create()
+Camera::create(const string& name)
 {
-	return shared_ptr<Camera>(new Camera());
+	return shared_ptr<Camera>(new Camera(name));
 }
 
 shared_ptr<Camera>
 Camera::create(
+		const string& name,
 	const float fieldOfView, const float aspectRatio,
 	const float nearPlane, const float farPlane,
 	const float horizontalAngle, const float verticalAngle,
 	const vec3 position)
 {
-	return shared_ptr<Camera>(new Camera(fieldOfView, aspectRatio, nearPlane, farPlane,
+	return shared_ptr<Camera>(new Camera(name, fieldOfView, aspectRatio, nearPlane, farPlane,
 			horizontalAngle, verticalAngle, position));
 }
 

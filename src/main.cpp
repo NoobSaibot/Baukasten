@@ -83,15 +83,16 @@ int main(int argc, char const *argv[])
 	};
 
 	auto tex = Texture::fromBitmap(
-		*Bitmap::fromFile("wooden-crate.jpg")
+		"Wooden Crate", *Bitmap::fromFile("wooden-crate.jpg")
 	);
 
 	ShaderList shader;
-	shader.push_back( Shader::fromFile("default.vert", ShaderType::VERTEX) );
-	shader.push_back( Shader::fromFile("default.frag", ShaderType::FRAGMENT) );
+	shader.push_back( Shader::fromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
+	shader.push_back( Shader::fromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
 
-	auto program = Program::create(shader);
-	auto mesh = Mesh::create(*program, vertices, IMesh::STATIC, format, sizeof(vertices));
+	auto program = Program::create("Main", shader);
+	auto mesh = Mesh::create("Box", *program, vertices,
+			IMesh::STATIC, format, sizeof(vertices));
 
 	auto dot = Model::create( mesh, program, tex );
 
@@ -110,17 +111,17 @@ int main(int argc, char const *argv[])
 	auto hMid = Model::create( mesh, program, tex );
 	hMid->translate(-5, -2, 0);
 
-	auto cam = Camera::create();
+	auto cam = Camera::create("Front Cam");
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
 
-	auto cam2 = Camera::create();
+	auto cam2 = Camera::create("Right Cam");
 
 	cam2->setPosition(vec3(4,0,4));
 	cam2->setAspectRatio(800.0f/640.0f);
 
-	auto scene = Scene::create(cam);
+	auto scene = Scene::create("Die Unendlichkeit", cam);
 
 	scene->addModel(dot);
 	scene->addModel(i);
