@@ -4,9 +4,8 @@
 #include "base.h"
 #include "graphics/IProgram"
 
-/*!
- * \brief ProgramOpenGL class declaration.
- */
+namespace bk {
+
 class ProgramOpenGL : public IProgram {
 public:
 	virtual ~ProgramOpenGL();
@@ -25,6 +24,8 @@ private:
 	friend class Program;
 	BK_PIMPL(ProgramOpenGL);
 };
+
+} /* bk */
 
 #endif /* end of include guard: PROGRAM_OPENGL_H_8QTPJICH */
 

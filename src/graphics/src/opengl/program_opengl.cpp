@@ -2,6 +2,8 @@
 
 #include "graphics/IShader"
 
+namespace bk {
+
 class ProgramOpenGLPrivate {
 public:
 	ProgramOpenGLPrivate(const ShaderList& shader)
@@ -127,3 +129,6 @@ void ProgramOpenGL::deactivate() const
 	BK_ASSERT(m_impl);
 	m_impl->deactivate();
 }
+
+}
+

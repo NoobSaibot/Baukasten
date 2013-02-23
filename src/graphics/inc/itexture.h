@@ -4,12 +4,11 @@
 #include "base.h"
 #include "core/Identity"
 
+namespace bk {
+
 class Bitmap;
 class IProgram;
 
-/*!
- * \brief ITexture class declaration.
- */
 class ITexture : public Identity {
 public:
 	enum Wrapping {
@@ -31,6 +30,8 @@ public:
 	virtual void setWrapping(const Wrapping) = 0;
 	virtual void init(const Bitmap&) = 0;
 };
+
+}
 
 #endif /* end of include guard: ITEXTURE_H_CPT5FEFW */
 

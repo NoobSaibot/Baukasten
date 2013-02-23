@@ -2,6 +2,8 @@
 
 #include "graphics/MeshImpl"
 
+namespace bk {
+
 shared_ptr<IMesh>
 Mesh::create(const string& name, const IProgram& program, const float* data,
 		const IMesh::UsageHint hint, const VertexFormat format, const int size)
@@ -10,4 +12,6 @@ Mesh::create(const string& name, const IProgram& program, const float* data,
 	impl->init(program, data, hint, format, size);
 	return impl;
 }
+
+} // bk
 

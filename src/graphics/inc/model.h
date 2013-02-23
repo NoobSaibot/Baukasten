@@ -2,16 +2,16 @@
 #define MODEL_H_IZNSJVOY
 
 #include "base.h"
+#include "core/Identity"
+
+namespace bk {
 
 class Camera;
 class IMesh;
 class IProgram;
 class ITexture;
 
-/*!
- * \brief Model class declaration.
- */
-class Model {
+class Model : public Identity {
 public:
 	static shared_ptr<Model> create(shared_ptr<IMesh>,
 			shared_ptr<IProgram>, shared_ptr<ITexture>);
@@ -35,6 +35,8 @@ private:
 
 	mat4      m_translation;
 };
+
+}
 
 #endif /* end of include guard: MODEL_H_IZNSJVOY */
 

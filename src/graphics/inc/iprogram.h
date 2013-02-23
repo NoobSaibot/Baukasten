@@ -4,9 +4,8 @@
 #include "base.h"
 #include "core/Identity"
 
-/*!
- * \brief IProgram class declaration.
- */
+namespace bk {
+
 class IProgram : public Identity {
 public:
 	IProgram(const string& name) : Identity(name, "Program") {}
@@ -20,6 +19,8 @@ public:
 	virtual void activate() const = 0;
 	virtual void deactivate() const = 0;
 };
+
+}
 
 #endif /* end of include guard: IPROGRAM_H_R9MJXBZH */
 

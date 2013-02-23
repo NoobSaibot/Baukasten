@@ -3,16 +3,20 @@
 #include "graphics/Bitmap"
 #include "graphics/IProgram"
 
-static GLenum _opengl_format(BitmapFormat format)
+namespace {
+static GLenum _opengl_format(bk::BitmapFormat format)
 {
 	switch (format) {
-		case BitmapFormat::Grayscale: return GL_LUMINANCE;
-		case BitmapFormat::GrayscaleAlpha: return GL_LUMINANCE_ALPHA;
-		case BitmapFormat::RGB: return GL_RGB;
-		case BitmapFormat::RGBA: return GL_RGBA;
+		case bk::BitmapFormat::Grayscale: return GL_LUMINANCE;
+		case bk::BitmapFormat::GrayscaleAlpha: return GL_LUMINANCE_ALPHA;
+		case bk::BitmapFormat::RGB: return GL_RGB;
+		case bk::BitmapFormat::RGBA: return GL_RGBA;
 		default: return GL_RGB;
 	}
 }
+}
+
+namespace bk {
 
 class TextureOpenGLPrivate {
 public:
@@ -96,3 +100,6 @@ void TextureOpenGL::setWrapping(const ITexture::Wrapping wrapping)
 void TextureOpenGL::setFiltering(const ITexture::Filtering filtering)
 {
 }
+
+}
+

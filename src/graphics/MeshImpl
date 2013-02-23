@@ -1,3 +1,5 @@
 #include "inc/opengl/mesh_opengl.h"
 
+namespace bk {
 typedef MeshOpenGL MeshImpl;
+}

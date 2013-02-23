@@ -4,12 +4,11 @@
 #include "base.h"
 #include "graphics/ITexture"
 
+namespace bk {
+
 class TextureOpenGLPrivate;
 class Bitmap;
 
-/*!
- * \brief TextureOpenGL class declaration.
- */
 class TextureOpenGL : public ITexture {
 public:
 	virtual ~TextureOpenGL();
@@ -25,6 +24,8 @@ private:
 	friend class Texture;
 	BK_PIMPL(TextureOpenGL);
 };
+
+}
 
 #endif /* end of include guard: TEXTURE_OPENGL_H_XXM5JMKA */
 

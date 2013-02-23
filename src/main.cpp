@@ -11,6 +11,8 @@
 #include "graphics/ITexture"
 #include "io/Filesystem"
 
+using namespace bk;
+
 int main(int argc, char const *argv[])
 {
 	glfwInit();

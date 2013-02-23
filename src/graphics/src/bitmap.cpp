@@ -5,10 +5,14 @@
 #define STBI_FAILURE_USERMSG
 #include "3rdparty/stb_image.c"
 
+namespace {
 inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width,
-		unsigned height, BitmapFormat format) {
+		unsigned height, bk::BitmapFormat format) {
 	return (row*width + col)* static_cast<int>(format);
 }
+}
+
+namespace bk {
 
 Bitmap::Bitmap(const string& path, unsigned char* pixels,
 		const BitmapFormat format, const int width, const int height) :
@@ -77,5 +81,7 @@ void Bitmap::flip(const BitmapFlipMode mode)
 	//}
 
 	//delete rowBuffer;
+}
+
 }
 

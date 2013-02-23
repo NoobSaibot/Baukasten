@@ -1,5 +1,7 @@
 #include "core/Identity"
 
+namespace bk {
+
 int Identity::m_nextId = 0;
 
 Identity::Identity(const string& name, const string& type) :
@@ -27,5 +29,7 @@ string
 Identity::type() const
 {
 	return m_type;
+}
+
 }
 

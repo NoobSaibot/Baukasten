@@ -1,5 +1,7 @@
 #include "graphics/VertexFormat"
 
+namespace bk {
+
 VertexFormat::VertexFormat() :
 	m_size(0)
 {
@@ -32,5 +34,7 @@ void VertexFormat::operator=(const VertexFormat& other)
 {
 	m_elements = other.elements();
 	m_size = other.size();
+}
+
 }
 

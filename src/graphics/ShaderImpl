@@ -1,3 +1,5 @@
 #include "inc/opengl/shader_opengl.h"
 
+namespace bk {
 typedef ShaderOpenGL ShaderImpl;
+}

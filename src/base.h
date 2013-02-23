@@ -18,6 +18,8 @@
 using namespace std;
 using namespace glm;
 
+namespace bk {
+
 enum class BitmapFormat {
 	Grayscale = 1,
 	GrayscaleAlpha = 2,
@@ -35,6 +37,8 @@ enum ShaderType {
 
 class IShader;
 typedef vector<shared_ptr<IShader>> ShaderList;
+
+}
 
 #define BK_PIMPL(X) class X##Private* m_impl; friend class X##Private
 #define BK_STRINGIFY(X) #X

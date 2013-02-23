@@ -4,9 +4,8 @@
 #include "base.h"
 #include "graphics/IMesh"
 
-/*!
- * \brief MeshOpengl class declaration.
- */
+namespace bk {
+
 class MeshOpenGL : public IMesh {
 public:
 	virtual ~MeshOpenGL();
@@ -23,6 +22,8 @@ private:
 	friend class Mesh;
 	BK_PIMPL(MeshOpenGL);
 };
+
+}
 
 #endif /* end of include guard: MESH_OPENGL_H_K4YSTC7O */
 

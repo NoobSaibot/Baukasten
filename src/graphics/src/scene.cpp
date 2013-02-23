@@ -3,6 +3,8 @@
 #include "graphics/Camera"
 #include "graphics/Model"
 
+namespace bk {
+
 Scene::Scene(const string& name, shared_ptr<Camera>& cam) :
 	Identity(name, "Scene"), m_cams({cam}), m_activeCam(cam)
 {
@@ -59,3 +61,6 @@ Scene::addCamera(shared_ptr<Camera>& cam, bool makeActive)
 		m_activeCam = cam;
 	}
 }
+
+}
+

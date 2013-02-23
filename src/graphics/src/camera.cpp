@@ -1,8 +1,7 @@
 #include "graphics/Camera"
 
-/*!
- * \brief CameraPrivate class declaration.
- */
+namespace bk {
+
 class CameraPrivate {
 public:
 	CameraPrivate() :
@@ -259,5 +258,7 @@ vec3 Camera::up() const
 vec3 Camera::down() const
 {
 	return m_impl->down();
+}
+
 }
 

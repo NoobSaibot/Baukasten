@@ -4,6 +4,8 @@
 #include "graphics/ITexture"
 #include "graphics/TextureImpl"
 
+namespace bk {
+
 shared_ptr<ITexture>
 Texture::fromFile(const string& name, const string& path)
 {
@@ -17,5 +19,7 @@ Texture::fromBitmap(const string& name, const Bitmap& bitmap)
 	auto t = shared_ptr<ITexture>(new TextureImpl(name));
 	t->init(bitmap);
 	return t;
+}
+
 }
 

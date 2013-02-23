@@ -2,12 +2,10 @@
 #define BITMAP_H_QOEYDWMJ
 
 #include "base.h"
-
 #include "core/Identity"
 
-/*!
- * \brief Bitmap class declaration.
- */
+namespace bk {
+
 class Bitmap : public Identity {
 public:
 	static shared_ptr<Bitmap> fromFile(const string&);
@@ -29,6 +27,8 @@ private:
 	int m_width;
 	int m_height;
 };
+
+}
 
 #endif /* end of include guard: BITMAP_H_QOEYDWMJ */
 

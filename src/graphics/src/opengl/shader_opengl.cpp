@@ -1,14 +1,18 @@
 #include "graphics/inc/opengl/shader_opengl.h"
 
-static GLint _to_opengl_type(const ShaderType type)
+namespace {
+static GLint _to_opengl_type(const bk::ShaderType type)
 {
 	switch ( type ) {
-	case ShaderType::VERTEX:
+	case bk::ShaderType::VERTEX:
 		return GL_VERTEX_SHADER;
-	case ShaderType::FRAGMENT:
+	case bk::ShaderType::FRAGMENT:
 		return GL_FRAGMENT_SHADER;
 	}
 }
+}
+
+namespace bk {
 
 class ShaderOpenGLPrivate {
 public:
@@ -84,5 +88,7 @@ int
 ShaderOpenGL::handler() const
 {
 	return m_impl->handler();
+}
+
 }
 

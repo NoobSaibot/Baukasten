@@ -4,11 +4,8 @@
 #include "base.h"
 #include "core/Identity"
 
-class ManagedPrivate;
+namespace bk {
 
-/*!
- * \brief Managed class declaration.
- */
 class Managed : public Identity {
 public:
 	void addRef();
@@ -20,9 +17,10 @@ public:
 	virtual ~Managed();
 
 private:
-	friend class ManagedPrivate;
-	ManagedPrivate* m_impl;
+	BK_PIMPL(Managed);
 };
+
+}
 
 #endif /* end of include guard: MANAGED_H_V6R2GJOK */
 

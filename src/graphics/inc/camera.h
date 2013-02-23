@@ -4,11 +4,10 @@
 #include "base.h"
 #include "core/Identity"
 
+namespace bk {
+
 class Settings;
 
-/*!
- * \brief Camera class declaration.
- */
 class Camera : public Identity {
 public:
 	static shared_ptr<Camera> create(const string&);
@@ -52,6 +51,8 @@ private:
 
 	BK_PIMPL(Camera);
 };
+
+}
 
 #endif /* end of include guard: CAMERA_H_T6GLZWCT */
 

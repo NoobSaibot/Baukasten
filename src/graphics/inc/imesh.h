@@ -4,12 +4,11 @@
 #include "base.h"
 #include "core/Identity"
 
+namespace bk {
+
 class IProgram;
 class VertexFormat;
 
-/*!
- * \brief IMesh class declaration.
- */
 class IMesh : public Identity {
 public:
 	enum UsageHint {
@@ -25,6 +24,8 @@ public:
 	virtual VertexFormat format() const = 0;
 	virtual void init(const IProgram&, const float*, const UsageHint, const VertexFormat, const int) = 0;
 };
+
+}
 
 #endif /* end of include guard: IMESH_H_W4FDKTY7 */
 

@@ -4,9 +4,8 @@
 #include "base.h"
 #include "core/Identity"
 
-/*!
- * \brief IShader class declaration.
- */
+namespace bk {
+
 class IShader : public Identity {
 public:
 	IShader(const string& name) : Identity(name, "Shader") {}
@@ -14,6 +13,8 @@ public:
 	virtual ShaderType type() const = 0;
 	virtual int handler() const = 0;
 };
+
+}
 
 #endif /* end of include guard: ISHADER_H_CGG0R9RZ */
 

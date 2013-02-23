@@ -3,6 +3,8 @@
 
 #include "base.h"
 
+namespace bk {
+
 class IShader;
 
 class Shader {
@@ -13,6 +15,8 @@ public:
 	static shared_ptr<IShader> fromSource( const string&, const string&,
 			const ShaderType );
 };
+
+}
 
 #endif /* end of include guard: SHADER_H_UEZJIHHF */
 

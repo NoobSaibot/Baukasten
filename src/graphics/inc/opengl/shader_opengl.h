@@ -4,9 +4,8 @@
 #include "base.h"
 #include "graphics/IShader"
 
-/*!
- * \brief ShaderOpenGL class declaration.
- */
+namespace bk {
+
 class ShaderOpenGL : public IShader {
 public:
 	virtual ~ShaderOpenGL();
@@ -19,6 +18,8 @@ private:
 	friend class Shader;
 	BK_PIMPL(ShaderOpenGL);
 };
+
+}
 
 #endif /* end of include guard: SHADER_OPENGL_H_UDEPWQPA */
 

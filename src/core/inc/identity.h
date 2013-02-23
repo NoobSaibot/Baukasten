@@ -3,6 +3,8 @@
 
 #include "base.h"
 
+namespace bk {
+
 class Identity {
 public:
 	Identity(const string&, const string& type = "Unknown");
@@ -18,6 +20,8 @@ private:
 	string m_type;
 	static int m_nextId;
 };
+
+}
 
 #endif /* end of include guard: OBJECT_H_DPFT5OLZ */
 

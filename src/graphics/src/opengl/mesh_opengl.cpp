@@ -3,8 +3,10 @@
 #include "graphics/IProgram"
 #include "graphics/VertexFormat"
 
+namespace {
 static void
-_set_attrib(const IProgram* program, VertexFormat::Data d, const int size, const string& attrib)
+_set_attrib(const bk::IProgram* program, bk::VertexFormat::Data d,
+		const int size, const string& attrib)
 {
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
@@ -13,6 +15,9 @@ _set_attrib(const IProgram* program, VertexFormat::Data d, const int size, const
 	));
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }
+}
+
+namespace bk {
 
 class MeshOpenGLPrivate {
 public:
@@ -146,5 +151,7 @@ MeshOpenGL::isActive() const
 void MeshOpenGL::deactivate() const
 {
 	m_impl->deactivate();
+}
+
 }
 
