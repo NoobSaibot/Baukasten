@@ -31,7 +31,7 @@ enum class BitmapFlipMode {
 	HORIZONTALLY, VERTICALLY
 };
 
-enum ShaderType {
+enum class ShaderType {
 	VERTEX, FRAGMENT
 };
 
