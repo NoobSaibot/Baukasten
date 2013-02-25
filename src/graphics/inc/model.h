@@ -27,13 +27,9 @@ public:
 	virtual ~Model();
 
 private:
-	Model(shared_ptr<IMesh>, shared_ptr<IProgram>, shared_ptr<ITexture>);
-
-	shared_ptr<IMesh>    m_mesh;
-	shared_ptr<IProgram> m_program;
-	shared_ptr<ITexture> m_texture;
-
-	mat4      m_translation;
+	Model(const string&, shared_ptr<IMesh>, shared_ptr<IProgram>,
+			shared_ptr<ITexture>);
+	BK_IMPL(Model);
 };
 
 }

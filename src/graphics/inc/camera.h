@@ -49,7 +49,7 @@ private:
 	Camera(const string&, const float, const float, const float,
 			const float, const float, const float, const vec3);
 
-	BK_PIMPL(Camera);
+	BK_IMPL(Camera);
 };
 
 }

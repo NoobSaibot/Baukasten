@@ -22,7 +22,7 @@ public:
 private:
 	TextureOpenGL(const string&);
 	friend class Texture;
-	BK_PIMPL(TextureOpenGL);
+	BK_IMPL(TextureOpenGL);
 };
 
 }

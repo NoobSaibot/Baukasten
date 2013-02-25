@@ -16,7 +16,7 @@ public:
 private:
 	ShaderOpenGL(const string&, const string&, const ShaderType);
 	friend class Shader;
-	BK_PIMPL(ShaderOpenGL);
+	BK_IMPL(ShaderOpenGL);
 };
 
 }

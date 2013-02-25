@@ -22,7 +22,7 @@ public:
 private:
 	ProgramOpenGL(const string&, const ShaderList&);
 	friend class Program;
-	BK_PIMPL(ProgramOpenGL);
+	BK_IMPL(ProgramOpenGL);
 };
 
 } /* bk */

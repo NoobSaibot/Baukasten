@@ -17,7 +17,7 @@ public:
 	virtual ~Managed();
 
 private:
-	BK_PIMPL(Managed);
+	BK_IMPL(Managed);
 };
 
 }
