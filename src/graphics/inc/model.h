@@ -13,7 +13,7 @@ class ITexture;
 
 class Model : public Identity {
 public:
-	static shared_ptr<Model> create(shared_ptr<IMesh>,
+	static shared_ptr<Model> create(const string&, shared_ptr<IMesh>,
 			shared_ptr<IProgram>, shared_ptr<ITexture>);
 
 	void render(const Camera&, const float) const;

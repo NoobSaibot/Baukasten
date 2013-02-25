@@ -13,6 +13,10 @@ class Mesh {
 public:
 	static shared_ptr<IMesh> create(const string&, const IProgram&,
 			const float*, const IMesh::UsageHint, const VertexFormat, const int);
+	static shared_ptr<IMesh> createQuad(const string&, const IProgram&,
+			const float, const float, const float);
+	static shared_ptr<IMesh> createRect(const string&, const IProgram&,
+			const float, const float, const float, const float);
 };
 
 }
