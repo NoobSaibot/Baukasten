@@ -96,21 +96,21 @@ int main(int argc, char const *argv[])
 	auto mesh = Mesh::create("Box", *program, vertices,
 			IMesh::STATIC, format, sizeof(vertices));
 
-	auto dot = Model::create( mesh, program, tex );
+	auto dot = Model::create( "Dot", mesh, program, tex );
 
-	auto i = Model::create( mesh, program, tex );
+	auto i = Model::create( "I", mesh, program, tex );
 	i->translate(0, -4, 0);
 	i->scale(1, 2, 1);
 
-	auto hLeft = Model::create( mesh, program, tex );
+	auto hLeft = Model::create( "H-Left", mesh, program, tex );
 	hLeft->translate(-7, -2, 0);
 	hLeft->scale(1, 4, 1);
 
-	auto hRight = Model::create( mesh, program, tex );
+	auto hRight = Model::create( "H-Right", mesh, program, tex );
 	hRight->translate(-3, -2, 0);
 	hRight->scale(1, 4, 1);
 
-	auto hMid = Model::create( mesh, program, tex );
+	auto hMid = Model::create( "H-Mid", mesh, program, tex );
 	hMid->translate(-5, -2, 0);
 
 	auto cam = Camera::create("Front Cam");
