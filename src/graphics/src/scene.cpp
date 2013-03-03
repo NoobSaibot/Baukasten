@@ -48,7 +48,7 @@ Scene::setActiveCamera(const int id)
 }
 
 void
-Scene::addModel(shared_ptr<Model>& model)
+Scene::addModel(Model* model)
 {
 	m_models.push_back(model);
 }

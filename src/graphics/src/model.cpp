@@ -20,7 +20,7 @@ public:
 	{
 	}
 
-	void render(const Camera& cam, const float timeDelta) const
+	void render(const Camera* cam, const float timeDelta) const
 	{
 		m_program->activate();
 
@@ -33,8 +33,8 @@ public:
 		}
 
 		// set camera matrix
-		m_program->setConstant("camera", cam.matrix());
 		m_program->setConstant("translation", m_translation);
+		m_program->setConstant("camera", cam->matrix());
 
 		// draw the mesh
 		BK_GL_ASSERT(glDrawArrays(GL_TRIANGLES, 0, m_mesh->count()));
@@ -89,14 +89,14 @@ Model::~Model()
 	delete m_impl;
 }
 
-shared_ptr<Model>
+Model*
 Model::create(const string& name, shared_ptr<IMesh> mesh,
 		shared_ptr<IProgram> program, shared_ptr<ITexture> texture )
 {
-	return shared_ptr<Model>(new Model(name, mesh, program, texture));
+	return new Model(name, mesh, program, texture);
 }
 
-void Model::render(const Camera& cam, const float timeDelta) const
+void Model::render(const Camera* cam, const float timeDelta) const
 {
 	m_impl->render(cam, timeDelta);
 }

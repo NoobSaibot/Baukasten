@@ -17,7 +17,7 @@ public:
 	shared_ptr<Camera> activeCamera() const;
 	void setActiveCamera(const int);
 
-	void addModel(shared_ptr<Model>&);
+	void addModel(Model*);
 	void addCamera(shared_ptr<Camera>&, bool makeActive = false);
 
 	virtual ~Scene();
@@ -27,7 +27,7 @@ private:
 
 	vector<shared_ptr<Camera>> m_cams;
 	shared_ptr<Camera>         m_activeCam;
-	vector<shared_ptr<Model>>  m_models;
+	vector<Model*>  m_models;
 };
 
 }

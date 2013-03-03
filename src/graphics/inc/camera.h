@@ -10,8 +10,8 @@ class Settings;
 
 class Camera : public Identity {
 public:
-	static shared_ptr<Camera> create(const string&);
-	static shared_ptr<Camera> create(const string&, const float,
+	static Camera* create(const string&);
+	static Camera* create(const string&, const float,
 			const float, const float, const float, const float,
 			const float, const vec3);
 

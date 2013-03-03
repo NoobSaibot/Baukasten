@@ -162,13 +162,13 @@ Camera::~Camera()
 	SAFE_DELETE(m_impl);
 }
 
-shared_ptr<Camera>
+Camera*
 Camera::create(const string& name)
 {
-	return shared_ptr<Camera>(new Camera(name));
+	return new Camera(name);
 }
 
-shared_ptr<Camera>
+Camera*
 Camera::create(
 		const string& name,
 	const float fieldOfView, const float aspectRatio,
@@ -176,8 +176,8 @@ Camera::create(
 	const float horizontalAngle, const float verticalAngle,
 	const vec3 position)
 {
-	return shared_ptr<Camera>(new Camera(name, fieldOfView, aspectRatio, nearPlane, farPlane,
-			horizontalAngle, verticalAngle, position));
+	return new Camera(name, fieldOfView, aspectRatio, nearPlane, farPlane,
+			horizontalAngle, verticalAngle, position);
 }
 
 float Camera::fieldOfView() const

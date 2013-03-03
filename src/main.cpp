@@ -96,42 +96,45 @@ int main(int argc, char const *argv[])
 	auto mesh = Mesh::create("Box", *program, vertices,
 			IMesh::STATIC, format, sizeof(vertices));
 
-	auto dot = Model::create( "Dot", mesh, program, tex );
+	auto dot = Actor::create("actor.dot", Model::create( "Dot", mesh, program, tex ));
 
-	auto i = Model::create( "I", mesh, program, tex );
-	i->translate(0, -4, 0);
-	i->scale(1, 2, 1);
+	auto i = Actor::create("actor.i", Model::create( "I", mesh, program, tex ));
+	i->model()->translate(0, -4, 0);
+	i->model()->scale(1, 2, 1);
 
-	auto hLeft = Model::create( "H-Left", mesh, program, tex );
-	hLeft->translate(-7, -2, 0);
-	hLeft->scale(1, 4, 1);
+	auto hLeft = Actor::create("actor.hLeft", Model::create( "H-Left", mesh, program, tex ));
+	hLeft->model()->translate(-7, -2, 0);
+	hLeft->model()->scale(1, 4, 1);
 
-	auto hRight = Model::create( "H-Right", mesh, program, tex );
-	hRight->translate(-3, -2, 0);
-	hRight->scale(1, 4, 1);
+	auto hRight = Actor::create("actor.hRight", Model::create( "H-Right", mesh, program, tex ));
+	hRight->model()->translate(-3, -2, 0);
+	hRight->model()->scale(1, 4, 1);
 
-	auto hMid = Model::create( "H-Mid", mesh, program, tex );
-	hMid->translate(-5, -2, 0);
+	auto hMid = Actor::create("actor.hMide", Model::create( "H-Mid", mesh, program, tex ));
+	hMid->model()->translate(-5, -2, 0);
 
 	auto cam = Camera::create("Front Cam");
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
 
-	auto cam2 = Camera::create("Right Cam");
+	auto cam2 = Camera::create("camera.cam2");
 
 	cam2->setPosition(vec3(4,0,4));
 	cam2->setAspectRatio(800.0f/640.0f);
 
-	auto scene = Scene::create("Die Unendlichkeit", cam);
+	auto scene = Actor::create("actor.scene", 0);
 
-	scene->addModel(dot);
-	scene->addModel(i);
-	scene->addModel(hLeft);
-	scene->addModel(hMid);
-	scene->addModel(hRight);
+	scene->addChild(dot);
+	scene->addChild(i);
+	scene->addChild(hLeft);
+	scene->addChild(hMid);
+	scene->addChild(hRight);
 
-	scene->addCamera(cam2);
+	auto context = Context::create();
+	context->addCamera(cam);
+
+	scene->setContext(context);
 
 	GLfloat rotationY = 0.0f;
 	GLfloat rotationX = 0.0f;
@@ -143,7 +146,7 @@ int main(int argc, char const *argv[])
 
 	const float zoomSensitivity = -2.0;
 
-	auto activeCam = cam;
+	Camera* activeCam = cam;
 
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		double thisTime = glfwGetTime();
@@ -151,7 +154,7 @@ int main(int argc, char const *argv[])
 
 		if(glfwGetKey('G')) {
 			activeCam = (activeCam == cam) ? cam2 : cam;
-			scene->setActiveCamera(activeCam->id());
+			scene->context()->setActiveCamera(activeCam->id());
 		}
 
 		if(glfwGetKey('S')) {
@@ -194,11 +197,12 @@ int main(int argc, char const *argv[])
 		if(glfwGetKey('M'))
 			rotationX -= 0.5f;
 
-		dot->translate(
+		dot->model()->translate(
 			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
 		);
 
-		scene->render(secondsElapsed);
+		scene->update(secondsElapsed);
+		scene->render();
 
 		rotationX = rotationY = 0.0f;
 	}

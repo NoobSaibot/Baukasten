@@ -13,10 +13,10 @@ class ITexture;
 
 class Model : public Identity {
 public:
-	static shared_ptr<Model> create(const string&, shared_ptr<IMesh>,
+	static Model* create(const string&, shared_ptr<IMesh>,
 			shared_ptr<IProgram>, shared_ptr<ITexture>);
 
-	void render(const Camera&, const float) const;
+	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
 	mat4 translation() const;
 	void translate(const mat4&);
