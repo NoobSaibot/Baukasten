@@ -33,8 +33,8 @@ public:
 		}
 
 		// set camera matrix
-		m_program->setConstant("translation", m_translation);
 		m_program->setConstant("camera", cam->matrix());
+		m_program->setConstant("transformation", m_translation);
 
 		// draw the mesh
 		BK_GL_ASSERT(glDrawArrays(GL_TRIANGLES, 0, m_mesh->count()));
