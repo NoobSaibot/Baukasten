@@ -2,8 +2,10 @@ set(graphics_SRCS
   graphics/src/bitmap.cpp
   graphics/src/camera.cpp
   graphics/src/context.cpp
+  graphics/src/display.cpp
   graphics/src/mesh.cpp
   graphics/src/model.cpp
+  graphics/src/opengl/display_opengl.cpp
   graphics/src/opengl/mesh_opengl.cpp
   graphics/src/opengl/program_opengl.cpp
   graphics/src/opengl/shader_opengl.cpp

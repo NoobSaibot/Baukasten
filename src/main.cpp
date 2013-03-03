@@ -1,34 +1,26 @@
 #include "base.h"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
+#include "graphics/Context"
+#include "graphics/Display"
+#include "graphics/IDisplay"
+#include "graphics/IProgram"
+#include "graphics/ITexture"
 #include "graphics/Mesh"
 #include "graphics/Model"
 #include "graphics/Program"
-#include "graphics/IProgram"
 #include "graphics/Scene"
 #include "graphics/Shader"
 #include "graphics/Texture"
-#include "graphics/ITexture"
 #include "io/Filesystem"
+#include "model/Actor"
 
 using namespace bk;
 
 int main(int argc, char const *argv[])
 {
-	glfwInit();
-
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
-	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-	glfwOpenWindow(800, 600, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
-
-	glewInit();
-	BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
-	BK_GL_ASSERT(glDepthFunc(GL_LESS));
-
-	glfwDisable(GLFW_MOUSE_CURSOR);
-	glfwSetMousePos(0, 0);
-	glfwSetMouseWheel(0);
+	auto display = Display::create();
+	display->init();
 
 	float vertices[] = {
 	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
@@ -149,6 +141,8 @@ int main(int argc, char const *argv[])
 	Camera* activeCam = cam;
 
 	while (glfwGetWindowParam(GLFW_OPENED)) {
+		display->clear();
+
 		double thisTime = glfwGetTime();
 		float secondsElapsed = thisTime - lastTime;
 
@@ -205,6 +199,8 @@ int main(int argc, char const *argv[])
 		scene->render();
 
 		rotationX = rotationY = 0.0f;
+
+		display->display();
 	}
 
 	glfwTerminate();
