@@ -37,6 +37,16 @@ public:
 			m_activeCam = cam;
 	}
 
+	void activate()
+	{
+		if (m_enable3d) {
+			BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
+			BK_GL_ASSERT(glDepthFunc(GL_LESS));
+		} else {
+			BK_GL_ASSERT(glDisable(GL_DEPTH_TEST));
+		}
+	}
+
 	void setActiveCamera(const int id)
 	{
 		m_activeCam = m_cams[id];
@@ -64,10 +74,10 @@ Context::~Context()
 	delete m_impl;
 }
 
-Context*
-Context::create()
+void
+Context::activate()
 {
-	return new Context();
+	m_impl->activate();
 }
 
 void
