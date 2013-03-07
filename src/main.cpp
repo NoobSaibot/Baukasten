@@ -16,7 +16,7 @@ using namespace bk;
 int main(int argc, char const *argv[])
 {
 	auto display = Graphics::createDisplay();
-	display->init();
+	display->init(800, 600);
 
 	float vertices[] = {
 	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,

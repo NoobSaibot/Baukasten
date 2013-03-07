@@ -7,7 +7,7 @@ class IDisplay {
 public:
 	virtual void clear() = 0;
 	virtual void display() = 0;
-	virtual void init() = 0;
+	virtual void init(const int, const int) = 0;
 	virtual void setBackgroundColor(const float, const float, const float) = 0;
 };
 

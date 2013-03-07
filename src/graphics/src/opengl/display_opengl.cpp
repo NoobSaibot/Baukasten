@@ -4,18 +4,20 @@ namespace bk {
 
 class DisplayOpenGLPrivate {
 public:
-	void init()
+	void init(const int width, const int height)
 	{
+		m_width = width;
+		m_height = height;
+
 		glfwInit();
 
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
 		glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-		glfwOpenWindow(800, 600, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
+		glfwOpenWindow(width, height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
 
 		glewInit();
-		BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
-		BK_GL_ASSERT(glDepthFunc(GL_LESS));
+		BK_GL_ASSERT(glViewport(0, 0, width, height));
 
 		glfwDisable(GLFW_MOUSE_CURSOR);
 		glfwSetMousePos(0, 0);
@@ -32,6 +34,9 @@ public:
 	{
 		BK_GL_ASSERT(glfwSwapBuffers());
 	}
+
+private:
+	int m_width, m_height;
 };
 
 DisplayOpenGL::DisplayOpenGL() :
@@ -57,9 +62,9 @@ DisplayOpenGL::display()
 }
 
 void
-DisplayOpenGL::init()
+DisplayOpenGL::init(const int width, const int height)
 {
-	m_impl->init();
+	m_impl->init(width, height);
 }
 
 void
