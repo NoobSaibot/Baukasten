@@ -29,7 +29,8 @@ public:
 	void setTransformation(const mat4&);
 
 private:
-	Context();
+	Context(const string&);
+	friend class Graphics;
 	BK_IMPL(Context);
 };
 

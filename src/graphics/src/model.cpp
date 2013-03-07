@@ -93,13 +93,6 @@ Model::~Model()
 	delete m_impl;
 }
 
-Model*
-Model::create(const string& name, shared_ptr<IMesh> mesh,
-		shared_ptr<IProgram> program, shared_ptr<ITexture> texture )
-{
-	return new Model(name, mesh, program, texture);
-}
-
 void Model::render(const Camera* cam, const float timeDelta) const
 {
 	m_impl->render(cam, timeDelta);

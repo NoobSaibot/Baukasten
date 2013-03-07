@@ -25,6 +25,7 @@ public:
 
 private:
 	Model(const string&, IMesh*, IProgram*, ITexture*);
+	friend class Graphics;
 	BK_IMPL(Model);
 };
 

@@ -44,6 +44,8 @@ private:
 	Camera(const string&, const float, const float, const float,
 			const float, const float, const float, const vec3);
 
+	friend class Graphics;
+
 	BK_IMPL(Camera);
 };
 

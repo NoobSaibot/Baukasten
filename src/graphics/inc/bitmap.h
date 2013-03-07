@@ -22,6 +22,7 @@ private:
 	Bitmap(const string&, unsigned char*, const BitmapFormat,
 			const int, const int);
 
+	friend class Graphics;
 	unsigned char* m_pixels;
 	BitmapFormat m_format;
 	int m_width;

@@ -2,16 +2,12 @@
 #include "graphics/Bitmap"
 #include "graphics/Camera"
 #include "graphics/Context"
-#include "graphics/Display"
+#include "graphics/Graphics"
 #include "graphics/IDisplay"
 #include "graphics/IProgram"
 #include "graphics/ITexture"
-#include "graphics/Mesh"
 #include "graphics/Model"
-#include "graphics/Program"
-#include "graphics/Scene"
-#include "graphics/Shader"
-#include "graphics/Texture"
+#include "graphics/VertexFormat"
 #include "io/Filesystem"
 #include "model/Actor"
 
@@ -19,7 +15,7 @@ using namespace bk;
 
 int main(int argc, char const *argv[])
 {
-	auto display = Display::create();
+	auto display = Graphics::createDisplay();
 	display->init();
 
 	float vertices[] = {
@@ -71,46 +67,48 @@ int main(int argc, char const *argv[])
 	 1.0f, 1.0f, 1.0f,   0.0f, 0.0f
 	};
 
+	auto stride = 5*sizeof(float);
+	auto offset = 3*sizeof(float);
 	VertexFormat format = {
-		VertexFormat::Data(VertexFormat::POSITION, 3, 0),
-		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, 3)
+		VertexFormat::Data(VertexFormat::POSITION, 3, 0, stride),
+		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, offset, stride)
 	};
 
-	auto tex = Texture::fromBitmap(
-		"Wooden Crate", *Bitmap::fromFile("wooden-crate.jpg")
-	);
+	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
+	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
+	bitmap->release();
 
 	ShaderList shader;
-	shader.push_back( Shader::fromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
-	shader.push_back( Shader::fromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
+	shader.push_back( Graphics::createShaderFromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
+	shader.push_back( Graphics::createShaderFromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
 
 	auto program = Graphics::createProgram("program.main", shader);
 	auto mesh = Graphics::createMesh("Box", *program, vertices,
 			MeshUsageHint::STATIC, format, sizeof(vertices));
 
-	auto dot = Actor::create("actor.dot", Model::create( "Dot", mesh, program, tex ));
+	auto dot = Actor::create("actor.dot", Graphics::createModel( "Dot", mesh, program, tex ));
 
-	auto i = Actor::create("actor.i", Model::create( "I", mesh, program, tex ));
+	auto i = Actor::create("actor.i", Graphics::createModel( "I", mesh, program, tex ));
 	i->model()->translate(0, -4, 0);
 	i->model()->scale(1, 2, 1);
 
-	auto hLeft = Actor::create("actor.hLeft", Model::create( "H-Left", mesh, program, tex ));
+	auto hLeft = Actor::create("actor.hLeft", Graphics::createModel( "H-Left", mesh, program, tex ));
 	hLeft->model()->translate(-7, -2, 0);
 	hLeft->model()->scale(1, 4, 1);
 
-	auto hRight = Actor::create("actor.hRight", Model::create( "H-Right", mesh, program, tex ));
+	auto hRight = Actor::create("actor.hRight", Graphics::createModel( "H-Right", mesh, program, tex ));
 	hRight->model()->translate(-3, -2, 0);
 	hRight->model()->scale(1, 4, 1);
 
-	auto hMid = Actor::create("actor.hMide", Model::create( "H-Mid", mesh, program, tex ));
+	auto hMid = Actor::create("actor.hMide", Graphics::createModel( "H-Mid", mesh, program, tex ));
 	hMid->model()->translate(-5, -2, 0);
 
-	auto cam = Camera::create("Front Cam");
+	auto cam = Graphics::createCamera("Front Cam");
 
 	cam->setPosition(vec3(0,0,4));
 	cam->setAspectRatio(800.0f/640.0f);
 
-	auto cam2 = Camera::create("camera.cam2");
+	auto cam2 = Graphics::createCamera("camera.cam2");
 
 	cam2->setPosition(vec3(4,0,4));
 	cam2->setAspectRatio(800.0f/640.0f);
@@ -123,7 +121,7 @@ int main(int argc, char const *argv[])
 	scene->addChild(hMid);
 	scene->addChild(hRight);
 
-	auto context = Context::create();
+	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
 
 	scene->setContext(context);

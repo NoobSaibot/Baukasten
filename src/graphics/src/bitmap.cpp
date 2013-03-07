@@ -1,10 +1,5 @@
 #include "graphics/Bitmap"
 
-#include "io/Filesystem"
-
-#define STBI_FAILURE_USERMSG
-#include "3rdparty/stb_image.c"
-
 namespace {
 inline unsigned _pixelOffset(unsigned col, unsigned row, unsigned width,
 		unsigned height, bk::BitmapFormat format) {
@@ -24,16 +19,6 @@ Bitmap::Bitmap(const string& path, unsigned char* pixels,
 Bitmap::~Bitmap()
 {
 	delete[] m_pixels;
-}
-
-shared_ptr<Bitmap>
-Bitmap::fromFile(const string& path)
-{
-	BK_ASSERT(Filesystem::exists(path));
-	int width, height, channels;
-	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
-
-	return shared_ptr<Bitmap>(new Bitmap(path, pixels, (BitmapFormat)channels, width, height));
 }
 
 BitmapFormat Bitmap::format() const

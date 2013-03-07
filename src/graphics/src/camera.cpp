@@ -162,24 +162,6 @@ Camera::~Camera()
 	SAFE_DELETE(m_impl);
 }
 
-Camera*
-Camera::create(const string& name)
-{
-	return new Camera(name);
-}
-
-Camera*
-Camera::create(
-		const string& name,
-	const float fieldOfView, const float aspectRatio,
-	const float nearPlane, const float farPlane,
-	const float horizontalAngle, const float verticalAngle,
-	const vec3 position)
-{
-	return new Camera(name, fieldOfView, aspectRatio, nearPlane, farPlane,
-			horizontalAngle, verticalAngle, position);
-}
-
 float Camera::fieldOfView() const
 {
 	return m_impl->fieldOfView();

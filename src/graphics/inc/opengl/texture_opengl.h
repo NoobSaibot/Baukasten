@@ -21,7 +21,7 @@ public:
 
 private:
 	TextureOpenGL(const string&);
-	friend class Texture;
+	friend class Graphics;
 	BK_IMPL(TextureOpenGL);
 };
 

@@ -21,7 +21,7 @@ public:
 
 private:
 	ProgramOpenGL(const string&, const ShaderList&);
-	friend class Program;
+	friend class Graphics;
 	BK_IMPL(ProgramOpenGL);
 };
 

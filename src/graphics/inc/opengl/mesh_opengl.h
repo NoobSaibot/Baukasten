@@ -20,7 +20,7 @@ public:
 
 private:
 	MeshOpenGL(const string&);
-	friend class Mesh;
+	friend class Graphics;
 	BK_IMPL(MeshOpenGL);
 };
 

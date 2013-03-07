@@ -75,11 +75,14 @@ public:
 			return m_parent->context();
 		}
 
-		return Context::create();
+		m_context = Graphics::createContext("context.auto");
+		return m_context;
 	}
 
 	void render()
 	{
+		context()->activate();
+
 		if (m_model)
 			m_model->render(context()->camera(), 1.0);
 
