@@ -1,6 +1,7 @@
 #ifndef CONTEXT_H_DS6NWYGQ
 #define CONTEXT_H_DS6NWYGQ
 
+#include "core/Managed"
 #include "graphics/Global"
 
 namespace bk {
@@ -10,10 +11,11 @@ class Camera;
 /*!
  * \brief Context class declaration.
  */
-class Context {
+class Context : public Managed {
 public:
 	virtual ~Context();
-	static Context* create();
+
+	void activate();
 
 	void setOption(const ContextOption, const bool);
 	void setOption(const ContextOption, const int);

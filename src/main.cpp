@@ -203,6 +203,11 @@ int main(int argc, char const *argv[])
 		display->display();
 	}
 
+	cam->release();
+	cam2->release();
+	scene->release();
+	context->release();
+
 	glfwTerminate();
 	return 0;
 }

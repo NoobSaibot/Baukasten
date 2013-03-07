@@ -10,14 +10,19 @@ namespace bk {
 
 class ModelPrivate {
 public:
-	ModelPrivate(shared_ptr<IMesh> mesh, shared_ptr<IProgram> program,
-		shared_ptr<ITexture> texture) :
+	ModelPrivate(IMesh* mesh, IProgram* program, ITexture* texture) :
 		m_mesh(mesh), m_program(program), m_texture(texture)
 	{
+		m_mesh->addRef();
+		m_program->addRef();
+		m_texture->addRef();
 	}
 
 	~ModelPrivate()
 	{
+		m_mesh->release();
+		m_program->release();
+		m_texture->release();
 	}
 
 	void render(const Camera* cam, const float timeDelta) const
@@ -71,16 +76,15 @@ public:
 	}
 
 private:
-	shared_ptr<IMesh>    m_mesh;
-	shared_ptr<IProgram> m_program;
-	shared_ptr<ITexture> m_texture;
+	IMesh*    m_mesh;
+	IProgram* m_program;
+	ITexture* m_texture;
 
-	mat4      m_translation;
+	mat4 m_translation;
 };
 
-Model::Model(const string& name, shared_ptr<IMesh> mesh,
-		shared_ptr<IProgram> program, shared_ptr<ITexture> texture) :
-	Identity(name, "Model"), m_impl(new ModelPrivate(mesh, program, texture))
+Model::Model(const string& name, IMesh* mesh, IProgram* program, ITexture* texture) :
+	Managed(name, "Model"), m_impl(new ModelPrivate(mesh, program, texture))
 {
 }
 

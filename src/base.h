@@ -39,8 +39,9 @@ enum class MeshUsageHint {
 	DYNAMIC, STATIC, STREAM
 };
 
+
 class IShader;
-typedef vector<shared_ptr<IShader>> ShaderList;
+typedef vector<IShader*> ShaderList;
 
 }
 

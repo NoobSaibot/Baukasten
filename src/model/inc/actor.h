@@ -2,7 +2,7 @@
 #define ACTOR_H_DEFKVZDF
 
 #include "graphics/Global"
-#include "core/Identity"
+#include "core/Managed"
 
 namespace bk {
 
@@ -12,7 +12,7 @@ class Model;
 /*!
 * \brief Actor class declaration.
 */
-class Actor : public Identity {
+class Actor : public Managed {
 public:
 
 	static Actor* create(const string&, Model*);

@@ -2,13 +2,13 @@
 #define BITMAP_H_QOEYDWMJ
 
 #include "base.h"
-#include "core/Identity"
+#include "core/Managed"
 
 namespace bk {
 
-class Bitmap : public Identity {
+class Bitmap : public Managed {
 public:
-	static shared_ptr<Bitmap> fromFile(const string&);
+	static Bitmap* fromFile(const string&);
 
 	BitmapFormat format() const;
 	int height() const;

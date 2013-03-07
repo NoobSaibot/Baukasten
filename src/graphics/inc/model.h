@@ -2,7 +2,7 @@
 #define MODEL_H_IZNSJVOY
 
 #include "base.h"
-#include "core/Identity"
+#include "core/Managed"
 
 namespace bk {
 
@@ -11,11 +11,8 @@ class IMesh;
 class IProgram;
 class ITexture;
 
-class Model : public Identity {
+class Model : public Managed {
 public:
-	static Model* create(const string&, shared_ptr<IMesh>,
-			shared_ptr<IProgram>, shared_ptr<ITexture>);
-
 	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
 	mat4 translation() const;
@@ -27,8 +24,7 @@ public:
 	virtual ~Model();
 
 private:
-	Model(const string&, shared_ptr<IMesh>, shared_ptr<IProgram>,
-			shared_ptr<ITexture>);
+	Model(const string&, IMesh*, IProgram*, ITexture*);
 	BK_IMPL(Model);
 };
 

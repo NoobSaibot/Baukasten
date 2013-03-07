@@ -1,15 +1,15 @@
 #ifndef ITEXTURE_H_CPT5FEFW
 #define ITEXTURE_H_CPT5FEFW
 
-#include "base.h"
-#include "core/Identity"
+#include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 
 class Bitmap;
 class IProgram;
 
-class ITexture : public Identity {
+class ITexture : public Managed {
 public:
 	enum Wrapping {
 		CLAMP_TO_EDGE, CLAMP_TO_BORDER,
@@ -22,7 +22,7 @@ public:
 		LINEAR_MIPMAP_LINEAR
 	};
 
-	ITexture(const string& name) : Identity(name, "Texture") {}
+	ITexture(const string& name) : Managed(name, "Texture") {}
 
 	virtual void activate(const IProgram&) const = 0;
 	virtual void deactivate() const = 0;

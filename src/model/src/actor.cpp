@@ -1,24 +1,37 @@
 #include "model/Actor"
 
 #include "graphics/Context"
+#include "graphics/Graphics"
 #include "graphics/Model"
 
 namespace bk {
 
 class ActorPrivate {
 public:
-	ActorPrivate(Model* model) :
-		m_context(0), m_model(model)
+	ActorPrivate(Actor *object, Model* model) :
+		m_context(0), m_object(object), m_model(model)
 	{
 	}
 
 	~ActorPrivate()
 	{
+		for ( Actor* a: m_children ) {
+			a->release();
+		}
+
+		if (m_context) {
+			m_context->release();
+		}
+
+		if (m_model) {
+			m_model->release();
+		}
 	}
 
 	void addChild(Actor* actor)
 	{
 		m_children.push_back(actor);
+		actor->setParent(m_object);
 	}
 
 	vector<Actor*> children() const
@@ -49,6 +62,7 @@ public:
 	void setContext(Context* context)
 	{
 		m_context = context;
+		context->addRef();
 	}
 
 	Context* context() const
@@ -86,7 +100,7 @@ private:
 };
 
 Actor::Actor( const string& id, Model* model ) :
-	Identity(id), m_impl(new ActorPrivate(model))
+	Managed(id, "Actor"), m_impl(new ActorPrivate(this, model))
 {
 }
 

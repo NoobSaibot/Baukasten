@@ -13,6 +13,7 @@ public:
 	int  refCount() const;
 
 	Managed(const string&);
+	Managed(const string&, const string&);
 	Managed(const Managed& other);
 	virtual ~Managed();
 

@@ -139,7 +139,7 @@ private:
 };
 
 Camera::Camera(const string& name) :
-	Identity(name, "Camera"),
+	Managed(name, "Camera"),
 	m_impl(new CameraPrivate())
 {
 }
@@ -151,7 +151,7 @@ Camera::Camera(
 	const float horizontalAngle, const float verticalAngle,
 	const vec3 position) :
 
-	Identity(name, "Camera"),
+	Managed(name, "Camera"),
 	m_impl(new CameraPrivate(fieldOfView, aspectRatio, nearPlane,
 		farPlane, horizontalAngle, verticalAngle, position))
 {

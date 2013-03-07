@@ -16,7 +16,7 @@ namespace bk {
 
 Bitmap::Bitmap(const string& path, unsigned char* pixels,
 		const BitmapFormat format, const int width, const int height) :
-	Identity(path, "Bitmap"),
+	Managed(path, "Bitmap"),
 	m_pixels(pixels), m_format(format), m_width(width), m_height(height)
 {
 }

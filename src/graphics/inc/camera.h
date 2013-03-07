@@ -2,19 +2,14 @@
 #define CAMERA_H_T6GLZWCT
 
 #include "base.h"
-#include "core/Identity"
+#include "core/Managed"
 
 namespace bk {
 
 class Settings;
 
-class Camera : public Identity {
+class Camera : public Managed {
 public:
-	static Camera* create(const string&);
-	static Camera* create(const string&, const float,
-			const float, const float, const float, const float,
-			const float, const vec3);
-
 	// TODO implement settings class
 	void init(Settings*);
 

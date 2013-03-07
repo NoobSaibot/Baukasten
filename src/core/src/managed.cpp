@@ -4,8 +4,8 @@ namespace bk {
 
 class ManagedPrivate {
 public:
-	ManagedPrivate(Managed* parent) :
-		m_refCount(0), m_parent(parent)
+	ManagedPrivate(Managed* this_) :
+		m_refCount(1), m_this(this_)
 	{
 	}
 
@@ -20,11 +20,11 @@ public:
 
 	void release()
 	{
-		BK_DEBUG("id: " << m_parent->id() << " - refs: " << m_refCount);
+		BK_DEBUG("id: " << m_this->id() << " type: " << m_this->type() << " name: " << m_this->name() << " - refs: " << m_refCount);
 		--m_refCount;
 		if (m_refCount <= 0) {
-			BK_DEBUG("\tdeleting " << m_parent->id());
-			delete m_parent;
+			BK_DEBUG("\tdeleting " << m_this->id());
+			SAFE_DELETE(m_this);
 		}
 	}
 
@@ -35,11 +35,17 @@ public:
 
 private:
 	int m_refCount;
-	Managed* m_parent;
+	Managed* m_this;
 };
 
 Managed::Managed(const string& name) :
 	Identity(name),
+	m_impl(new ManagedPrivate(this))
+{
+}
+
+Managed::Managed(const string& name, const string& type) :
+	Identity(name, type),
 	m_impl(new ManagedPrivate(this))
 {
 }

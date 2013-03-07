@@ -15,6 +15,9 @@ public:
 
 	~ContextPrivate()
 	{
+		for ( auto pair: m_cams ) {
+			pair.second->release();
+		}
 	}
 
 	void setOption(ContextOption option, bool value)
@@ -28,6 +31,7 @@ public:
 
 	void addCamera(Camera* cam, bool setActive)
 	{
+		cam->addRef();
 		m_cams[cam->id()] = cam;
 		if (setActive)
 			m_activeCam = cam;
@@ -49,7 +53,8 @@ private:
 	Camera* m_activeCam;
 };
 
-Context::Context() :
+Context::Context(const string& name) :
+	Managed(name, "Context"),
 	m_impl(new ContextPrivate())
 {
 }

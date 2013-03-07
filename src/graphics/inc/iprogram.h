@@ -2,13 +2,13 @@
 #define IPROGRAM_H_R9MJXBZH
 
 #include "base.h"
-#include "core/Identity"
+#include "core/Managed"
 
 namespace bk {
 
-class IProgram : public Identity {
+class IProgram : public Managed {
 public:
-	IProgram(const string& name) : Identity(name, "Program") {}
+	IProgram(const string& name) : Managed(name, "Program") {}
 
 	virtual int attrib(const string&) const = 0;
 	virtual void setAttrib(const string&, const mat4&) = 0;
