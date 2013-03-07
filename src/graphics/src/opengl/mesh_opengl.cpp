@@ -31,14 +31,14 @@ public:
 		BK_GL_ASSERT(glDeleteVertexArrays(1, &m_vao));
 	}
 
-	void init(const IProgram& program, const float* data, const IMesh::UsageHint hint,
+	void init(const IProgram& program, const float* data, const MeshUsageHint hint,
 			const VertexFormat format, const int size)
 	{
 		m_format = format;
 		m_size = size;
 
-		GLint gl_hint = (hint == IMesh::STATIC) ? GL_STATIC_DRAW :
-			( (hint == IMesh::DYNAMIC) ? GL_DYNAMIC_DRAW : GL_STREAM_DRAW );
+		GLint gl_hint = (hint == MeshUsageHint::STATIC) ? GL_STATIC_DRAW :
+			( (hint == MeshUsageHint::DYNAMIC) ? GL_DYNAMIC_DRAW : GL_STREAM_DRAW );
 
 		BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
 		BK_GL_ASSERT( glBindVertexArray(m_vao) );
@@ -121,8 +121,8 @@ MeshOpenGL::~MeshOpenGL()
 	SAFE_DELETE(m_impl);
 }
 
-void MeshOpenGL::init(const IProgram& program, const float* data, const UsageHint hint,
-		const VertexFormat format, const int size)
+void MeshOpenGL::init(const IProgram& program, const float* data,
+		const MeshUsageHint hint, const VertexFormat format, const int size)
 {
 	m_impl->init(program, data, hint, format, size);
 }

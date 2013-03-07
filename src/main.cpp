@@ -84,9 +84,9 @@ int main(int argc, char const *argv[])
 	shader.push_back( Shader::fromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
 	shader.push_back( Shader::fromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
 
-	auto program = Program::create("Main", shader);
-	auto mesh = Mesh::create("Box", *program, vertices,
-			IMesh::STATIC, format, sizeof(vertices));
+	auto program = Graphics::createProgram("program.main", shader);
+	auto mesh = Graphics::createMesh("Box", *program, vertices,
+			MeshUsageHint::STATIC, format, sizeof(vertices));
 
 	auto dot = Actor::create("actor.dot", Model::create( "Dot", mesh, program, tex ));
 

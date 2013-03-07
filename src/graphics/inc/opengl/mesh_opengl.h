@@ -10,7 +10,8 @@ class MeshOpenGL : public IMesh {
 public:
 	virtual ~MeshOpenGL();
 
-	void init(const IProgram&, const float*, const UsageHint, const VertexFormat, const int);
+	void init(const IProgram&, const float*, const MeshUsageHint,
+			const VertexFormat, const int);
 	VertexFormat format() const;
 	int count() const;
 	void activate() const;

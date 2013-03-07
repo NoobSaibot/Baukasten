@@ -11,10 +11,6 @@ class VertexFormat;
 
 class IMesh : public Identity {
 public:
-	enum UsageHint {
-		DYNAMIC, STATIC, STREAM
-	};
-
 	IMesh(const string& name) : Identity(name, "Mesh") {}
 
 	virtual void activate() const = 0;
@@ -22,7 +18,8 @@ public:
 	virtual int count() const = 0;
 	virtual void deactivate() const = 0;
 	virtual VertexFormat format() const = 0;
-	virtual void init(const IProgram&, const float*, const UsageHint, const VertexFormat, const int) = 0;
+	virtual void init(const IProgram&, const float*, const MeshUsageHint,
+			const VertexFormat, const int) = 0;
 };
 
 }

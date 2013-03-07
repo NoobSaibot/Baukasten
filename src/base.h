@@ -35,6 +35,10 @@ enum class ShaderType {
 	VERTEX, FRAGMENT
 };
 
+enum class MeshUsageHint {
+	DYNAMIC, STATIC, STREAM
+};
+
 class IShader;
 typedef vector<shared_ptr<IShader>> ShaderList;
 
