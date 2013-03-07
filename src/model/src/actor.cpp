@@ -93,12 +93,16 @@ public:
 
 	void update(const int timeDelta)
 	{
+		for ( auto m: m_children ) {
+			m->update(timeDelta);
+		}
 	}
 
 private:
 	vector<Actor*> m_children;
 	Actor*   m_parent;
-	Context* m_context;
+	mutable Context* m_context;
+	Actor*   m_object;
 	Model*   m_model;
 };
 
@@ -152,7 +156,6 @@ void
 Actor::addChild(Actor* child)
 {
 	m_impl->addChild(child);
-	child->setParent(this);
 }
 
 void
