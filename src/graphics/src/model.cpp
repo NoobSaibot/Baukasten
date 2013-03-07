@@ -60,9 +60,9 @@ public:
 		return m_translation;
 	}
 
-	void translate(const mat4& translationOffset)
+	void translate(const mat4& offset)
 	{
-		m_translation *= translationOffset;
+		m_translation *= offset;
 	}
 
 	void translate(const float x, const float y, const float z)
