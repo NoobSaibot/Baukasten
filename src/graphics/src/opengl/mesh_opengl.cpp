@@ -11,7 +11,7 @@ _set_attrib(const bk::IProgram* program, bk::VertexFormat::Data d,
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
 	BK_GL_ASSERT(glVertexAttribPointer(
-		pos, d.size, GL_FLOAT, GL_FALSE, size * sizeof(GLfloat), (const GLvoid*)(d.padding * sizeof(GLfloat))
+		pos, d.size, GL_FLOAT, GL_FALSE, d.stride, (const GLvoid*)(d.offset)
 	));
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }

@@ -26,14 +26,16 @@ namespace bk {
 		};
 
 		struct Data {
-			Data(VertexType _type, const int _size, const int _padding) :
-				type(_type), size(_size), padding(_padding)
+			Data(VertexType _type, const int _size,
+					const int _offset = 0, const int _stride = 0) :
+				type(_type), size(_size), offset(_offset), stride(_stride)
 			{
 			}
 
 			VertexType type;
 			int size;
-			int padding;
+			int offset;
+			int stride;
 		};
 
 		VertexFormat();
