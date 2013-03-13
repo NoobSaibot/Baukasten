@@ -10,6 +10,7 @@
 #include "graphics/VertexFormat"
 #include "io/Filesystem"
 #include "model/Actor"
+#include "model/ActorType"
 #include "model/State"
 
 using namespace bk;
@@ -18,6 +19,15 @@ int main(int argc, char const *argv[])
 {
 	auto display = Graphics::createDisplay();
 	display->init(800, 600);
+
+	float verticesRamza[] = {
+		-0.5f,-1.0f, 1.0f,   1.0f, 1.0f,
+		 0.5f,-1.0f, 1.0f,   0.0f, 1.0f,
+		-0.5f, 1.0f, 1.0f,   1.0f, 0.0f,
+		 0.5f,-1.0f, 1.0f,   0.0f, 1.0f,
+		 0.5f, 1.0f, 1.0f,   0.0f, 0.0f,
+		-0.5f, 1.0f, 1.0f,   1.0f, 0.0f,
+	};
 
 	float vertices[] = {
 	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
@@ -79,21 +89,49 @@ int main(int argc, char const *argv[])
 	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
 	bitmap->release();
 
+	auto waterBitmap = Graphics::createBitmapFromFile("water4xw1.png");
+	auto texWater = Graphics::createTextureFromBitmap("texture.water", *waterBitmap);
+	waterBitmap->release();
+
+	auto ramzaBitmap = Graphics::createBitmapFromFile("Ramza1-S.gif");
+	auto texRamza = Graphics::createTextureFromBitmap("texture.ramza", *ramzaBitmap);
+	ramzaBitmap->release();
+
 	ShaderList shader;
 	shader.push_back( Graphics::createShaderFromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
 	shader.push_back( Graphics::createShaderFromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
 
 	auto program = Graphics::createProgram("program.main", shader);
 	auto mesh = Graphics::createMesh("Box", *program, vertices,
-			MeshUsageHint::STATIC, format, sizeof(vertices));
+		MeshUsageHint::STATIC, format, sizeof(vertices));
+	auto meshRamza = Graphics::createMesh("mesh.ramza", *program, verticesRamza,
+		MeshUsageHint::STATIC, format, sizeof(verticesRamza));
 
-	auto dot = Actor::create("actor.dot", Graphics::createModel( "Dot", mesh, program, tex ));
+	auto blockType = new ActorType("actortype.block");
+	blockType->addState(new State<int>("state.height", 1));
+	blockType->addState(new State<int>("state.width", 1));
+
+	auto unitType = new ActorType("actortype.unit");
+	unitType->addState(new State<int>("state.hp", 10));
+	unitType->addState(new State<int>("state.mp", 10));
+	unitType->addState(new State<int>("state.exp", 0));
+	unitType->addState(new State<int>("state.level", 1));
+
+	auto ramza = Actor::create("actor.ramza", Graphics::createModel( "model.ramza", meshRamza, program, texRamza ));
+	ramza->setActorType(unitType);
+	ramza->model()->translate(0, -3.5, -0.5);
+
+	auto dot = Actor::create("actor.dot", Graphics::createModel( "model.dot", mesh, program, tex ));
+	dot->model()->translate(0, -5.5, 0);
+	dot->setActorType(blockType);
 
 	auto i = Actor::create("actor.i", Graphics::createModel( "I", mesh, program, tex ));
+	i->setActorType(blockType);
 	i->model()->translate(0, -4, 0);
 	i->model()->scale(1, 2, 1);
 
 	auto hLeft = Actor::create("actor.hLeft", Graphics::createModel( "H-Left", mesh, program, tex ));
+	hLeft->setActorType(blockType);
 	hLeft->model()->translate(-7, -2, 0);
 	hLeft->model()->scale(1, 4, 1);
 
@@ -104,23 +142,31 @@ int main(int argc, char const *argv[])
 	auto hMid = Actor::create("actor.hMide", Graphics::createModel( "H-Mid", mesh, program, tex ));
 	hMid->model()->translate(-5, -2, 0);
 
+	auto surface = Actor::create("actor.surface", Graphics::createModel("model.surface", mesh, program, texWater ));
+	surface->model()->translate(-3, -7, 0);
+	surface->model()->scale(10, 0.5, 10);
+
 	auto cam = Graphics::createCamera("Front Cam");
 
-	cam->setPosition(vec3(0,0,4));
+	cam->setPosition(vec3(-3, 3, 15));
+	cam->pan(15.0, 0.0);
 	cam->setAspectRatio(800.0f/640.0f);
 
 	auto cam2 = Graphics::createCamera("camera.cam2");
 
-	cam2->setPosition(vec3(4,0,4));
+	cam2->setPosition(vec3(10,0,4));
 	cam2->setAspectRatio(800.0f/640.0f);
+	cam2->pan(0.0, -90.0);
 
 	auto scene = Actor::create("actor.scene", 0);
 
 	scene->addChild(dot);
-	scene->addChild(i);
-	scene->addChild(hLeft);
-	scene->addChild(hMid);
-	scene->addChild(hRight);
+	//scene->addChild(i);
+	//scene->addChild(hLeft);
+	//scene->addChild(hMid);
+	//scene->addChild(hRight);
+	scene->addChild(surface);
+	scene->addChild(ramza);
 
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
@@ -131,7 +177,7 @@ int main(int argc, char const *argv[])
 
 	GLfloat rotationY = 0.0f;
 	GLfloat rotationX = 0.0f;
-	const float moveSpeed = 0.05f;
+	const float moveSpeed = 0.5f;
 	double lastTime = glfwGetTime();
 
 	const float mouseSensitivity = 0.05f;
@@ -153,21 +199,21 @@ int main(int argc, char const *argv[])
 		}
 
 		if(glfwGetKey('S')) {
-			activeCam->move(secondsElapsed * moveSpeed * activeCam->back());
+			activeCam->move(moveSpeed * activeCam->back());
 		} else if(glfwGetKey('W')) {
-			activeCam->move(secondsElapsed * moveSpeed * activeCam->forward());
+			activeCam->move(moveSpeed * activeCam->forward());
 		}
 
 		if(glfwGetKey('A')) {
-			activeCam->move(secondsElapsed * moveSpeed * activeCam->left());
+			activeCam->move(moveSpeed * activeCam->left());
 		} else if(glfwGetKey('D')) {
-			activeCam->move(secondsElapsed * moveSpeed * activeCam->right());
+			activeCam->move(moveSpeed * activeCam->right());
 		}
 
 		if(glfwGetKey('Y')) {
-			activeCam->move(secondsElapsed * moveSpeed * -vec3(0,1,0));
+			activeCam->move(moveSpeed * -vec3(0,1,0));
 		} else if(glfwGetKey('X')) {
-			activeCam->move(secondsElapsed * moveSpeed * vec3(0,1,0));
+			activeCam->move(moveSpeed * vec3(0,1,0));
 		}
 
 		if(glfwGetKey(GLFW_KEY_ESC))

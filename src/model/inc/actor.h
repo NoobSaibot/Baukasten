@@ -6,6 +6,7 @@
 
 namespace bk {
 
+class ActorType;
 class Context;
 class Model;
 class IState;
@@ -27,6 +28,9 @@ public:
 	vector<Actor*> children() const;
 	Actor* child(const string&) const;
 	void addChild(Actor*);
+
+	void setActorType(ActorType*);
+	ActorType* actorType() const;
 
 	void setContext(Context*);
 	Context* context() const;

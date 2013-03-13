@@ -5,6 +5,7 @@
 #include "graphics/Context"
 #include "graphics/Graphics"
 #include "graphics/Model"
+#include "model/ActorType"
 #include "model/State"
 
 namespace bk {
@@ -14,7 +15,7 @@ typedef std::map<string, IState*> StateMap;
 class ActorPrivate {
 public:
 	ActorPrivate(Actor *object, Model* model) :
-		m_context(0), m_object(object), m_model(model)
+		m_actorType(0), m_context(0), m_object(object), m_model(model)
 	{
 	}
 
@@ -34,6 +35,10 @@ public:
 
 		if (m_model) {
 			m_model->release();
+		}
+
+		if (m_actorType) {
+			m_actorType->release();
 		}
 	}
 
@@ -102,11 +107,27 @@ public:
 			state = it->second;
 		}
 
+		if (!state && m_actorType) {
+			state = m_actorType->state(name);
+			state->setShared( true );
+		}
+
 		return state;
 	}
 
 	void removeState(const string& name)
 	{
+	}
+
+	void setActorType(ActorType* actorType)
+	{
+		m_actorType = actorType;
+		actorType->addRef();
+	}
+
+	ActorType* actorType() const
+	{
+		return m_actorType;
 	}
 
 	void render()
@@ -131,6 +152,7 @@ public:
 private:
 	vector<Actor*> m_children;
 	Actor*   m_parent;
+	ActorType* m_actorType;
 	mutable Context* m_context;
 	Actor*   m_object;
 	Model*   m_model;
@@ -217,6 +239,18 @@ void
 Actor::removeState(const string& name)
 {
 	m_impl->removeState(name);
+}
+
+void
+Actor::setActorType(ActorType* actorType)
+{
+	m_impl->setActorType(actorType);
+}
+
+ActorType*
+Actor::actorType() const
+{
+	return m_impl->actorType();
 }
 
 void
