@@ -9,7 +9,7 @@ namespace bk {
 class ContextPrivate {
 public:
 	ContextPrivate() :
-		m_enable3d(true)
+		m_enable3d(true), m_enableBlend(false), m_activeCam(0)
 	{
 	}
 
@@ -25,6 +25,9 @@ public:
 		switch( option ) {
 		case ContextOption::ENABLE_3D:
 			m_enable3d = value;
+			break;
+		case ContextOption::ENABLE_BLEND:
+			m_enableBlend = value;
 			break;
 		}
 	}
@@ -45,6 +48,13 @@ public:
 		} else {
 			BK_GL_ASSERT(glDisable(GL_DEPTH_TEST));
 		}
+
+		if (m_enableBlend) {
+			BK_GL_ASSERT(glEnable(GL_BLEND));
+			BK_GL_ASSERT(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		} else {
+			BK_GL_ASSERT(glDisable(GL_BLEND));
+		}
 	}
 
 	void setActiveCamera(const int id)
@@ -59,6 +69,7 @@ public:
 
 private:
 	bool m_enable3d;
+	bool m_enableBlend;
 	map<int, Camera*> m_cams;
 	Camera* m_activeCam;
 };

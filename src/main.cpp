@@ -123,6 +123,8 @@ int main(int argc, char const *argv[])
 
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
+	context->addCamera(cam2, false);
+	context->setOption(ContextOption::ENABLE_BLEND, true);
 
 	scene->setContext(context);
 

@@ -6,7 +6,7 @@
 namespace bk {
 
 	enum class ContextOption {
-		ENABLE_3D
+		ENABLE_3D, ENABLE_BLEND
 	};
 } /* bk */
 
