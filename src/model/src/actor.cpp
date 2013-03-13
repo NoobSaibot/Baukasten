@@ -1,10 +1,15 @@
 #include "model/Actor"
 
+#include <map>
+
 #include "graphics/Context"
 #include "graphics/Graphics"
 #include "graphics/Model"
+#include "model/State"
 
 namespace bk {
+
+typedef std::map<string, IState*> StateMap;
 
 class ActorPrivate {
 public:
@@ -17,6 +22,10 @@ public:
 	{
 		for ( Actor* a: m_children ) {
 			a->release();
+		}
+
+		for ( auto s: m_states ) {
+			s.second->release();
 		}
 
 		if (m_context) {
@@ -79,6 +88,27 @@ public:
 		return m_context;
 	}
 
+	void addState(IState* state)
+	{
+		m_states[state->name()] = state;
+	}
+
+	IState* state(const string& name)
+	{
+		IState* state = 0;
+
+		auto it = m_states.find(name);
+		if (it != m_states.end()) {
+			state = it->second;
+		}
+
+		return state;
+	}
+
+	void removeState(const string& name)
+	{
+	}
+
 	void render()
 	{
 		context()->activate();
@@ -104,6 +134,7 @@ private:
 	mutable Context* m_context;
 	Actor*   m_object;
 	Model*   m_model;
+	std::map<string, IState*> m_states;
 };
 
 Actor::Actor( const string& id, Model* model ) :
@@ -168,6 +199,24 @@ Context*
 Actor::context() const
 {
 	return m_impl->context();
+}
+
+void
+Actor::addState(IState* state)
+{
+	m_impl->addState(state);
+}
+
+IState*
+Actor::state(const string& name)
+{
+	return m_impl->state(name);
+}
+
+void
+Actor::removeState(const string& name)
+{
+	m_impl->removeState(name);
 }
 
 void

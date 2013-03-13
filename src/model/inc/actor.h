@@ -8,10 +8,11 @@ namespace bk {
 
 class Context;
 class Model;
+class IState;
 
 /*!
-* \brief Actor class declaration.
-*/
+ * \brief Actor class declaration.
+ */
 class Actor : public Managed {
 public:
 
@@ -29,6 +30,10 @@ public:
 
 	void setContext(Context*);
 	Context* context() const;
+
+	void addState(IState*);
+	IState* state(const string&);
+	void removeState(const string&);
 
 	void render();
 	void update(const int);

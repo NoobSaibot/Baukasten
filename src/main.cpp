@@ -10,6 +10,7 @@
 #include "graphics/VertexFormat"
 #include "io/Filesystem"
 #include "model/Actor"
+#include "model/State"
 
 using namespace bk;
 
