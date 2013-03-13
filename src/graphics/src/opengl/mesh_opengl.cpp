@@ -64,10 +64,12 @@ public:
 			case VertexFormat::TEXCOORD7:
 				break;
 			case VertexFormat::POSITION:
-				_set_attrib(&program, d, m_format.size(), "vert");
+				_set_attrib(&program, d, m_format.size(),
+						program.getVariableName(ProgramVariableType::VERTEX));
 				break;
 			case VertexFormat::TEXCOORD0:
-				_set_attrib(&program, d, m_format.size(), "vertTexCoord");
+				_set_attrib(&program, d, m_format.size(),
+						program.getVariableName(ProgramVariableType::TEXTURE0));
 				break;
 			}
 		}

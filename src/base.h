@@ -39,6 +39,10 @@ enum class MeshUsageHint {
 	DYNAMIC, STATIC, STREAM
 };
 
+enum class ProgramVariableType {
+	VERTEX, COLOR, TEXTURE0, TEXTURE1, TEXTURE2, TEXTURE3, TEXTURE4,
+	TEXTURE5, TEXTURE6, TEXTURE7, CAMERA, TRANSFORMATION
+};
 
 class IShader;
 typedef vector<IShader*> ShaderList;
