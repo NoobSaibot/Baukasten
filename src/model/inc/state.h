@@ -38,19 +38,25 @@ public:
 	{
 	}
 
+	explicit State(const State<T>& other) :
+		IState(other.name()), m_state(other.m_state)
+	{
+		m_state->addRef();
+	}
+
 	virtual ~State()
 	{
 		m_state->release();
 	}
 
+	IState* clone() const
+	{
+		State<T>* t_state = new State<T>(name(), value());
+		return t_state;
+	}
+
 	void setValue(const T& value)
 	{
-		if (m_shared) {
-			m_state->release();
-			m_state = new StateWrapper<T>(value);
-			m_shared = false;
-		}
-
 		m_state->setValue(value);
 	}
 
@@ -59,15 +65,9 @@ public:
 		return m_state->value();
 	}
 
-	bool shared() const
-	{
-		return m_shared;
-	}
-
 private:
 	friend class Actor;
 	StateWrapper<T>* m_state;
-	bool m_shared;
 };
 
 }

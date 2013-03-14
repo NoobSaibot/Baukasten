@@ -109,7 +109,10 @@ public:
 
 		if (!state && m_actorType) {
 			state = m_actorType->state(name);
-			state->setShared( true );
+			if (state) {
+				state = state->clone();
+				addState(state);
+			}
 		}
 
 		return state;

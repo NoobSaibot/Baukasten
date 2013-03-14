@@ -15,12 +15,7 @@ public:
 	{
 	}
 
-	void setShared(bool shared)
-	{
-		m_shared = shared;
-	}
-private:
-	bool m_shared;
+	virtual IState* clone() const = 0;
 };
 
 } /* bk */
