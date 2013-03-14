@@ -3,8 +3,6 @@
 
 #ifdef NDEBUG
 
-#define BK_ASSERT( X )
-#define BK_GL_ASSERT( X ) X
 #define BK_DEBUG( X )
 #define BK_PRINT( X )
 #define BK_ERROR( X )
@@ -34,14 +32,6 @@ _bk_debug_print( const string &msg, _bk_debug_verbosity v )
 #define BK_PRINT( X ) std::cout << X << std::endl;
 #define BK_ERROR( X ) { std::cerr << __FILE__ << " " << __LINE__ \
 	<< ": " << X << std::endl; abort(); }
-#define BK_ASSERT(X) assert(X)
-#define BK_GL_ASSERT( X ) do \
-	{\
-		X;\
-		GLenum __gl_error_code = glGetError();\
-		BK_ASSERT(__gl_error_code == GL_NO_ERROR);\
-	} while(0)
-
 #endif
 
 #endif /* end of include guard: DEBUG_H_G18WJCD2 */

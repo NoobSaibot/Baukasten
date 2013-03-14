@@ -1,7 +1,10 @@
 #include "graphics/inc/opengl/mesh_opengl.h"
 
+#include "core/Assert"
 #include "graphics/IProgram"
 #include "graphics/VertexFormat"
+
+#include "graphics/inc/opengl/assert_opengl.h"
 
 namespace {
 static void

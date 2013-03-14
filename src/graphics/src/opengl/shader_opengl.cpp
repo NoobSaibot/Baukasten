@@ -1,5 +1,9 @@
 #include "graphics/inc/opengl/shader_opengl.h"
 
+#include "core/Assert"
+
+#include "graphics/inc/opengl/assert_opengl.h"
+
 namespace {
 static GLint _to_opengl_type(const bk::ShaderType type)
 {
@@ -43,7 +47,7 @@ public:
 			glDeleteShader(m_shader);
 			m_shader = 0;
 		}
-		BK_ASSERT(m_shader != 0);
+		BK_ASSERT(m_shader != 0, "Shader couldn't be created.");
 	}
 
 	~ShaderOpenGLPrivate()

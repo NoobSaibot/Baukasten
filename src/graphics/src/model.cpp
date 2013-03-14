@@ -1,5 +1,6 @@
 #include "graphics/Model"
 
+#include "core/Assert"
 #include "graphics/Camera"
 #include "graphics/IMesh"
 #include "graphics/IProgram"
@@ -42,7 +43,8 @@ public:
 		m_program->setConstant("transformation", m_translation);
 
 		// draw the mesh
-		BK_GL_ASSERT(glDrawArrays(GL_TRIANGLES, 0, m_mesh->count()));
+		// TODO auslagern
+		glDrawArrays(GL_TRIANGLES, 0, m_mesh->count());
 
 		// clean up
 		m_texture->deactivate();

@@ -1,5 +1,6 @@
 #include "graphics/Graphics"
 
+#include "core/Assert"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
 #include "graphics/Context"
@@ -20,7 +21,7 @@ namespace bk {
 Bitmap*
 Graphics::createBitmapFromFile(const string& path)
 {
-	BK_ASSERT(Filesystem::exists(path));
+	BK_ASSERT(Filesystem::exists(path), "File must be present.");
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 

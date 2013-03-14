@@ -1,5 +1,9 @@
 #include "graphics/inc/opengl/display_opengl.h"
 
+#include "core/Assert"
+
+#include "graphics/inc/opengl/assert_opengl.h"
+
 namespace bk {
 
 class DisplayOpenGLPrivate {

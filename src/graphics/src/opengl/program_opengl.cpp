@@ -1,6 +1,9 @@
 #include "graphics/inc/opengl/program_opengl.h"
 
+#include "core/Assert"
 #include "graphics/IShader"
+
+#include "graphics/inc/opengl/assert_opengl.h"
 
 namespace bk {
 
@@ -11,7 +14,7 @@ public:
 		m_shader = shader;
 		BK_GL_ASSERT(m_program = (glCreateProgram()));
 		for( auto s: shader ) {
-			BK_ASSERT(s->handler() != 0);
+			BK_ASSERT(s->handler() != 0, "No valid GLuint handler found.");
 			BK_GL_ASSERT(glAttachShader(m_program, s->handler()));
 		}
 		BK_GL_ASSERT(glLinkProgram(m_program));
@@ -32,7 +35,7 @@ public:
 			BK_DEBUG(msg);
 		}
 
-		BK_ASSERT(status == GL_TRUE);
+		BK_ASSERT(status == GL_TRUE, "OpenGL Program linkage failed.");
 		for( auto s: shader ) {
 			BK_GL_ASSERT(glDetachShader(m_program, s->handler()));
 		}
@@ -96,37 +99,31 @@ ProgramOpenGL::~ProgramOpenGL()
 
 int ProgramOpenGL::attrib(const string& name) const
 {
-	BK_ASSERT(m_impl);
 	return m_impl->attrib(name);
 }
 
 void ProgramOpenGL::setAttrib(const string& name, const mat4& value)
 {
-	BK_ASSERT(m_impl);
 	m_impl->setAttrib(name, value);
 }
 
 int ProgramOpenGL::constant(const string& name) const
 {
-	BK_ASSERT(m_impl);
 	return m_impl->constant(name);
 }
 
 void ProgramOpenGL::setConstant(const string& name, const mat4& value)
 {
-	BK_ASSERT(m_impl);
 	m_impl->setConstant(name, value);
 }
 
 void ProgramOpenGL::activate() const
 {
-	BK_ASSERT(m_impl);
 	m_impl->activate();
 }
 
 void ProgramOpenGL::deactivate() const
 {
-	BK_ASSERT(m_impl);
 	m_impl->deactivate();
 }
 

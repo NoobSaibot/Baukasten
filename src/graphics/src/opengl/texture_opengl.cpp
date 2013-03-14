@@ -1,7 +1,10 @@
 #include "graphics/inc/opengl/texture_opengl.h"
 
+#include "core/Assert"
 #include "graphics/Bitmap"
 #include "graphics/IProgram"
+
+#include "graphics/inc/opengl/assert_opengl.h"
 
 namespace {
 static GLenum _opengl_format(bk::BitmapFormat format)
@@ -48,7 +51,7 @@ public:
 		));
 		BK_GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
 		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, 0));
-		BK_ASSERT(m_txt != 0);
+		BK_ASSERT(m_txt != 0, "OpenGL handler couldn't be acquired.");
 	}
 
 	void activate(const IProgram& program) const

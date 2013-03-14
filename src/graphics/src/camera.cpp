@@ -1,5 +1,7 @@
 #include "graphics/Camera"
 
+#include "core/Assert"
+
 namespace bk {
 
 class CameraPrivate {
@@ -43,7 +45,7 @@ public:
 
 	void setFieldOfView(const float fieldOfView)
 	{
-		BK_ASSERT(fieldOfView > 0.0f && fieldOfView < 180.0f);
+		BK_ASSERT(fieldOfView > 0.0f && fieldOfView < 180.0f, "fieldOfView must be in a range of (0.0, 180)");
 		m_fieldOfView = fieldOfView;
 	}
 

@@ -1,6 +1,7 @@
 #ifndef STATE_H_AKMCYL2T
 #define STATE_H_AKMCYL2T
 
+#include "core/Assert"
 #include "core/Managed"
 #include "model/IState"
 
