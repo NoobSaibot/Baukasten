@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "graphics/Context"
+#include "graphics/IContext"
 #include "graphics/Graphics"
 #include "graphics/Model"
 #include "model/ActorType"
@@ -73,13 +73,13 @@ public:
 		return m_model;
 	}
 
-	void setContext(Context* context)
+	void setContext(IContext* context)
 	{
 		m_context = context;
 		context->addRef();
 	}
 
-	Context* context() const
+	IContext* context() const
 	{
 		if (m_context) {
 			return m_context;
@@ -153,7 +153,7 @@ private:
 	vector<Actor*> m_children;
 	Actor*   m_parent;
 	ActorType* m_actorType;
-	mutable Context* m_context;
+	mutable IContext* m_context;
 	Actor*   m_object;
 	Model*   m_model;
 	std::map<string, IState*> m_states;
@@ -212,12 +212,12 @@ Actor::addChild(Actor* child)
 }
 
 void
-Actor::setContext(Context* context)
+Actor::setContext(IContext* context)
 {
 	m_impl->setContext(context);
 }
 
-Context*
+IContext*
 Actor::context() const
 {
 	return m_impl->context();

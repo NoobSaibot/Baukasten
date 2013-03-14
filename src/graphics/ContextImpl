@@ -1,0 +1,6 @@
+#include "graphics/inc/opengl/context_opengl.h"
+
+namespace bk {
+typedef ContextOpenGL ContextImpl;
+};
+

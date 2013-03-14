@@ -11,16 +11,15 @@ class Camera;
 /*!
  * \brief Context class declaration.
  */
-class Context : public Managed {
+class IContext : public Managed {
 public:
-	virtual ~Context();
+	IContext(const string&);
+	virtual ~IContext();
 
-	void activate();
+	virtual void activate() = 0;
 
 	void setOption(const ContextOption, const bool);
-	void setOption(const ContextOption, const int);
-	void setOption(const ContextOption, const float);
-	void setOption(const ContextOption, const string&);
+	bool option(const ContextOption) const;
 
 	void addCamera(Camera*, bool setActive = true);
 	void setActiveCamera(const int);
@@ -29,9 +28,8 @@ public:
 	void setTransformation(const mat4&);
 
 private:
-	Context(const string&);
 	friend class Graphics;
-	BK_IMPL(Context);
+	BK_IMPL(IContext);
 };
 
 } /*  bk */

@@ -7,7 +7,7 @@ namespace bk {
 
 class Bitmap;
 class Camera;
-class Context;
+class IContext;
 class IDisplay;
 class IMesh;
 class Model;
@@ -23,7 +23,7 @@ public:
 	static Camera* createCamera(const string&, const float,
 			const float, const float, const float, const float,
 			const float, const vec3);
-	static Context* createContext(const string&);
+	static IContext* createContext(const string&);
 	static IDisplay* createDisplay();
 	static IMesh* createMesh(const string&, const IProgram&,
 			const float*, const MeshUsageHint, const VertexFormat, const int);

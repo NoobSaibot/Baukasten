@@ -7,9 +7,9 @@
 namespace bk {
 
 class ActorType;
-class Context;
-class Model;
+class IContext;
 class IState;
+class Model;
 
 /*!
  * \brief Actor class declaration.
@@ -32,8 +32,8 @@ public:
 	void setActorType(ActorType*);
 	ActorType* actorType() const;
 
-	void setContext(Context*);
-	Context* context() const;
+	void setContext(IContext*);
+	IContext* context() const;
 
 	void addState(IState*);
 	IState* state(const string&);

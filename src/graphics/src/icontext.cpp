@@ -1,19 +1,20 @@
-#include "graphics/Context"
+#include "graphics/IContext"
+
+#include "core/Assert"
+#include "graphics/Camera"
 
 #include <map>
 
-#include "graphics/Camera"
-
 namespace bk {
 
-class ContextPrivate {
+class IContextPrivate {
 public:
-	ContextPrivate() :
+	IContextPrivate() :
 		m_enable3d(true), m_enableBlend(false), m_activeCam(0)
 	{
 	}
 
-	~ContextPrivate()
+	~IContextPrivate()
 	{
 		for ( auto pair: m_cams ) {
 			pair.second->release();
@@ -32,29 +33,20 @@ public:
 		}
 	}
 
+	bool option(ContextOption option)
+	{
+		switch( option ) {
+		case ContextOption::ENABLE_3D:    return m_enable3d;
+		case ContextOption::ENABLE_BLEND: return m_enableBlend;
+		}
+	}
+
 	void addCamera(Camera* cam, bool setActive)
 	{
 		cam->addRef();
 		m_cams[cam->id()] = cam;
 		if (setActive)
 			m_activeCam = cam;
-	}
-
-	void activate()
-	{
-		if (m_enable3d) {
-			BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
-			BK_GL_ASSERT(glDepthFunc(GL_LESS));
-		} else {
-			BK_GL_ASSERT(glDisable(GL_DEPTH_TEST));
-		}
-
-		if (m_enableBlend) {
-			BK_GL_ASSERT(glEnable(GL_BLEND));
-			BK_GL_ASSERT(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		} else {
-			BK_GL_ASSERT(glDisable(GL_BLEND));
-		}
 	}
 
 	void setActiveCamera(const int id)
@@ -74,43 +66,43 @@ private:
 	Camera* m_activeCam;
 };
 
-Context::Context(const string& name) :
+IContext::IContext(const string& name) :
 	Managed(name, "Context"),
-	m_impl(new ContextPrivate())
+	m_impl(new IContextPrivate())
 {
 }
 
-Context::~Context()
+IContext::~IContext()
 {
 	delete m_impl;
 }
 
 void
-Context::activate()
-{
-	m_impl->activate();
-}
-
-void
-Context::setOption(const ContextOption option, bool value)
+IContext::setOption(const ContextOption option, bool value)
 {
 	m_impl->setOption(option, value);
 }
 
+bool
+IContext::option(const ContextOption option) const
+{
+	return m_impl->option(option);
+}
+
 void
-Context::addCamera(Camera* cam, bool setActive)
+IContext::addCamera(Camera* cam, bool setActive)
 {
 	m_impl->addCamera(cam, setActive);
 }
 
 void
-Context::setActiveCamera(const int id)
+IContext::setActiveCamera(const int id)
 {
 	m_impl->setActiveCamera(id);
 }
 
 Camera*
-Context::camera() const
+IContext::camera() const
 {
 	return m_impl->camera();
 }

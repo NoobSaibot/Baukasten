@@ -3,7 +3,7 @@
 #include "core/Assert"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
-#include "graphics/Context"
+#include "graphics/ContextImpl"
 #include "graphics/DisplayImpl"
 #include "graphics/MeshImpl"
 #include "graphics/Model"
@@ -44,10 +44,10 @@ Graphics::createCamera(const string& name, const float fieldOfView,
 			horizontalAngle, verticalAngle, position);
 }
 
-Context*
+IContext*
 Graphics::createContext(const string& name)
 {
-	return new Context(name);
+	return new ContextImpl(name);
 }
 
 IDisplay*

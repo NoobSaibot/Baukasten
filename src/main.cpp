@@ -1,7 +1,7 @@
 #include "base.h"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
-#include "graphics/Context"
+#include "graphics/IContext"
 #include "graphics/Graphics"
 #include "graphics/IDisplay"
 #include "graphics/IProgram"
