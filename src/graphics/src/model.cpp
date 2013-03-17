@@ -7,6 +7,8 @@
 #include "graphics/ITexture"
 #include "graphics/VertexFormat"
 
+#include "graphics/inc/opengl/assert_opengl.h"
+
 namespace bk {
 
 class ModelPrivate {
@@ -44,7 +46,7 @@ public:
 
 		// draw the mesh
 		// TODO auslagern
-		glDrawArrays(GL_TRIANGLES, 0, m_mesh->count());
+		BK_GL_ASSERT(glDrawArrays(GL_TRIANGLES, 0, m_mesh->count()));
 
 		// clean up
 		m_texture->deactivate();
