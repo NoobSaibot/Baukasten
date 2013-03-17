@@ -29,6 +29,7 @@ public:
 
 	virtual int constant(const string&) const = 0;
 	virtual void setConstant(const string&, const mat4&) = 0;
+	virtual void setConstant(const string&, const vec2&) = 0;
 
 	void setVariableName(const ProgramVariableType type, const string& value)
 	{

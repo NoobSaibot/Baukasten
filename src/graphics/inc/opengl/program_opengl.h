@@ -15,6 +15,7 @@ public:
 
 	int constant(const string&) const;
 	void setConstant(const string&, const mat4&);
+	void setConstant(const string&, const vec2&);
 
 	void activate() const;
 	void deactivate() const;

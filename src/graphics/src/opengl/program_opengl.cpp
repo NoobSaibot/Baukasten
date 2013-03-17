@@ -71,6 +71,11 @@ public:
 		));
 	}
 
+	void setConstant(const string& name, const vec2& value) const
+	{
+		BK_GL_ASSERT(glUniform2f( constant(name.c_str()), value.x, value.y ));
+	}
+
 	void activate() const
 	{
 		BK_GL_ASSERT(glUseProgram(m_program));
@@ -113,6 +118,12 @@ int ProgramOpenGL::constant(const string& name) const
 }
 
 void ProgramOpenGL::setConstant(const string& name, const mat4& value)
+{
+	m_impl->setConstant(name, value);
+}
+
+void
+ProgramOpenGL::setConstant(const string& name, const vec2& value)
 {
 	m_impl->setConstant(name, value);
 }
