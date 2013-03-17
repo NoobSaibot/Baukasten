@@ -9,6 +9,7 @@
 #include "graphics/Model"
 #include "graphics/VertexFormat"
 #include "io/Filesystem"
+#include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
 #include "model/State"
@@ -186,6 +187,16 @@ int main(int argc, char const *argv[])
 	const float zoomSensitivity = -2.0;
 
 	Camera* activeCam = cam;
+
+	Action* bla = new Action("action.bla", ramza, ([]( Action* action, vector<Actor*> targets ) {
+		for ( Actor* t: targets ) {
+			BK_DEBUG("reduce " << t->name() << "s hp by 10!");
+		}
+	}));
+
+	ramza->addAction(bla);
+	ramza->invokeAction("action.bla");
+	ramza->runActions();
 
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		display->clear();

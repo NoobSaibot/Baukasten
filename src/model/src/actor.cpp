@@ -5,6 +5,7 @@
 #include "graphics/IContext"
 #include "graphics/Graphics"
 #include "graphics/Model"
+#include "model/Action"
 #include "model/ActorType"
 #include "model/State"
 
@@ -133,6 +134,55 @@ public:
 		return m_actorType;
 	}
 
+	void addAction(Action* action)
+	{
+		BK_ASSERT(action, "Action must not be null");
+		BK_ASSERT(m_actions.find(action->name()) == m_actions.end(), "Action " << action->name() << " has already been added.");
+		m_actions[action->name()] = action;
+	}
+
+	Action* action(const string& name)
+	{
+		BK_ASSERT(m_actions.find(name) != m_actions.end(), "Action " << name << " couldn't be found.");
+		return m_actions[name];
+	}
+
+	void invokeAction(const string& name, vector<Actor*> targets)
+	{
+		auto it = m_actions.find(name);
+		BK_ASSERT(it != m_actions.end(), "Action " << name << " couldn't be found.");
+		BK_ASSERT(!targets.empty(), "Target Actors must be given.");
+		auto action = it->second;
+
+		action->setTargets(targets);
+		m_invokedActions.push_back(action);
+	}
+
+	vector<Action*> invokedActions() const
+	{
+		return m_invokedActions;
+	}
+
+	void removeAction(const string& name)
+	{
+		auto it = m_actions.find(name);
+		if ( it != m_actions.end() ) {
+			it->second->release();
+			m_actions.erase(it);
+		}
+	}
+
+	void runActions()
+	{
+		for ( unsigned int i = 0; i < m_invokedActions.size(); ++i ) {
+			auto a = m_invokedActions[i];
+			a->run();
+			if (a->done()) {
+				m_invokedActions.erase(m_invokedActions.begin() + i);
+			}
+		}
+	}
+
 	void render()
 	{
 		context()->activate();
@@ -160,6 +210,8 @@ private:
 	Actor*   m_object;
 	Model*   m_model;
 	std::map<string, IState*> m_states;
+	std::map<string, Action*> m_actions;
+	vector<Action*> m_invokedActions;
 };
 
 Actor::Actor( const string& id, Model* model ) :
@@ -257,6 +309,42 @@ Actor::actorType() const
 }
 
 void
+Actor::addAction(Action* action)
+{
+	m_impl->addAction(action);
+}
+
+Action*
+Actor::action(const string& name)
+{
+	return m_impl->action(name);
+}
+
+void
+Actor::invokeAction(const string& name)
+{
+	m_impl->invokeAction(name, { this });
+}
+
+void
+Actor::invokeAction(const string& name, vector<Actor*> targets)
+{
+	m_impl->invokeAction(name, targets);
+}
+
+vector<Action*>
+Actor::invokedActions() const
+{
+	return m_impl->invokedActions();
+}
+
+void
+Actor::removeAction(const string& name)
+{
+	m_impl->removeAction(name);
+}
+
+void
 Actor::render()
 {
 	m_impl->render();
@@ -266,6 +354,12 @@ void
 Actor::update(const int timeDelta)
 {
 	m_impl->update(timeDelta);
+}
+
+void
+Actor::runActions()
+{
+	m_impl->runActions();
 }
 
 }

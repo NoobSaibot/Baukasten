@@ -6,6 +6,7 @@
 
 namespace bk {
 
+class Action;
 class ActorType;
 class IContext;
 class IState;
@@ -39,8 +40,16 @@ public:
 	IState* state(const string&);
 	void removeState(const string&);
 
+	void addAction(Action*);
+	Action* action(const string&);
+	void invokeAction(const string&);
+	void invokeAction(const string&, vector<Actor*>);
+	vector<Action*> invokedActions() const;
+	void removeAction(const string&);
+
 	void render();
 	void update(const int);
+	void runActions();
 
 	virtual ~Actor();
 
