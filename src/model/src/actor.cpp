@@ -116,11 +116,17 @@ public:
 			}
 		}
 
+		BK_ASSERT(state, "No state with the given name found: " << name);
 		return state;
 	}
 
 	void removeState(const string& name)
 	{
+		auto it = m_states.find(name);
+		if ( it != m_states.end() ) {
+			it->second->release();
+			m_states.erase(it);
+		}
 	}
 
 	void setActorType(ActorType* actorType)
@@ -225,7 +231,7 @@ Actor::Actor( const string& id, Model* model ) :
 
 Actor::~Actor()
 {
-	delete m_impl;
+	SAFE_DELETE( m_impl );
 }
 
 Actor*
