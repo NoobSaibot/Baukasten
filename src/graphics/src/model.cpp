@@ -1,6 +1,7 @@
 #include "graphics/Model"
 
 #include "core/Assert"
+#include "graphics/Animation"
 #include "graphics/Camera"
 #include "graphics/IMesh"
 #include "graphics/IProgram"
@@ -9,12 +10,14 @@
 
 #include "graphics/inc/opengl/assert_opengl.h"
 
+#include <map>
+
 namespace bk {
 
 class ModelPrivate {
 public:
 	ModelPrivate(IMesh* mesh, IProgram* program, ITexture* texture) :
-		m_mesh(mesh), m_program(program), m_texture(texture)
+		m_mesh(mesh), m_program(program), m_texture(texture), m_currAnimation(0)
 	{
 		m_mesh->addRef();
 		m_program->addRef();
@@ -43,6 +46,19 @@ public:
 		// set camera matrix
 		m_program->setConstant("camera", cam->matrix());
 		m_program->setConstant("transformation", m_translation);
+
+		// set default value if no animation is present
+		m_program->setConstant("bk_texOffset0", vec2(0.0, 0.0));
+		m_program->setConstant("bk_texSize0", vec2(1.0, 1.0));
+
+		if (m_currAnimation) {
+			m_program->setConstant("bk_texOffset0", vec2(
+				m_currAnimation->frame().x, m_currAnimation->frame().y
+			));
+			m_program->setConstant("bk_texSize0", vec2(
+				m_currAnimation->frame().width, m_currAnimation->frame().height
+			));
+		}
 
 		// draw the mesh
 		// TODO auslagern
@@ -79,10 +95,39 @@ public:
 		m_translation *= glm::scale(mat4(), vec3(x,y,z));
 	}
 
+	void addAnimation(Animation* animation)
+	{
+		m_animations[animation->name()] = animation;
+	}
+
+	void startAnimation(const string& name)
+	{
+		if (m_currAnimation) {
+			m_currAnimation->reset();
+			if (m_currAnimation->name() == name) return;
+		}
+
+		m_currAnimation = m_animations[name];
+	}
+
+	void stopAnimation()
+	{
+		m_currAnimation = 0;
+	}
+
+	void update(const int timeDelta)
+	{
+		if (m_currAnimation) {
+			m_currAnimation->update(timeDelta);
+		}
+	}
+
 private:
 	IMesh*    m_mesh;
 	IProgram* m_program;
 	ITexture* m_texture;
+	std::map<string, Animation*> m_animations;
+	Animation* m_currAnimation;
 
 	mat4 m_translation;
 };
@@ -125,6 +170,30 @@ void Model::translate(const float x, const float y, const float z)
 void Model::scale(const float x, const float y, const float z)
 {
 	m_impl->scale(x, y, z);
+}
+
+void
+Model::addAnimation(Animation* animation)
+{
+	m_impl->addAnimation(animation);
+}
+
+void
+Model::startAnimation(const string& name)
+{
+	m_impl->startAnimation(name);
+}
+
+void
+Model::stopAnimation()
+{
+	m_impl->stopAnimation();
+}
+
+void
+Model::update(const int timeDelta)
+{
+	m_impl->update(timeDelta);
 }
 
 }

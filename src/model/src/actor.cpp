@@ -197,6 +197,10 @@ public:
 
 	void update(const int timeDelta)
 	{
+		if (m_model) {
+			m_model->update(timeDelta);
+		}
+
 		for ( auto m: m_children ) {
 			m->update(timeDelta);
 		}

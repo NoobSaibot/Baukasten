@@ -1,4 +1,5 @@
 set(graphics_SRCS
+  graphics/src/animation.cpp
   graphics/src/bitmap.cpp
   graphics/src/camera.cpp
   graphics/src/graphics.cpp

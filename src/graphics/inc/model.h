@@ -6,6 +6,7 @@
 
 namespace bk {
 
+class Animation;
 class Camera;
 class IMesh;
 class IProgram;
@@ -20,6 +21,12 @@ public:
 	void translate(const float, const float, const float);
 	void scale(const mat4&);
 	void scale(const float, const float, const float);
+
+	void addAnimation(Animation*);
+	void startAnimation(const string&);
+	void stopAnimation();
+
+	void update(const int);
 
 	virtual ~Model();
 

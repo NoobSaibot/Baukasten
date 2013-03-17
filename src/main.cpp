@@ -1,4 +1,5 @@
 #include "base.h"
+#include "graphics/Animation"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
 #include "graphics/IContext"
@@ -94,7 +95,7 @@ int main(int argc, char const *argv[])
 	auto texWater = Graphics::createTextureFromBitmap("texture.water", *waterBitmap);
 	waterBitmap->release();
 
-	auto ramzaBitmap = Graphics::createBitmapFromFile("Ramza1-S.gif");
+	auto ramzaBitmap = Graphics::createBitmapFromFile("ramza_tex.png");
 	auto texRamza = Graphics::createTextureFromBitmap("texture.ramza", *ramzaBitmap);
 	ramzaBitmap->release();
 
@@ -121,6 +122,22 @@ int main(int argc, char const *argv[])
 	auto ramza = Actor::create("actor.ramza", Graphics::createModel( "model.ramza", meshRamza, program, texRamza ));
 	ramza->setActorType(unitType);
 	ramza->model()->translate(0, -3.5, -0.5);
+
+	ramza->model()->addAnimation( new Animation("animation.walk_right", {
+		Animation::Frame(0.07, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.21, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.28, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.35, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.28, 0.0, 0.07, 0.25, 10),
+		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
+	}));
+
+	ramza->model()->addAnimation( new Animation("animation.die", {
+		Animation::Frame(0.42, 0.0, 0.07, 0.25, 30),
+		Animation::Frame(0.49, 0.0, 0.07, 0.25, 80),
+		Animation::Frame(0.56, 0.0, 0.07, 0.25, 1, true),
+	}));
 
 	auto dot = Actor::create("actor.dot", Graphics::createModel( "model.dot", mesh, program, tex ));
 	dot->model()->translate(0, -5.5, 0);
@@ -229,6 +246,13 @@ int main(int argc, char const *argv[])
 
 		if(glfwGetKey(GLFW_KEY_ESC))
 			glfwCloseWindow();
+
+		if (glfwGetKey('I')) {
+			ramza->model()->startAnimation("animation.die");
+		} else if (glfwGetKey('O')) {
+			ramza->model()->startAnimation("animation.walk_right");
+		}
+
 
 		glfwGetMousePos(&mouseX, &mouseY);
 		activeCam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
