@@ -6,7 +6,7 @@
 #include "graphics/ContextImpl"
 #include "graphics/DisplayImpl"
 #include "graphics/MeshImpl"
-#include "graphics/Model"
+#include "graphics/Form"
 #include "graphics/ProgramImpl"
 #include "graphics/ShaderImpl"
 #include "graphics/TextureImpl"
@@ -98,10 +98,10 @@ Graphics::createRect(const string& name, const IProgram& program, const float x,
 	return impl;
 }
 
-Model*
-Graphics::createModel(const string& name, IMesh* mesh, IProgram* program, ITexture* texture)
+Form*
+Graphics::createForm(const string& name, IMesh* mesh, IProgram* program, ITexture* texture)
 {
-	return new Model(name, mesh, program, texture);
+	return new Form(name, mesh, program, texture);
 }
 
 IProgram*

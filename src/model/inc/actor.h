@@ -10,7 +10,7 @@ class Action;
 class ActorType;
 class IContext;
 class IState;
-class Model;
+class Form;
 
 /*!
  * \brief Actor class declaration.
@@ -18,10 +18,10 @@ class Model;
 class Actor : public Managed {
 public:
 
-	static Actor* create(const string&, Model*);
+	static Actor* create(const string&, Form*);
 
-	Model* model() const;
-	void setModel(Model*);
+	Form* form() const;
+	void setForm(Form*);
 
 	Actor* parent() const;
 	void setParent(Actor*);
@@ -54,7 +54,7 @@ public:
 	virtual ~Actor();
 
 private:
-	explicit Actor(const string&, Model*);
+	explicit Actor(const string&, Form*);
 
 	BK_IMPL(Actor);
 };

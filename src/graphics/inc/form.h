@@ -1,5 +1,5 @@
-#ifndef MODEL_H_IZNSJVOY
-#define MODEL_H_IZNSJVOY
+#ifndef FORM_H_IZNSJVOY
+#define FORM_H_IZNSJVOY
 
 #include "base.h"
 #include "core/Managed"
@@ -12,7 +12,7 @@ class IMesh;
 class IProgram;
 class ITexture;
 
-class Model : public Managed {
+class Form : public Managed {
 public:
 	void render(const Camera*, const float) const;
 	void setTranslation(const mat4&);
@@ -28,15 +28,15 @@ public:
 
 	void update(const int);
 
-	virtual ~Model();
+	virtual ~Form();
 
 private:
-	Model(const string&, IMesh*, IProgram*, ITexture*);
+	Form(const string&, IMesh*, IProgram*, ITexture*);
 	friend class Graphics;
-	BK_IMPL(Model);
+	BK_IMPL(Form);
 };
 
 }
 
-#endif /* end of include guard: MODEL_H_IZNSJVOY */
+#endif /* end of include guard: FORM_H_IZNSJVOY */
 

@@ -4,7 +4,7 @@
 
 #include "graphics/IContext"
 #include "graphics/Graphics"
-#include "graphics/Model"
+#include "graphics/Form"
 #include "model/Action"
 #include "model/ActorType"
 #include "model/State"
@@ -15,8 +15,8 @@ typedef std::map<string, IState*> StateMap;
 
 class ActorPrivate {
 public:
-	ActorPrivate(Actor *object, Model* model) :
-		m_actorType(0), m_context(0), m_object(object), m_model(model)
+	ActorPrivate(Actor *object, Form* form) :
+		m_actorType(0), m_context(0), m_object(object), m_form(form)
 	{
 	}
 
@@ -34,8 +34,8 @@ public:
 			m_context->release();
 		}
 
-		if (m_model) {
-			m_model->release();
+		if (m_form) {
+			m_form->release();
 		}
 
 		if (m_actorType) {
@@ -64,14 +64,14 @@ public:
 		return m_parent;
 	}
 
-	void setModel(Model* model)
+	void setForm(Form* form)
 	{
-		m_model = model;
+		m_form = form;
 	}
 
-	Model* model() const
+	Form* form() const
 	{
-		return m_model;
+		return m_form;
 	}
 
 	void setContext(IContext* context)
@@ -192,8 +192,8 @@ public:
 	{
 		context()->activate();
 
-		if (m_model)
-			m_model->render(context()->camera(), 1.0);
+		if (m_form)
+			m_form->render(context()->camera(), 1.0);
 
 		for ( auto m: m_children ) {
 			m->render();
@@ -202,8 +202,8 @@ public:
 
 	void update(const int timeDelta)
 	{
-		if (m_model) {
-			m_model->update(timeDelta);
+		if (m_form) {
+			m_form->update(timeDelta);
 		}
 
 		for ( auto m: m_children ) {
@@ -217,14 +217,14 @@ private:
 	ActorType* m_actorType;
 	mutable IContext* m_context;
 	Actor*   m_object;
-	Model*   m_model;
+	Form*   m_form;
 	std::map<string, IState*> m_states;
 	std::map<string, Action*> m_actions;
 	vector<Action*> m_invokedActions;
 };
 
-Actor::Actor( const string& id, Model* model ) :
-	Managed(id, "Actor"), m_impl(new ActorPrivate(this, model))
+Actor::Actor( const string& id, Form* form ) :
+	Managed(id, "Actor"), m_impl(new ActorPrivate(this, form))
 {
 }
 
@@ -234,21 +234,21 @@ Actor::~Actor()
 }
 
 Actor*
-Actor::create(const string& id, Model* model)
+Actor::create(const string& id, Form* form)
 {
-	return new Actor(id, model);
+	return new Actor(id, form);
 }
 
-Model*
-Actor::model() const
+Form*
+Actor::form() const
 {
-	return m_impl->model();
+	return m_impl->form();
 }
 
 void
-Actor::setModel(Model* model)
+Actor::setForm(Form* form)
 {
-	m_impl->setModel(model);
+	m_impl->setForm(form);
 }
 
 void

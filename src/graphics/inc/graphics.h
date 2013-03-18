@@ -10,7 +10,7 @@ class Camera;
 class IContext;
 class IDisplay;
 class IMesh;
-class Model;
+class Form;
 class IProgram;
 class IShader;
 class ITexture;
@@ -31,7 +31,7 @@ public:
 			const float, const float, const float);
 	static IMesh* createRect(const string&, const IProgram&,
 			const float, const float, const float, const float);
-	static Model* createModel(const string&, IMesh*, IProgram*, ITexture*);
+	static Form* createForm(const string&, IMesh*, IProgram*, ITexture*);
 	static IProgram* createProgram(const string&, const ShaderList&);
 	static IShader* createShaderFromFile( const string&, const string&,
 			const ShaderType );

@@ -1,4 +1,4 @@
-#include "graphics/Model"
+#include "graphics/Form"
 
 #include "core/Assert"
 #include "graphics/Animation"
@@ -14,9 +14,9 @@
 
 namespace bk {
 
-class ModelPrivate {
+class FormPrivate {
 public:
-	ModelPrivate(IMesh* mesh, IProgram* program, ITexture* texture) :
+	FormPrivate(IMesh* mesh, IProgram* program, ITexture* texture) :
 		m_mesh(mesh), m_program(program), m_texture(texture), m_currAnimation(0)
 	{
 		m_mesh->addRef();
@@ -24,7 +24,7 @@ public:
 		m_texture->addRef();
 	}
 
-	~ModelPrivate()
+	~FormPrivate()
 	{
 		m_mesh->release();
 		m_program->release();
@@ -132,66 +132,72 @@ private:
 	mat4 m_translation;
 };
 
-Model::Model(const string& name, IMesh* mesh, IProgram* program, ITexture* texture) :
-	Managed(name, "Model"), m_impl(new ModelPrivate(mesh, program, texture))
+Form::Form(const string& name, IMesh* mesh, IProgram* program, ITexture* texture) :
+	Managed(name, "Form"), m_impl(new FormPrivate(mesh, program, texture))
 {
 }
 
-Model::~Model()
+Form::~Form()
 {
 	delete m_impl;
 }
 
-void Model::render(const Camera* cam, const float timeDelta) const
+void
+Form::render(const Camera* cam, const float timeDelta) const
 {
 	m_impl->render(cam, timeDelta);
 }
 
-void Model::setTranslation(const mat4& translation)
+void
+Form::setTranslation(const mat4& translation)
 {
 	m_impl->setTranslation(translation);
 }
 
-mat4 Model::translation() const
+mat4
+Form::translation() const
 {
 	return m_impl->translation();
 }
 
-void Model::translate(const mat4& translationOffset)
+void
+Form::translate(const mat4& translationOffset)
 {
 	m_impl->translate(translationOffset);
 }
 
-void Model::translate(const float x, const float y, const float z)
+void
+Form::translate(const float x, const float y, const float z)
 {
 	m_impl->translate(x, y, z);
 }
 
-void Model::scale(const float x, const float y, const float z)
+void
+Form::scale(const float x, const float y, const float z)
 {
 	m_impl->scale(x, y, z);
 }
 
 void
-Model::addAnimation(Animation* animation)
+Form::addAnimation(Animation* animation)
 {
 	m_impl->addAnimation(animation);
 }
 
 void
-Model::startAnimation(const string& name)
+Form::startAnimation(const string& name)
 {
 	m_impl->startAnimation(name);
 }
 
 void
-Model::stopAnimation()
+Form::stopAnimation()
 {
 	m_impl->stopAnimation();
 }
 
 void
-Model::update(const int timeDelta)
+Form::update(const int timeDelta)
 {
 	m_impl->update(timeDelta);
 }

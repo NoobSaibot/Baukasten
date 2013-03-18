@@ -7,7 +7,7 @@
 #include "graphics/IDisplay"
 #include "graphics/IProgram"
 #include "graphics/ITexture"
-#include "graphics/Model"
+#include "graphics/Form"
 #include "graphics/VertexFormat"
 #include "io/Filesystem"
 #include "model/Action"
@@ -119,11 +119,15 @@ int main(int argc, char const *argv[])
 	unitType->addState(new State<int>("state.exp", 0));
 	unitType->addState(new State<int>("state.level", 1));
 
-	auto ramza = Actor::create("actor.ramza", Graphics::createModel( "model.ramza", meshRamza, program, texRamza ));
+	auto ramza = Actor::create("actor.ramza", Graphics::createForm( "form.ramza", meshRamza, program, texRamza ));
 	ramza->setActorType(unitType);
-	ramza->model()->translate(0, -3.5, -0.5);
+	ramza->form()->translate(0, -3.5, -0.5);
 
-	ramza->model()->addAnimation( new Animation("animation.walk_right", {
+	ramza->form()->addAnimation( new Animation("animation.stand", {
+		Animation::Frame(0.0, 0.0, 0.07, 0.25, 1, true),
+	}));
+
+	ramza->form()->addAnimation( new Animation("animation.walk_right", {
 		Animation::Frame(0.07, 0.0, 0.07, 0.25, 10),
 		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
 		Animation::Frame(0.21, 0.0, 0.07, 0.25, 10),
@@ -133,36 +137,38 @@ int main(int argc, char const *argv[])
 		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
 	}));
 
-	ramza->model()->addAnimation( new Animation("animation.die", {
+	ramza->form()->addAnimation( new Animation("animation.die", {
 		Animation::Frame(0.42, 0.0, 0.07, 0.25, 30),
 		Animation::Frame(0.49, 0.0, 0.07, 0.25, 80),
 		Animation::Frame(0.56, 0.0, 0.07, 0.25, 1, true),
 	}));
 
-	auto dot = Actor::create("actor.dot", Graphics::createModel( "model.dot", mesh, program, tex ));
-	dot->model()->translate(0, -5.5, 0);
+	ramza->form()->startAnimation("animation.stand");
+
+	auto dot = Actor::create("actor.dot", Graphics::createForm( "form.dot", mesh, program, tex ));
+	dot->form()->translate(0, -5.5, 0);
 	dot->setActorType(blockType);
 
-	auto i = Actor::create("actor.i", Graphics::createModel( "I", mesh, program, tex ));
+	auto i = Actor::create("actor.i", Graphics::createForm( "I", mesh, program, tex ));
 	i->setActorType(blockType);
-	i->model()->translate(0, -4, 0);
-	i->model()->scale(1, 2, 1);
+	i->form()->translate(0, -4, 0);
+	i->form()->scale(1, 2, 1);
 
-	auto hLeft = Actor::create("actor.hLeft", Graphics::createModel( "H-Left", mesh, program, tex ));
+	auto hLeft = Actor::create("actor.hLeft", Graphics::createForm( "H-Left", mesh, program, tex ));
 	hLeft->setActorType(blockType);
-	hLeft->model()->translate(-7, -2, 0);
-	hLeft->model()->scale(1, 4, 1);
+	hLeft->form()->translate(-7, -2, 0);
+	hLeft->form()->scale(1, 4, 1);
 
-	auto hRight = Actor::create("actor.hRight", Graphics::createModel( "H-Right", mesh, program, tex ));
-	hRight->model()->translate(-3, -2, 0);
-	hRight->model()->scale(1, 4, 1);
+	auto hRight = Actor::create("actor.hRight", Graphics::createForm( "H-Right", mesh, program, tex ));
+	hRight->form()->translate(-3, -2, 0);
+	hRight->form()->scale(1, 4, 1);
 
-	auto hMid = Actor::create("actor.hMide", Graphics::createModel( "H-Mid", mesh, program, tex ));
-	hMid->model()->translate(-5, -2, 0);
+	auto hMid = Actor::create("actor.hMide", Graphics::createForm( "H-Mid", mesh, program, tex ));
+	hMid->form()->translate(-5, -2, 0);
 
-	auto surface = Actor::create("actor.surface", Graphics::createModel("model.surface", mesh, program, texWater ));
-	surface->model()->translate(-3, -7, 0);
-	surface->model()->scale(10, 0.5, 10);
+	auto surface = Actor::create("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
+	surface->form()->translate(-3, -7, 0);
+	surface->form()->scale(10, 0.5, 10);
 
 	auto cam = Graphics::createCamera("Front Cam");
 
@@ -249,9 +255,9 @@ int main(int argc, char const *argv[])
 			glfwCloseWindow();
 
 		if (glfwGetKey('I')) {
-			ramza->model()->startAnimation("animation.die");
+			ramza->form()->startAnimation("animation.die");
 		} else if (glfwGetKey('O')) {
-			ramza->model()->startAnimation("animation.walk_right");
+			ramza->form()->startAnimation("animation.walk_right");
 		}
 
 
@@ -274,7 +280,7 @@ int main(int argc, char const *argv[])
 		if(glfwGetKey('M'))
 			rotationX -= 0.5f;
 
-		dot->model()->translate(
+		dot->form()->translate(
 			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
 		);
 

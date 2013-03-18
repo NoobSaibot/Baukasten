@@ -2,9 +2,9 @@ set(graphics_SRCS
   graphics/src/animation.cpp
   graphics/src/bitmap.cpp
   graphics/src/camera.cpp
+  graphics/src/form.cpp
   graphics/src/graphics.cpp
   graphics/src/icontext.cpp
-  graphics/src/model.cpp
   graphics/src/opengl/context_opengl.cpp
   graphics/src/opengl/display_opengl.cpp
   graphics/src/opengl/mesh_opengl.cpp
