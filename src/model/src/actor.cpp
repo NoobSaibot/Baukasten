@@ -182,8 +182,7 @@ public:
 	{
 		for ( unsigned int i = 0; i < m_invokedActions.size(); ++i ) {
 			auto a = m_invokedActions[i];
-			a->run();
-			if (a->done()) {
+			if (a->run()) {
 				m_invokedActions.erase(m_invokedActions.begin() + i);
 			}
 		}

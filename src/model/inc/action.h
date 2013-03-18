@@ -15,14 +15,12 @@ class Actor;
  */
 class Action : public Managed {
 public:
-	typedef std::function<bool ( const Action* )> DoneFunc;
-	typedef std::function<void ( Action*, vector<Actor*> )> RunFunc;
+	typedef std::function<bool ( Action*, vector<Actor*> )> RunFunc;
 
 	Action(const string&, Actor*, RunFunc);
 	virtual ~Action();
 
-	bool done() const;
-	void run();
+	bool run();
 	Actor* owner() const;
 	vector<Actor*> targets() const;
 	void setTargets(const vector<Actor*>);

@@ -209,6 +209,7 @@ int main(int argc, char const *argv[])
 		for ( Actor* t: targets ) {
 			BK_DEBUG("reduce " << t->name() << "s hp by 10!");
 		}
+		return true;
 	}));
 
 	ramza->addAction(bla);

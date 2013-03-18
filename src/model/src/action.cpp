@@ -5,7 +5,7 @@ namespace bk {
 class ActionPrivate {
 public:
 	ActionPrivate(Action* action, Actor* owner, Action::RunFunc run) :
-		m_action(action), m_owner(owner), m_run(run), m_done(0)
+		m_action(action), m_owner(owner), m_run(run)
 	{
 	}
 
@@ -18,17 +18,9 @@ public:
 		return m_owner;
 	}
 
-	void run()
+	bool run()
 	{
-		m_run(m_action, m_targets);
-	}
-
-	bool done() const
-	{
-		if (!m_done) {
-			return true;
-		}
-		return m_done(m_action);
+		return m_run(m_action, m_targets);
 	}
 
 	vector<Actor*> targets() const
@@ -45,7 +37,6 @@ private:
 	Action* m_action;
 	Actor* m_owner;
 	Action::RunFunc m_run;
-	Action::DoneFunc m_done;
 	vector<Actor*> m_targets;
 };
 
@@ -66,15 +57,9 @@ Action::owner() const
 }
 
 bool
-Action::done() const
-{
-	return m_impl->done();
-}
-
-void
 Action::run()
 {
-	m_impl->run();
+	return m_impl->run();
 }
 
 vector<Actor*>
