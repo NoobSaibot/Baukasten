@@ -1,7 +1,7 @@
 #ifndef PROGRAM_OPENGL_H_8QTPJICH
 #define PROGRAM_OPENGL_H_8QTPJICH
 
-#include "base.h"
+#include "graphics/Global"
 #include "graphics/IProgram"
 
 namespace bk {

@@ -1,4 +1,4 @@
-#include "base.h"
+#include "core/Debug"
 #include "graphics/Animation"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
@@ -13,6 +13,7 @@
 #include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
+#include "model/Model"
 #include "model/State"
 
 using namespace bk;
@@ -23,12 +24,12 @@ int main(int argc, char const *argv[])
 	display->init(800, 600);
 
 	float verticesRamza[] = {
-		-0.5f,-1.0f, 1.0f,   1.0f, 1.0f,
-		 0.5f,-1.0f, 1.0f,   0.0f, 1.0f,
-		-0.5f, 1.0f, 1.0f,   1.0f, 0.0f,
-		 0.5f,-1.0f, 1.0f,   0.0f, 1.0f,
-		 0.5f, 1.0f, 1.0f,   0.0f, 0.0f,
-		-0.5f, 1.0f, 1.0f,   1.0f, 0.0f,
+		-1.0f,-1.0f, 1.0f,   1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
+		 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
+		-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
 	};
 
 	float vertices[] = {
@@ -109,17 +110,17 @@ int main(int argc, char const *argv[])
 	auto meshRamza = Graphics::createMesh("mesh.ramza", *program, verticesRamza,
 		MeshUsageHint::STATIC, format, sizeof(verticesRamza));
 
-	auto blockType = new ActorType("actortype.block");
-	blockType->addState(new State<int>("state.height", 1));
-	blockType->addState(new State<int>("state.width", 1));
+	auto blockType = Model::createActorType("actortype.block");
+	blockType->addState(Model::createState<int>("state.height", 1));
+	blockType->addState(Model::createState<int>("state.width", 1));
 
-	auto unitType = new ActorType("actortype.unit");
-	unitType->addState(new State<int>("state.hp", 10));
-	unitType->addState(new State<int>("state.mp", 10));
-	unitType->addState(new State<int>("state.exp", 0));
-	unitType->addState(new State<int>("state.level", 1));
+	auto unitType = Model::createActorType("actortype.unit");
+	unitType->addState(Model::createState<int>("state.hp", 10));
+	unitType->addState(Model::createState<int>("state.mp", 10));
+	unitType->addState(Model::createState<int>("state.exp", 0));
+	unitType->addState(Model::createState<int>("state.level", 1));
 
-	auto ramza = Actor::create("actor.ramza", Graphics::createForm( "form.ramza", meshRamza, program, texRamza ));
+	auto ramza = Model::createActor("actor.ramza", Graphics::createForm( "form.ramza", meshRamza, program, texRamza ));
 	ramza->setActorType(unitType);
 	ramza->form()->translate(0, -3.5, -0.5);
 
@@ -145,28 +146,28 @@ int main(int argc, char const *argv[])
 
 	ramza->form()->startAnimation("animation.stand");
 
-	auto dot = Actor::create("actor.dot", Graphics::createForm( "form.dot", mesh, program, tex ));
+	auto dot = Model::createActor("actor.dot", Graphics::createForm( "form.dot", mesh, program, tex ));
 	dot->form()->translate(0, -5.5, 0);
 	dot->setActorType(blockType);
 
-	auto i = Actor::create("actor.i", Graphics::createForm( "I", mesh, program, tex ));
+	auto i = Model::createActor("actor.i", Graphics::createForm( "I", mesh, program, tex ));
 	i->setActorType(blockType);
 	i->form()->translate(0, -4, 0);
 	i->form()->scale(1, 2, 1);
 
-	auto hLeft = Actor::create("actor.hLeft", Graphics::createForm( "H-Left", mesh, program, tex ));
+	auto hLeft = Model::createActor("actor.hLeft", Graphics::createForm( "H-Left", mesh, program, tex ));
 	hLeft->setActorType(blockType);
 	hLeft->form()->translate(-7, -2, 0);
 	hLeft->form()->scale(1, 4, 1);
 
-	auto hRight = Actor::create("actor.hRight", Graphics::createForm( "H-Right", mesh, program, tex ));
+	auto hRight = Model::createActor("actor.hRight", Graphics::createForm( "H-Right", mesh, program, tex ));
 	hRight->form()->translate(-3, -2, 0);
 	hRight->form()->scale(1, 4, 1);
 
-	auto hMid = Actor::create("actor.hMide", Graphics::createForm( "H-Mid", mesh, program, tex ));
+	auto hMid = Model::createActor("actor.hMide", Graphics::createForm( "H-Mid", mesh, program, tex ));
 	hMid->form()->translate(-5, -2, 0);
 
-	auto surface = Actor::create("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
+	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
@@ -182,7 +183,7 @@ int main(int argc, char const *argv[])
 	cam2->setAspectRatio(800.0f/640.0f);
 	cam2->pan(0.0, -90.0);
 
-	auto scene = Actor::create("actor.scene", 0);
+	auto scene = Model::createActor("actor.scene", 0);
 
 	scene->addChild(dot);
 	//scene->addChild(i);
@@ -211,7 +212,7 @@ int main(int argc, char const *argv[])
 
 	Camera* activeCam = cam;
 
-	Action* bla = new Action("action.bla", ramza, ([]( Action* action, vector<Actor*> targets ) {
+	Action* bla = Model::createAction("action.bla", ramza, ([]( Action* action, vector<Actor*> targets ) {
 		for ( Actor* t: targets ) {
 			BK_DEBUG("reduce " << t->name() << "s hp by 10!");
 		}
@@ -259,7 +260,6 @@ int main(int argc, char const *argv[])
 		} else if (glfwGetKey('O')) {
 			ramza->form()->startAnimation("animation.walk_right");
 		}
-
 
 		glfwGetMousePos(&mouseX, &mouseY);
 		activeCam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);

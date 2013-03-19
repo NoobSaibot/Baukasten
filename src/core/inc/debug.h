@@ -1,6 +1,8 @@
 #ifndef DEBUG_H_G18WJCD2
 #define DEBUG_H_G18WJCD2
 
+#include "core/Global"
+
 #ifdef NDEBUG
 
 #define BK_DEBUG( X )
@@ -8,6 +10,9 @@
 #define BK_ERROR( X )
 
 #else
+
+#include <iostream>
+#include <sstream>
 
 enum _bk_debug_verbosity {
 	DEBUG,

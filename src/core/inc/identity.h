@@ -1,7 +1,7 @@
 #ifndef OBJECT_H_DPFT5OLZ
 #define OBJECT_H_DPFT5OLZ
 
-#include "base.h"
+#include "core/Global"
 
 namespace bk {
 

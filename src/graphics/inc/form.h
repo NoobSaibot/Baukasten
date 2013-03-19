@@ -1,8 +1,8 @@
 #ifndef FORM_H_IZNSJVOY
 #define FORM_H_IZNSJVOY
 
-#include "base.h"
 #include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 

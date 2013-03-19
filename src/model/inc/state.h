@@ -33,11 +33,6 @@ public:
 		U m_value;
 	};
 
-	explicit State(const string& name, const T& value) :
-		IState(name), m_state(new StateWrapper<T>(name, value))
-	{
-	}
-
 	explicit State(const State<T>& other) :
 		IState(other.name()), m_state(other.m_state)
 	{
@@ -66,7 +61,11 @@ public:
 	}
 
 private:
-	friend class Actor;
+	friend class Model;
+	State(const string& name, const T& value) :
+		IState(name), m_state(new StateWrapper<T>(name, value))
+	{
+	}
 	StateWrapper<T>* m_state;
 };
 

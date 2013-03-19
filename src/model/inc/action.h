@@ -15,9 +15,6 @@ class Actor;
  */
 class Action : public Managed {
 public:
-	typedef std::function<bool ( Action*, vector<Actor*> )> RunFunc;
-
-	Action(const string&, Actor*, RunFunc);
 	virtual ~Action();
 
 	bool run();
@@ -26,6 +23,8 @@ public:
 	void setTargets(const vector<Actor*>);
 
 private:
+	friend class Model;
+	Action(const string&, Actor*, RunFunc);
 	BK_IMPL(Action);
 };
 

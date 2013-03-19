@@ -1,8 +1,8 @@
 #ifndef IPROGRAM_H_R9MJXBZH
 #define IPROGRAM_H_R9MJXBZH
 
-#include "base.h"
 #include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 

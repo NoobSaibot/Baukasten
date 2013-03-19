@@ -1,7 +1,7 @@
 #ifndef TEXTURE_OPENGL_H_XXM5JMKA
 #define TEXTURE_OPENGL_H_XXM5JMKA
 
-#include "base.h"
+#include "graphics/Global"
 #include "graphics/ITexture"
 
 namespace bk {

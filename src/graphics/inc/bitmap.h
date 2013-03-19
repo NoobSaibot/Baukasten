@@ -1,8 +1,8 @@
 #ifndef BITMAP_H_QOEYDWMJ
 #define BITMAP_H_QOEYDWMJ
 
-#include "base.h"
 #include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 

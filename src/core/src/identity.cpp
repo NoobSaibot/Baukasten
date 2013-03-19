@@ -1,5 +1,7 @@
 #include "core/Identity"
 
+#include "core/Debug"
+
 namespace bk {
 
 int Identity::m_nextId = 0;

@@ -32,10 +32,13 @@ public:
 
 	void addAction(Action* action)
 	{
+		// TODO implementieren
 	}
 
 	Action* action(const string& name) const
 	{
+		// TODO implementieren
+		//return m_actions[name];
 	}
 
 private:

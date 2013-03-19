@@ -1,5 +1,7 @@
 #include "core/Managed"
 
+#include "core/Debug"
+
 namespace bk {
 
 class ManagedPrivate {

@@ -1,9 +1,14 @@
 #include "io/Filesystem"
 
+#include "core/Assert"
+
 #include <sys/stat.h>
 #include <fstream>
 
-bool Filesystem::exists( const string& path )
+namespace bk {
+
+bool
+Filesystem::exists( const string& path )
 {
 	struct stat buf;
 	if (stat(path.c_str(), &buf) != -1) {
@@ -12,10 +17,11 @@ bool Filesystem::exists( const string& path )
 	return false;
 }
 
-char* Filesystem::readAll( const string& path, int* size )
+char*
+Filesystem::readAll( const string& path, int* size )
 {
 	ifstream file(path.c_str(), ios::in|ios::binary|ios::ate);
-	assert(file.is_open());
+	BK_ASSERT(file.is_open(), "File " << path << " couldn't be opened.");
 
 	int _size = file.tellg();
 	char* buffer = new char[_size + 1];
@@ -28,3 +34,6 @@ char* Filesystem::readAll( const string& path, int* size )
 		*size = _size;
 	return buffer;
 }
+
+}
+

@@ -2,6 +2,8 @@
 #define ASSERT_OPENGL_H_A9VNLXP7
 
 #include "core/Assert"
+#include "core/Debug"
+#include "graphics/Global"
 
 #ifdef NDEBUG
 #define BK_GL_ASSERT( X ) X

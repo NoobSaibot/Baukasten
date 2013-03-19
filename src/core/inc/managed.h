@@ -1,7 +1,7 @@
 #ifndef MANAGED_H_V6R2GJOK
 #define MANAGED_H_V6R2GJOK
 
-#include "base.h"
+#include "core/Global"
 #include "core/Identity"
 
 namespace bk {

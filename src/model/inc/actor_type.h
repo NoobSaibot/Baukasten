@@ -14,7 +14,6 @@ class IState;
  */
 class ActorType : public Managed {
 public:
-	explicit ActorType(const string&);
 	virtual ~ActorType();
 
 	void addState(IState*);
@@ -27,6 +26,8 @@ public:
 	ActorType* parent() const;
 
 private:
+	friend class Model;
+	explicit ActorType(const string&);
 	BK_IMPL(ActorType);
 };
 

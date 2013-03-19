@@ -4,7 +4,7 @@ namespace bk {
 
 class ActionPrivate {
 public:
-	ActionPrivate(Action* action, Actor* owner, Action::RunFunc run) :
+	ActionPrivate(Action* action, Actor* owner, RunFunc run) :
 		m_action(action), m_owner(owner), m_run(run)
 	{
 	}
@@ -36,7 +36,7 @@ public:
 private:
 	Action* m_action;
 	Actor* m_owner;
-	Action::RunFunc m_run;
+	RunFunc m_run;
 	vector<Actor*> m_targets;
 };
 

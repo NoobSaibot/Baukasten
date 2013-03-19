@@ -1,6 +1,8 @@
 #ifndef ASSERT_H_BTACVQZG
 #define ASSERT_H_BTACVQZGASSERT_H_BTACVQZG
 
+#include "core/Global"
+
 #if ASSERTIONS_ENABLED
 
 #include <iostream>

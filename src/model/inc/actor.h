@@ -17,9 +17,6 @@ class Form;
  */
 class Actor : public Managed {
 public:
-
-	static Actor* create(const string&, Form*);
-
 	Form* form() const;
 	void setForm(Form*);
 
@@ -54,8 +51,8 @@ public:
 	virtual ~Actor();
 
 private:
-	explicit Actor(const string&, Form*);
-
+	friend class Model;
+	Actor(const string&, Form*);
 	BK_IMPL(Actor);
 };
 

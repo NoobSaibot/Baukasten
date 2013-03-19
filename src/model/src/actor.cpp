@@ -233,12 +233,6 @@ Actor::~Actor()
 	SAFE_DELETE( m_impl );
 }
 
-Actor*
-Actor::create(const string& id, Form* form)
-{
-	return new Actor(id, form);
-}
-
 Form*
 Actor::form() const
 {

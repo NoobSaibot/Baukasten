@@ -1,7 +1,7 @@
 #ifndef SHADER_OPENGL_H_UDEPWQPA
 #define SHADER_OPENGL_H_UDEPWQPA
 
-#include "base.h"
+#include "graphics/Global"
 #include "graphics/IShader"
 
 namespace bk {

@@ -1,8 +1,9 @@
 #ifndef FILESYSTEM_H_Q9APEMHS
 #define FILESYSTEM_H_Q9APEMHS
 
+#include "core/Global"
 
-#include "base.h"
+namespace bk {
 
 /*!
  * \brief Filesystem class declaration.
@@ -14,6 +15,8 @@ public:
 	static bool  exists( const string& );
 	static char* readAll( const string& path, int* size = 0 );
 };
+
+} /* bk */
 
 #endif /* end of include guard: FILESYSTEM_H_Q9APEMHS */
 

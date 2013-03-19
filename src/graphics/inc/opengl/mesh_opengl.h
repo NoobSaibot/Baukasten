@@ -1,7 +1,7 @@
 #ifndef MESH_OPENGL_H_K4YSTC7O
 #define MESH_OPENGL_H_K4YSTC7O
 
-#include "base.h"
+#include "graphics/Global"
 #include "graphics/IMesh"
 
 namespace bk {

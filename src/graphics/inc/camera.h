@@ -1,8 +1,8 @@
 #ifndef CAMERA_H_T6GLZWCT
 #define CAMERA_H_T6GLZWCT
 
-#include "base.h"
 #include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 

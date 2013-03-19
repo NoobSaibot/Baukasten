@@ -1,8 +1,8 @@
 #ifndef IMESH_H_W4FDKTY7
 #define IMESH_H_W4FDKTY7
 
-#include "base.h"
 #include "core/Managed"
+#include "graphics/Global"
 
 namespace bk {
 
