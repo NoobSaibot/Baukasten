@@ -1,9 +1,12 @@
 #version 130
 
 uniform sampler2D tex;
-in vec2 fragTexCoord;
+uniform vec2 bk_texOffset0;
+uniform vec2 bk_texSize0;
+in vec2 bk_fragTex0;
 out vec4 finalColor;
 
 void main() {
-    finalColor = texture(tex, fragTexCoord);
+    finalColor = texture(tex,  (bk_texSize0 * bk_fragTex0) + bk_texOffset0);
 }
+
