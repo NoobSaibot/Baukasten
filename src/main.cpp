@@ -9,6 +9,8 @@
 #include "graphics/ITexture"
 #include "graphics/Form"
 #include "graphics/VertexFormat"
+#include "input/Input"
+#include "input/IInput"
 #include "io/Filesystem"
 #include "model/Action"
 #include "model/Actor"
@@ -149,6 +151,37 @@ int main(int argc, char const *argv[])
 	auto dot = Model::createActor("actor.dot", Graphics::createForm( "form.dot", mesh, program, tex ));
 	dot->form()->translate(0, -5.5, 0);
 	dot->setActorType(blockType);
+	dot->setInputSource(Input::createInputSource("input.default"));
+	dot->addAction(
+		Model::createAction("action.rotate", dot, ([](Action* action, vector<Actor*> targets) {
+			float rotationY = 0.0f;
+			float rotationX = 0.0f;
+
+			auto owner = action->owner();
+			auto input = owner->inputSource();
+
+			if (input->keyPressed('K')) {
+				rotationY += 0.5f;
+			}
+			if (input->keyPressed('J')) {
+				rotationY -= 0.5f;
+			}
+			if(input->keyPressed('U')) {
+				rotationX += 0.5f;
+			}
+			if (input->keyPressed('M')) {
+				rotationX -= 0.5f;
+			}
+
+			owner->form()->translate(
+				rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
+			);
+
+			return false;
+		}))
+	);
+
+	dot->invokeAction("action.rotate");
 
 	auto i = Model::createActor("actor.i", Graphics::createForm( "I", mesh, program, tex ));
 	i->setActorType(blockType);
@@ -200,8 +233,6 @@ int main(int argc, char const *argv[])
 
 	scene->setContext(context);
 
-	GLfloat rotationY = 0.0f;
-	GLfloat rotationX = 0.0f;
 	const float moveSpeed = 0.5f;
 	double lastTime = glfwGetTime();
 
@@ -271,23 +302,10 @@ int main(int argc, char const *argv[])
 		activeCam->setFieldOfView(fieldOfView);
 		glfwSetMouseWheel(0);
 
-		if(glfwGetKey('K'))
-			rotationY += 0.5f;
-		if(glfwGetKey('J'))
-			rotationY -= 0.5f;
-		if(glfwGetKey('U'))
-			rotationX += 0.5f;
-		if(glfwGetKey('M'))
-			rotationX -= 0.5f;
-
-		dot->form()->translate(
-			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
-		);
+		dot->runActions();
 
 		scene->update(secondsElapsed);
 		scene->render();
-
-		rotationX = rotationY = 0.0f;
 
 		display->display();
 	}

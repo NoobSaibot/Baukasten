@@ -1,0 +1,5 @@
+#include "input/inc/opengl/input_opengl.h"
+
+namespace bk {
+typedef InputOpenGL InputImpl;
+}

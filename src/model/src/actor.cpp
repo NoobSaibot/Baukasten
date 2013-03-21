@@ -16,7 +16,8 @@ typedef std::map<string, IState*> StateMap;
 class ActorPrivate {
 public:
 	ActorPrivate(Actor *object, Form* form) :
-		m_actorType(0), m_context(0), m_object(object), m_form(form)
+		m_actorType(nullptr), m_context(nullptr), m_object(object), m_form(form),
+		m_input(nullptr)
 	{
 	}
 
@@ -92,6 +93,25 @@ public:
 
 		m_context = Graphics::createContext("context.auto");
 		return m_context;
+	}
+
+	void setInputSource(IInput* input)
+	{
+		m_input = input;
+	}
+
+	IInput* inputSource() const
+	{
+		IInput *input = nullptr;
+
+		if (m_input) {
+			input = m_input;
+		} else if (m_parent) {
+			input = m_parent->inputSource();
+		}
+
+		BK_ASSERT(input != nullptr, "Inputsource must be set.");
+		return input;
 	}
 
 	void addState(IState* state)
@@ -218,6 +238,7 @@ private:
 	mutable IContext* m_context;
 	Actor*   m_object;
 	Form*   m_form;
+	IInput* m_input;
 	std::map<string, IState*> m_states;
 	std::map<string, Action*> m_actions;
 	vector<Action*> m_invokedActions;
@@ -279,6 +300,18 @@ IContext*
 Actor::context() const
 {
 	return m_impl->context();
+}
+
+void
+Actor::setInputSource(IInput* input)
+{
+	m_impl->setInputSource(input);
+}
+
+IInput*
+Actor::inputSource() const
+{
+	return m_impl->inputSource();
 }
 
 void
