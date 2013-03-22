@@ -38,20 +38,22 @@ public:
 		switch( option ) {
 		case ContextOption::ENABLE_3D:    return m_enable3d;
 		case ContextOption::ENABLE_BLEND: return m_enableBlend;
+		default:
+			return false;
 		}
 	}
 
 	void addCamera(Camera* cam, bool setActive)
 	{
 		cam->addRef();
-		m_cams[cam->id()] = cam;
+		m_cams[cam->name()] = cam;
 		if (setActive)
 			m_activeCam = cam;
 	}
 
-	void setActiveCamera(const int id)
+	void setActiveCamera(const string& name)
 	{
-		m_activeCam = m_cams[id];
+		m_activeCam = m_cams[name];
 	}
 
 	Camera* camera() const
@@ -59,10 +61,16 @@ public:
 		return m_activeCam;
 	}
 
+	Camera* camera(const string& name)
+	{
+		auto cam = m_cams[name];
+		return cam;
+	}
+
 private:
 	bool m_enable3d;
 	bool m_enableBlend;
-	map<int, Camera*> m_cams;
+	map<string, Camera*> m_cams;
 	Camera* m_activeCam;
 };
 
@@ -96,15 +104,21 @@ IContext::addCamera(Camera* cam, bool setActive)
 }
 
 void
-IContext::setActiveCamera(const int id)
+IContext::setActiveCamera(const string& name)
 {
-	m_impl->setActiveCamera(id);
+	m_impl->setActiveCamera(name);
 }
 
 Camera*
 IContext::camera() const
 {
 	return m_impl->camera();
+}
+
+Camera*
+IContext::camera(const string& name)
+{
+	return m_impl->camera(name);
 }
 
 } /* bk */

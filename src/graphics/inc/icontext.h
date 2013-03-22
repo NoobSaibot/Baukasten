@@ -22,8 +22,9 @@ public:
 	bool option(const ContextOption) const;
 
 	void addCamera(Camera*, bool setActive = true);
-	void setActiveCamera(const int);
+	void setActiveCamera(const string&);
 	Camera* camera() const;
+	Camera* camera(const string&);
 
 	void setTransformation(const mat4&);
 
