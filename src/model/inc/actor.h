@@ -8,10 +8,10 @@ namespace bk {
 
 class Action;
 class ActorType;
-class IContext;
-class IInput;
-class IState;
 class Form;
+class IContext;
+class IState;
+class Input;
 
 /*!
  * \brief Actor class declaration.
@@ -34,8 +34,8 @@ public:
 	void setContext(IContext*);
 	IContext* context() const;
 
-	void setInputSource(IInput*);
-	IInput* inputSource() const;
+	void setInput(Input*);
+	Input* input() const;
 
 	void addState(IState*);
 	IState* state(const string&);

@@ -1,0 +1,4 @@
+#include "input/inc/opengl/keyboard_opengl.h"
+namespace bk {
+typedef KeyboardOpenGL KeyboardImpl;
+}

@@ -95,19 +95,19 @@ public:
 		return m_context;
 	}
 
-	void setInputSource(IInput* input)
+	void setInput(Input* input)
 	{
 		m_input = input;
 	}
 
-	IInput* inputSource() const
+	Input* input() const
 	{
-		IInput *input = nullptr;
+		Input *input = nullptr;
 
 		if (m_input) {
 			input = m_input;
 		} else if (m_parent) {
-			input = m_parent->inputSource();
+			input = m_parent->input();
 		}
 
 		BK_ASSERT(input != nullptr, "Inputsource must be set.");
@@ -206,6 +206,10 @@ public:
 				m_invokedActions.erase(m_invokedActions.begin() + i);
 			}
 		}
+
+		for ( Actor* a: m_children ) {
+			a->runActions();
+		}
 	}
 
 	void render()
@@ -238,7 +242,7 @@ private:
 	mutable IContext* m_context;
 	Actor*   m_object;
 	Form*   m_form;
-	IInput* m_input;
+	Input* m_input;
 	std::map<string, IState*> m_states;
 	std::map<string, Action*> m_actions;
 	vector<Action*> m_invokedActions;
@@ -303,15 +307,15 @@ Actor::context() const
 }
 
 void
-Actor::setInputSource(IInput* input)
+Actor::setInput(Input* input)
 {
-	m_impl->setInputSource(input);
+	m_impl->setInput(input);
 }
 
-IInput*
-Actor::inputSource() const
+Input*
+Actor::input() const
 {
-	return m_impl->inputSource();
+	return m_impl->input();
 }
 
 void

@@ -10,7 +10,7 @@
 #include "graphics/Form"
 #include "graphics/VertexFormat"
 #include "input/Input"
-#include "input/IInput"
+#include "input/IKeyboard"
 #include "io/Filesystem"
 #include "model/Action"
 #include "model/Actor"
@@ -147,29 +147,44 @@ int main(int argc, char const *argv[])
 	}));
 
 	ramza->form()->startAnimation("animation.stand");
+	ramza->addAction(
+		Model::createAction("action.walk", ramza, ([] (Action *action, vector<Actor*> targets) {
+			auto owner = action->owner();
+			auto keyboard = owner->input()->keyboard();
 
-	auto dot = Model::createActor("actor.dot", Graphics::createForm( "form.dot", mesh, program, tex ));
-	dot->form()->translate(0, -5.5, 0);
-	dot->setActorType(blockType);
-	dot->setInputSource(Input::createInputSource("input.default"));
-	dot->addAction(
-		Model::createAction("action.rotate", dot, ([](Action* action, vector<Actor*> targets) {
+			if (keyboard->keyPressed('I')) {
+				owner->form()->startAnimation("animation.die");
+			} else if (keyboard->keyPressed('O')) {
+				owner->form()->startAnimation("animation.walk_right");
+			}
+
+			return false;
+		}))
+	);
+
+	ramza->invokeAction("action.walk");
+
+	auto box = Model::createActor("actor.box", Graphics::createForm( "form.box", mesh, program, tex ));
+	box->form()->translate(0, -5.5, 0);
+	box->setActorType(blockType);
+	box->addAction(
+		Model::createAction("action.rotate", box, ([](Action* action, vector<Actor*> targets) {
 			float rotationY = 0.0f;
 			float rotationX = 0.0f;
 
 			auto owner = action->owner();
-			auto input = owner->inputSource();
+			auto keyboard = owner->input()->keyboard();
 
-			if (input->keyPressed('K')) {
+			if (keyboard->keyPressed('K')) {
 				rotationY += 0.5f;
 			}
-			if (input->keyPressed('J')) {
+			if (keyboard->keyPressed('J')) {
 				rotationY -= 0.5f;
 			}
-			if(input->keyPressed('U')) {
+			if(keyboard->keyPressed('U')) {
 				rotationX += 0.5f;
 			}
-			if (input->keyPressed('M')) {
+			if (keyboard->keyPressed('M')) {
 				rotationX -= 0.5f;
 			}
 
@@ -181,50 +196,67 @@ int main(int argc, char const *argv[])
 		}))
 	);
 
-	dot->invokeAction("action.rotate");
-
-	auto i = Model::createActor("actor.i", Graphics::createForm( "I", mesh, program, tex ));
-	i->setActorType(blockType);
-	i->form()->translate(0, -4, 0);
-	i->form()->scale(1, 2, 1);
-
-	auto hLeft = Model::createActor("actor.hLeft", Graphics::createForm( "H-Left", mesh, program, tex ));
-	hLeft->setActorType(blockType);
-	hLeft->form()->translate(-7, -2, 0);
-	hLeft->form()->scale(1, 4, 1);
-
-	auto hRight = Model::createActor("actor.hRight", Graphics::createForm( "H-Right", mesh, program, tex ));
-	hRight->form()->translate(-3, -2, 0);
-	hRight->form()->scale(1, 4, 1);
-
-	auto hMid = Model::createActor("actor.hMide", Graphics::createForm( "H-Mid", mesh, program, tex ));
-	hMid->form()->translate(-5, -2, 0);
+	box->invokeAction("action.rotate");
 
 	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
-	auto cam = Graphics::createCamera("Front Cam");
+	auto cam = Graphics::createCamera("camera.front");
 
 	cam->setPosition(vec3(-3, 3, 15));
 	cam->pan(15.0, 0.0);
 	cam->setAspectRatio(800.0f/640.0f);
 
-	auto cam2 = Graphics::createCamera("camera.cam2");
+	auto cam2 = Graphics::createCamera("camera.right");
 
 	cam2->setPosition(vec3(10,0,4));
 	cam2->setAspectRatio(800.0f/640.0f);
 	cam2->pan(0.0, -90.0);
 
 	auto scene = Model::createActor("actor.scene", 0);
+	scene->setInput(Input::createInput("input.default"));
 
-	scene->addChild(dot);
-	//scene->addChild(i);
-	//scene->addChild(hLeft);
-	//scene->addChild(hMid);
-	//scene->addChild(hRight);
+	scene->addChild(box);
 	scene->addChild(surface);
 	scene->addChild(ramza);
+
+	scene->addAction(
+		Model::createAction("action.moveCamera", scene, ([] (Action *action, vector<Actor*> targets) {
+			const float moveSpeed = 0.5f;
+
+			auto owner = action->owner();
+			auto keyboard = owner->input()->keyboard();
+			auto context = owner->context();
+			auto activeCam = context->camera();
+
+			if (keyboard->keyPressed('G')) {
+				context->setActiveCamera((activeCam->name() == "camera.front") ?  "camera.right" : "camera.front");
+			}
+
+			if (keyboard->keyPressed('S')) {
+				context->camera()->move(moveSpeed * activeCam->back());
+			} else if(keyboard->keyPressed('W')) {
+				context->camera()->move(moveSpeed * activeCam->forward());
+			}
+
+			if (keyboard->keyPressed('A')) {
+				context->camera()->move(moveSpeed * activeCam->left());
+			} else if(keyboard->keyPressed('D')) {
+				context->camera()->move(moveSpeed * activeCam->right());
+			}
+
+			if (keyboard->keyPressed('Y')) {
+				context->camera()->move(moveSpeed * -vec3(0,1,0));
+			} else if(keyboard->keyPressed('X')) {
+				context->camera()->move(moveSpeed * vec3(0,1,0));
+			}
+
+			return false;
+		}))
+	);
+
+	scene->invokeAction("action.moveCamera");
 
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
@@ -233,7 +265,6 @@ int main(int argc, char const *argv[])
 
 	scene->setContext(context);
 
-	const float moveSpeed = 0.5f;
 	double lastTime = glfwGetTime();
 
 	const float mouseSensitivity = 0.05f;
@@ -243,54 +274,14 @@ int main(int argc, char const *argv[])
 
 	Camera* activeCam = cam;
 
-	Action* bla = Model::createAction("action.bla", ramza, ([]( Action* action, vector<Actor*> targets ) {
-		for ( Actor* t: targets ) {
-			BK_DEBUG("reduce " << t->name() << "s hp by 10!");
-		}
-		return true;
-	}));
-
-	ramza->addAction(bla);
-	ramza->invokeAction("action.bla");
-	ramza->runActions();
-
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		display->clear();
 
 		double thisTime = glfwGetTime();
 		float secondsElapsed = thisTime - lastTime;
 
-		if(glfwGetKey('G')) {
-			activeCam = (activeCam == cam) ? cam2 : cam;
-			scene->context()->setActiveCamera(activeCam->id());
-		}
-
-		if(glfwGetKey('S')) {
-			activeCam->move(moveSpeed * activeCam->back());
-		} else if(glfwGetKey('W')) {
-			activeCam->move(moveSpeed * activeCam->forward());
-		}
-
-		if(glfwGetKey('A')) {
-			activeCam->move(moveSpeed * activeCam->left());
-		} else if(glfwGetKey('D')) {
-			activeCam->move(moveSpeed * activeCam->right());
-		}
-
-		if(glfwGetKey('Y')) {
-			activeCam->move(moveSpeed * -vec3(0,1,0));
-		} else if(glfwGetKey('X')) {
-			activeCam->move(moveSpeed * vec3(0,1,0));
-		}
-
 		if(glfwGetKey(GLFW_KEY_ESC))
 			glfwCloseWindow();
-
-		if (glfwGetKey('I')) {
-			ramza->form()->startAnimation("animation.die");
-		} else if (glfwGetKey('O')) {
-			ramza->form()->startAnimation("animation.walk_right");
-		}
 
 		glfwGetMousePos(&mouseX, &mouseY);
 		activeCam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
@@ -302,9 +293,8 @@ int main(int argc, char const *argv[])
 		activeCam->setFieldOfView(fieldOfView);
 		glfwSetMouseWheel(0);
 
-		dot->runActions();
-
 		scene->update(secondsElapsed);
+		scene->runActions();
 		scene->render();
 
 		display->display();
