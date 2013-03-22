@@ -8,7 +8,7 @@ namespace bk {
 class InputPrivate {
 public:
 	InputPrivate() :
-		m_keyboard(new KeyboardImpl()), m_mouse(nullptr)
+		m_keyboard(new KeyboardImpl()), m_mouse(new MouseImpl())
 	{
 	}
 

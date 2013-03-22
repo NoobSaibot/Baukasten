@@ -1,0 +1,4 @@
+#include "input/inc/opengl/mouse_opengl.h"
+namespace bk {
+typedef MouseOpenGL MouseImpl;
+}

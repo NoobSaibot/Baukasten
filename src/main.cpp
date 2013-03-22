@@ -11,6 +11,7 @@
 #include "graphics/VertexFormat"
 #include "input/Input"
 #include "input/IKeyboard"
+#include "input/IMouse"
 #include "io/Filesystem"
 #include "model/Action"
 #include "model/Actor"
@@ -222,6 +223,22 @@ int main(int argc, char const *argv[])
 	scene->addChild(ramza);
 
 	scene->addAction(
+		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
+			auto owner = action->owner();
+			auto context = owner->context();
+			auto mouse = owner->input()->mouse();
+			const float mouseSensitivity = 0.05f;
+			int x, y;
+
+			mouse->position(&x, &y);
+			context->camera()->pan(mouseSensitivity * y, mouseSensitivity * x);
+			glfwSetMousePos(0, 0);
+
+			return false;
+		}))
+	);
+
+	scene->addAction(
 		Model::createAction("action.moveCamera", scene, ([] (Action *action, vector<Actor*> targets) {
 			const float moveSpeed = 0.5f;
 
@@ -257,6 +274,7 @@ int main(int argc, char const *argv[])
 	);
 
 	scene->invokeAction("action.moveCamera");
+	scene->invokeAction("action.trackMouse");
 
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
@@ -266,9 +284,6 @@ int main(int argc, char const *argv[])
 	scene->setContext(context);
 
 	double lastTime = glfwGetTime();
-
-	const float mouseSensitivity = 0.05f;
-	int mouseX, mouseY;
 
 	const float zoomSensitivity = -2.0;
 
@@ -282,10 +297,6 @@ int main(int argc, char const *argv[])
 
 		if(glfwGetKey(GLFW_KEY_ESC))
 			glfwCloseWindow();
-
-		glfwGetMousePos(&mouseX, &mouseY);
-		activeCam->pan(mouseSensitivity * mouseY, mouseSensitivity * mouseX);
-		glfwSetMousePos(0, 0);
 
 		float fieldOfView = activeCam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
 		if(fieldOfView < 5.0f) fieldOfView = 5.0f;
