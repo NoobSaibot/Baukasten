@@ -1,8 +1,9 @@
 #ifndef ACTOR_H_DEFKVZDF
 #define ACTOR_H_DEFKVZDF
 
-#include "graphics/Global"
+#include "model/Global"
 #include "core/Managed"
+#include "io/IObserver"
 
 namespace bk {
 
@@ -10,13 +11,14 @@ class Action;
 class ActorType;
 class Form;
 class IContext;
+class Event;
 class IState;
 class Input;
 
 /*!
  * \brief Actor class declaration.
  */
-class Actor : public Managed {
+class Actor : public Managed, public IObserver {
 public:
 	Form* form() const;
 	void setForm(Form*);
@@ -51,6 +53,9 @@ public:
 	void render();
 	void update(const int);
 	void runActions();
+
+	bool handleEvent(Event*) override;
+	void setEventHandler(HandlerFunc);
 
 	virtual ~Actor();
 

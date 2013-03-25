@@ -9,8 +9,10 @@ namespace bk {
 
 class Action;
 class Actor;
+class Event;
 
 typedef std::function<bool ( Action*, vector<Actor*> )> RunFunc;
+typedef std::function<bool ( Event* )> HandlerFunc;
 
 }
 

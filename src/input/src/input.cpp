@@ -26,6 +26,13 @@ public:
 		return m_mouse;
 	}
 
+	void update()
+	{
+		if (m_keyboard) {
+			m_keyboard->update();
+		}
+	}
+
 private:
 	IKeyboard* m_keyboard;
 	IMouse* m_mouse;
@@ -57,6 +64,12 @@ IMouse*
 Input::mouse() const
 {
 	return m_impl->mouse();
+}
+
+void
+Input::update()
+{
+	m_impl->update();
 }
 
 } /* bk */

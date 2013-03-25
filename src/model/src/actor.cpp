@@ -5,6 +5,8 @@
 #include "graphics/IContext"
 #include "graphics/Graphics"
 #include "graphics/Form"
+#include "input/Input"
+#include "input/IKeyboard"
 #include "model/Action"
 #include "model/ActorType"
 #include "model/State"
@@ -19,6 +21,9 @@ public:
 		m_actorType(nullptr), m_context(nullptr), m_object(object), m_form(form),
 		m_input(nullptr)
 	{
+		m_eventHandler = [](Event* e) {
+			return false;
+		};
 	}
 
 	~ActorPrivate()
@@ -233,6 +238,20 @@ public:
 		for ( auto m: m_children ) {
 			m->update(timeDelta);
 		}
+
+		if (m_input) {
+			m_input->keyboard()->update();
+		}
+	}
+
+	bool handleEvent(Event* event)
+	{
+		return m_eventHandler(event);
+	}
+
+	void setEventHandler(HandlerFunc f)
+	{
+		m_eventHandler = f;
 	}
 
 private:
@@ -246,6 +265,7 @@ private:
 	std::map<string, IState*> m_states;
 	std::map<string, Action*> m_actions;
 	vector<Action*> m_invokedActions;
+	HandlerFunc m_eventHandler;
 };
 
 Actor::Actor( const string& id, Form* form ) :
@@ -400,6 +420,18 @@ void
 Actor::runActions()
 {
 	m_impl->runActions();
+}
+
+bool
+Actor::handleEvent(Event* event)
+{
+	return m_impl->handleEvent(event);
+}
+
+void
+Actor::setEventHandler(HandlerFunc f)
+{
+	m_impl->setEventHandler(f);
 }
 
 }

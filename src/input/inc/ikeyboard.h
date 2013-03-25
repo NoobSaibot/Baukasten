@@ -10,7 +10,7 @@ namespace bk {
  */
 class IKeyboard {
 public:
-	virtual bool keyPressed(const char) const = 0;
+	virtual void update() = 0;
 };
 
 } /* bk */

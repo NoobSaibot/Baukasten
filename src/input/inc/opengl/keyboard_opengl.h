@@ -14,7 +14,7 @@ public:
 	KeyboardOpenGL();
 	virtual ~KeyboardOpenGL();
 
-	bool keyPressed(const char) const;
+	void update();
 
 private:
 	BK_IMPL(KeyboardOpenGL);

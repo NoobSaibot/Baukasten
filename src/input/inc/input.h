@@ -19,6 +19,8 @@ public:
 
 	static Input* createInput(const string&);
 
+	void update();
+
 	virtual ~Input();
 
 private:
