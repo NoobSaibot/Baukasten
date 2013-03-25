@@ -24,6 +24,10 @@ public:
 		glfwSetMousePos(x, y);
 	}
 
+	void update()
+	{
+	}
+
 private:
 	/* data */
 };
@@ -48,6 +52,12 @@ void
 MouseOpenGL::setPosition(const int x, const int y)
 {
 	m_impl->setPosition(x, y);
+}
+
+void
+MouseOpenGL::update()
+{
+	m_impl->update();
 }
 
 } /* bk */

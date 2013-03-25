@@ -31,6 +31,10 @@ public:
 		if (m_keyboard) {
 			m_keyboard->update();
 		}
+
+		if (m_mouse) {
+			m_mouse->update();
+		}
 	}
 
 private:

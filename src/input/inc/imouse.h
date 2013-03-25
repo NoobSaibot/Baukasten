@@ -12,6 +12,7 @@ class IMouse {
 public:
 	virtual void position(int*, int*) const = 0;
 	virtual void setPosition(const int, const int) = 0;
+	virtual void update() = 0;
 };
 
 } /* bk */

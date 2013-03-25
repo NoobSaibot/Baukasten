@@ -16,6 +16,7 @@ public:
 
 	void position(int*, int*) const;
 	void setPosition(const int, const int);
+	void update();
 
 private:
 	BK_IMPL(MouseOpenGL);
