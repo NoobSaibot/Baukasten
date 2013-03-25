@@ -240,7 +240,7 @@ public:
 		}
 
 		if (m_input) {
-			m_input->keyboard()->update();
+			m_input->update();
 		}
 	}
 
