@@ -13,6 +13,7 @@ public:
 
 	void clear();
 	void display();
+	void exit();
 	void init(const int, const int);
 	void setBackgroundColor(const float, const float, const float);
 

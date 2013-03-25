@@ -36,7 +36,12 @@ public:
 
 	void display()
 	{
-		BK_GL_ASSERT(glfwSwapBuffers());
+		glfwSwapBuffers();
+	}
+
+	void exit()
+	{
+		glfwCloseWindow();
 	}
 
 private:
@@ -63,6 +68,12 @@ void
 DisplayOpenGL::display()
 {
 	m_impl->display();
+}
+
+void
+DisplayOpenGL::exit()
+{
+	m_impl->exit();
 }
 
 void
