@@ -13,6 +13,8 @@
 #include "input/IKeyboard"
 #include "input/IMouse"
 #include "io/Filesystem"
+#include "io/Event"
+#include "io/EventManager"
 #include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
@@ -148,44 +150,46 @@ int main(int argc, char const *argv[])
 	}));
 
 	ramza->form()->startAnimation("animation.stand");
-	ramza->addAction(
-		Model::createAction("action.walk", ramza, ([] (Action *action, vector<Actor*> targets) {
-			auto owner = action->owner();
-			auto keyboard = owner->input()->keyboard();
 
-			if (keyboard->keyPressed('I')) {
-				owner->form()->startAnimation("animation.die");
-			} else if (keyboard->keyPressed('O')) {
-				owner->form()->startAnimation("animation.walk_right");
-			}
+	ramza->setEventHandler([&ramza](Event* e) {
+		std::stringstream s;
+		e->serialize(s);
+		string key = s.str();
 
-			return false;
-		}))
-	);
+		if (key == "I") {
+			ramza->form()->startAnimation("animation.die");
+		}
 
-	ramza->invokeAction("action.walk");
+		if (key == "O") {
+			ramza->form()->startAnimation("animation.walk_right");
+		}
+
+		return false;
+	});
 
 	auto box = Model::createActor("actor.box", Graphics::createForm( "form.box", mesh, program, tex ));
 	box->form()->translate(0, -5.5, 0);
 	box->setActorType(blockType);
-	box->addAction(
-		Model::createAction("action.rotate", box, ([](Action* action, vector<Actor*> targets) {
+	box->setEventHandler([&box](Event* event) {
 			float rotationY = 0.0f;
 			float rotationX = 0.0f;
 
-			auto owner = action->owner();
-			auto keyboard = owner->input()->keyboard();
+			auto owner = box;
+			stringstream s;
+			event->serialize(s);
+			string key = s.str();
 
-			if (keyboard->keyPressed('K')) {
+			if (key == "K") {
 				rotationY += 0.5f;
 			}
-			if (keyboard->keyPressed('J')) {
+			if (key == "J") {
 				rotationY -= 0.5f;
 			}
-			if(keyboard->keyPressed('U')) {
+			if (key == "U") {
 				rotationX += 0.5f;
 			}
-			if (keyboard->keyPressed('M')) {
+
+			if (key == "M") {
 				rotationX -= 0.5f;
 			}
 
@@ -194,10 +198,8 @@ int main(int argc, char const *argv[])
 			);
 
 			return false;
-		}))
+		}
 	);
-
-	box->invokeAction("action.rotate");
 
 	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
 	surface->form()->translate(-3, -7, 0);
@@ -218,6 +220,9 @@ int main(int argc, char const *argv[])
 	auto scene = Model::createActor("actor.scene", 0);
 	scene->setInput(Input::createInput("input.default"));
 
+	EventManager::instance().subscribe("event.keyPressed", ramza);
+	EventManager::instance().subscribe("event.keyPressed", box);
+
 	scene->addChild(box);
 	scene->addChild(surface);
 	scene->addChild(ramza);
@@ -232,48 +237,53 @@ int main(int argc, char const *argv[])
 
 			mouse->position(&x, &y);
 			context->camera()->pan(mouseSensitivity * y, mouseSensitivity * x);
-			glfwSetMousePos(0, 0);
+			mouse->setPosition(0, 0);
 
 			return false;
 		}))
 	);
 
-	scene->addAction(
-		Model::createAction("action.moveCamera", scene, ([] (Action *action, vector<Actor*> targets) {
+	EventManager::instance().subscribe("event.keyPressed", scene);
+	scene->setEventHandler([&scene, &display](Event* event) {
 			const float moveSpeed = 0.5f;
 
-			auto owner = action->owner();
-			auto keyboard = owner->input()->keyboard();
+			auto owner = scene;
 			auto context = owner->context();
 			auto activeCam = context->camera();
+			stringstream s;
+			event->serialize(s);
+			int key = (int)(*(s.str().c_str()));
 
-			if (keyboard->keyPressed('G')) {
+			if (key == 'G') {
 				context->setActiveCamera((activeCam->name() == "camera.front") ?  "camera.right" : "camera.front");
 			}
 
-			if (keyboard->keyPressed('S')) {
+			if (key == 'S') {
 				context->camera()->move(moveSpeed * activeCam->back());
-			} else if(keyboard->keyPressed('W')) {
+			} else if(key == 'W') {
 				context->camera()->move(moveSpeed * activeCam->forward());
 			}
 
-			if (keyboard->keyPressed('A')) {
+			if (key == 'A') {
 				context->camera()->move(moveSpeed * activeCam->left());
-			} else if(keyboard->keyPressed('D')) {
+			} else if(key == 'D') {
 				context->camera()->move(moveSpeed * activeCam->right());
 			}
 
-			if (keyboard->keyPressed('Y')) {
+			if (key == 'Y') {
 				context->camera()->move(moveSpeed * -vec3(0,1,0));
-			} else if(keyboard->keyPressed('X')) {
+			} else if(key == 'X') {
 				context->camera()->move(moveSpeed * vec3(0,1,0));
 			}
 
+			if (key == 50) {
+				display->exit();
+			}
+
 			return false;
-		}))
+		}
 	);
 
-	scene->invokeAction("action.moveCamera");
 	scene->invokeAction("action.trackMouse");
 
 	auto context = Graphics::createContext("context.standard");
@@ -294,9 +304,6 @@ int main(int argc, char const *argv[])
 
 		double thisTime = glfwGetTime();
 		float secondsElapsed = thisTime - lastTime;
-
-		if(glfwGetKey(GLFW_KEY_ESC))
-			glfwCloseWindow();
 
 		float fieldOfView = activeCam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
 		if(fieldOfView < 5.0f) fieldOfView = 5.0f;
