@@ -10,6 +10,7 @@ using namespace std;
 #define BK_STRINGIFY(X) #X
 
 #define SAFE_DELETE(X) { if(X) { delete X; X = NULL; } }
+#define SAFE_ARR_DELETE(X) { if(X && X != nullptr) { delete[] X; X = nullptr; }}
 
 #endif /* end of include guard: GLOBAL_H_8PLKMLEZ */
 

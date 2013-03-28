@@ -25,11 +25,10 @@ public:
 			const float, const vec3);
 	static IContext* createContext(const string&);
 	static IDisplay* createDisplay();
-	static IMesh* createMesh(const string&, const IProgram&,
-			const float*, const MeshUsageHint, const VertexFormat, const int);
-	static IMesh* createQuad(const string&, const IProgram&,
+	static IMesh* createMesh(const string&);
+	static IMesh* createQuad(const string&, IProgram*,
 			const float, const float, const float);
-	static IMesh* createRect(const string&, const IProgram&,
+	static IMesh* createRect(const string&, IProgram*,
 			const float, const float, const float, const float);
 	static Form* createForm(const string&, IMesh*, IProgram*, ITexture*);
 	static IProgram* createProgram(const string&, const ShaderList&);

@@ -6,7 +6,6 @@
 #include "graphics/IMesh"
 #include "graphics/IProgram"
 #include "graphics/ITexture"
-#include "graphics/VertexFormat"
 
 #include "graphics/inc/opengl/assert_opengl.h"
 

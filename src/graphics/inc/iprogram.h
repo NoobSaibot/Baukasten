@@ -22,6 +22,7 @@ public:
 		m_vars[(int)ProgramVariableType::COLOR]           = "bk_color";
 		m_vars[(int)ProgramVariableType::CAMERA]          = "bk_camera";
 		m_vars[(int)ProgramVariableType::TRANSFORMATION]  = "bk_transformation";
+		m_vars[(int)ProgramVariableType::NORMAL]          = "bk_normal";
 	}
 
 	virtual int attrib(const string&) const = 0;
@@ -45,7 +46,7 @@ public:
 	virtual void deactivate() const = 0;
 
 private:
-	string m_vars[12];
+	string m_vars[13];
 };
 
 }

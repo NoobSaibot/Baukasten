@@ -10,13 +10,20 @@ class MeshOpenGL : public IMesh {
 public:
 	virtual ~MeshOpenGL();
 
-	void init(const IProgram&, const float*, const MeshUsageHint,
-			const VertexFormat, const int);
-	VertexFormat format() const;
 	int count() const;
-	void activate() const;
+	void activate();
 	bool isActive() const;
 	void deactivate() const;
+
+	void setProgram(IProgram*);
+	void setVertices(const unsigned int, const unsigned int, const float*);
+	void setVertices(const unsigned int, const unsigned int, std::initializer_list<float>);
+	void setColors(const unsigned int, const unsigned int, const float*);
+	void setColors(const unsigned int, const unsigned int, std::initializer_list<float>);
+	void setTexture(const unsigned int, const unsigned int, const float*);
+	void setTexture(const unsigned int, const unsigned int, std::initializer_list<float>);
+	void setNormals(const unsigned int, const unsigned int, const float*);
+	void setNormals(const unsigned int, const unsigned int, std::initializer_list<float>);
 
 private:
 	MeshOpenGL(const string&);

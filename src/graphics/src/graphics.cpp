@@ -1,6 +1,7 @@
 #include "graphics/Graphics"
 
 #include "core/Assert"
+#include "core/Debug"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
 #include "graphics/ContextImpl"
@@ -10,7 +11,6 @@
 #include "graphics/ProgramImpl"
 #include "graphics/ShaderImpl"
 #include "graphics/TextureImpl"
-#include "graphics/VertexFormat"
 #include "io/Filesystem"
 
 #define STBI_FAILURE_USERMSG
@@ -57,44 +57,36 @@ Graphics::createDisplay()
 }
 
 IMesh*
-Graphics::createMesh(const string& name, const IProgram& program,
-		const float* data, const MeshUsageHint hint,
-		const VertexFormat format, const int size)
+Graphics::createMesh(const string& name)
 {
 	IMesh* impl = new MeshImpl(name);
-	impl->init(program, data, hint, format, size);
 	return impl;
 }
 
 IMesh*
-Graphics::createQuad(const string& name, const IProgram& program,
+Graphics::createQuad(const string& name, IProgram* program,
 		const float x, const float y, const float width)
 {
 	return createRect(name, program, x, y, width, width);
 }
 
 IMesh*
-Graphics::createRect(const string& name, const IProgram& program, const float x,
+Graphics::createRect(const string& name, IProgram* program, const float x,
 		const float y, const float width, const float height)
 {
 	IMesh* impl = new MeshImpl(name);
 
-	VertexFormat format = {
-		VertexFormat::Data(VertexFormat::POSITION, 3, 0),
-		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, 3)
-	};
+	impl->setProgram(program);
 
-	float vertices[] = {
-		// x       y            z    tex-x tex-y
-		x + width, y,          0.0f, 1.0f, 1.0f,
-		x + width, y + height, 0.0f, 1.0f, 0.0f,
-		x,         y,          0.0f, 0.0f, 1.0f,
-		x + width, y + height, 0.0f, 1.0f, 0.0f,
-		x,         y + height, 0.0f, 0.0f, 0.0f,
-		x,         y,          0.0f, 0.0f, 1.0f
-	};
+	impl->setVertices(18, 3, {
+		x + width, y, 0.0f, x + width, y + height, 0.0f, x, y,  0.0f,
+		x + width, y + height, 0.0f, x, y + height, 0.0f, x, y, 0.0f,
+	});
 
-	impl->init(program, vertices, MeshUsageHint::STATIC, format, sizeof(vertices));
+	impl->setTexture(12, 2, {
+		1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+	});
+
 	return impl;
 }
 

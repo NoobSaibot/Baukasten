@@ -11,5 +11,4 @@ set(graphics_SRCS
   graphics/src/opengl/program_opengl.cpp
   graphics/src/opengl/shader_opengl.cpp
   graphics/src/opengl/texture_opengl.cpp
-  graphics/src/vertex_format.cpp
 )
