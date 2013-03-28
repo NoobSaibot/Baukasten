@@ -6,9 +6,9 @@
 #include "graphics/Graphics"
 #include "graphics/IDisplay"
 #include "graphics/IProgram"
+#include "graphics/IMesh"
 #include "graphics/ITexture"
 #include "graphics/Form"
-#include "graphics/VertexFormat"
 #include "input/Input"
 #include "input/IKeyboard"
 #include "input/IMouse"
@@ -28,71 +28,6 @@ int main(int argc, char const *argv[])
 	auto display = Graphics::createDisplay();
 	display->init(800, 600);
 
-	float verticesRamza[] = {
-		-1.0f,-1.0f, 1.0f,   1.0f, 1.0f,
-		 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-		 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
-		 1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
-		-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-	};
-
-	float vertices[] = {
-	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
-	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
-	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
-	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
-	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
-
-	// top
-	-1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
-	 1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
-	 1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
-	 1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-
-	// front
-	-1.0f,-1.0f, 1.0f,   1.0f, 1.0f,
-	 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-	 1.0f,-1.0f, 1.0f,   0.0f, 1.0f,
-	 1.0f, 1.0f, 1.0f,   0.0f, 0.0f,
-	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-
-	// back
-	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,   0.0f, 0.0f,
-	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
-	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,   0.0f, 0.0f,
-	 1.0f, 1.0f,-1.0f,   1.0f, 0.0f,
-
-	// left
-	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
-	-1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,   0.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,   0.0f, 0.0f,
-	-1.0f, 1.0f, 1.0f,   1.0f, 0.0f,
-	-1.0f, 1.0f,-1.0f,   1.0f, 1.0f,
-
-	// right
-	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
-	 1.0f,-1.0f,-1.0f,   1.0f, 1.0f,
-	 1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
-	 1.0f,-1.0f, 1.0f,   1.0f, 0.0f,
-	 1.0f, 1.0f,-1.0f,   0.0f, 1.0f,
-	 1.0f, 1.0f, 1.0f,   0.0f, 0.0f
-	};
-
-	auto stride = 5*sizeof(float);
-	auto offset = 3*sizeof(float);
-	VertexFormat format = {
-		VertexFormat::Data(VertexFormat::POSITION, 3, 0, stride),
-		VertexFormat::Data(VertexFormat::TEXCOORD0, 2, offset, stride)
-	};
-
 	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
 	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
 	bitmap->release();
@@ -110,10 +45,38 @@ int main(int argc, char const *argv[])
 	shader.push_back( Graphics::createShaderFromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
 
 	auto program = Graphics::createProgram("program.main", shader);
-	auto mesh = Graphics::createMesh("Box", *program, vertices,
-		MeshUsageHint::STATIC, format, sizeof(vertices));
-	auto meshRamza = Graphics::createMesh("mesh.ramza", *program, verticesRamza,
-		MeshUsageHint::STATIC, format, sizeof(verticesRamza));
+
+	auto meshBox = Graphics::createMesh("mesh.box");
+
+	meshBox->setProgram(program);
+	meshBox->setVertices(108, 3, {
+		-1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f, 1.0f, -1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f, -1.0f, 1.0f,-1.0f, -1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f,
+	});
+
+	meshBox->setTexture(72, 2, {
+		0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+	});
+
+	auto meshRamza = Graphics::createMesh("mesh.ramza");
+
+	meshRamza->setProgram(program);
+	meshRamza->setVertices(18, 3, {
+		-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+	});
+
+	meshRamza->setTexture(12, 2, {
+		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	});
 
 	auto blockType = Model::createActorType("actortype.block");
 	blockType->addState(Model::createState<int>("state.height", 1));
@@ -167,7 +130,7 @@ int main(int argc, char const *argv[])
 		return false;
 	});
 
-	auto box = Model::createActor("actor.box", Graphics::createForm( "form.box", mesh, program, tex ));
+	auto box = Model::createActor("actor.box", Graphics::createForm( "form.box", meshBox, program, tex ));
 	box->form()->translate(0, -5.5, 0);
 	box->setActorType(blockType);
 	box->setEventHandler([&box](Event* event) {
@@ -201,7 +164,7 @@ int main(int argc, char const *argv[])
 		}
 	);
 
-	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", mesh, program, texWater ));
+	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", meshBox, program, texWater ));
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
