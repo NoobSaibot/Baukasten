@@ -1,0 +1,13 @@
+#ifndef GLOBAL_H_7GY4XO6H
+#define GLOBAL_H_7GY4XO6H
+
+#include "core/Global"
+
+#define BK_MATH_TOLERANCE 2e-37f
+#define BK_MATH_EPSILON   0.000001f
+#define BK_PI 3.14159
+#define BK_RAD_TO_DEG( X ) 180*X/BK_PI
+#define BK_DEG_TO_RAD( X ) BK_PI*X/180
+
+#endif /* end of include guard: GLOBAL_H_7GY4XO6H */
+
