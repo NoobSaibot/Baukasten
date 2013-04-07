@@ -1,6 +1,5 @@
 #include "model/Model"
 
-#include "graphics/Form"
 #include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
@@ -14,7 +13,7 @@ Model::createAction(const string& name, Actor* actor, RunFunc run)
 }
 
 Actor*
-Model::createActor(const string& name, Form* form)
+Model::createActor(const string& name, IForm* form)
 {
 	return new Actor(name, form);
 }

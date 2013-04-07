@@ -8,13 +8,14 @@
 #include "graphics/IProgram"
 #include "graphics/IMesh"
 #include "graphics/ITexture"
-#include "graphics/Form"
+#include "graphics/IForm"
 #include "input/Input"
 #include "input/IKeyboard"
 #include "input/IMouse"
 #include "io/Filesystem"
 #include "io/Event"
 #include "io/EventManager"
+#include "math/Vector3"
 #include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
@@ -88,7 +89,9 @@ int main(int argc, char const *argv[])
 	unitType->addState(Model::createState<int>("state.exp", 0));
 	unitType->addState(Model::createState<int>("state.level", 1));
 
-	auto ramza = Model::createActor("actor.ramza", Graphics::createForm( "form.ramza", meshRamza, program, texRamza ));
+	auto ramza = Model::createActor("actor.ramza",
+		Graphics::createForm( "form.ramza", meshRamza, program, texRamza, display ));
+
 	ramza->setActorType(unitType);
 	ramza->form()->translate(0, -3.5, -0.5);
 

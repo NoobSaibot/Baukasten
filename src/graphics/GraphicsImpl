@@ -1,0 +1,4 @@
+#include "graphics/inc/opengl/graphics_opengl.h"
+namespace bk {
+typedef GraphicsOpenGL GraphicsImpl;
+}

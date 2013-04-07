@@ -9,12 +9,12 @@ class Bitmap;
 class Camera;
 class IContext;
 class IDisplay;
+class IGraphics;
 class IMesh;
-class Form;
+class IForm;
 class IProgram;
 class IShader;
 class ITexture;
-class VertexFormat;
 
 class Graphics {
 public:
@@ -30,14 +30,25 @@ public:
 			const float, const float, const float);
 	static IMesh* createRect(const string&, IProgram*,
 			const float, const float, const float, const float);
-	static Form* createForm(const string&, IMesh*, IProgram*, ITexture*);
+	static IForm* createForm(const string&, IMesh*,
+			IProgram*, ITexture*, IDisplay*);
+	static IForm* createTextForm(const string&, const string&, Font*,
+			IProgram*, IDisplay*);
+	static Font* createFont(const string&, const u32);
 	static IProgram* createProgram(const string&, const ShaderList&);
 	static IShader* createShaderFromFile( const string&, const string&,
 			const ShaderType );
 	static IShader* createShaderFromSource( const string&, const string&,
 			const ShaderType );
 	static ITexture* createTextureFromFile(const string&, const string&);
+	static ITexture* createTextureFromData(const string&, const unsigned int,
+			const unsigned int, unsigned char*, const VertexDataType);
 	static ITexture* createTextureFromBitmap(const string&, const Bitmap&);
+
+	static IGraphics* graphics();
+
+	// erstelle fenster hier
+	static void init(const u16, const u16, const string&);
 };
 
 } /* bk */

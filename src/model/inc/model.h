@@ -9,7 +9,7 @@ namespace bk {
 class Action;
 class Actor;
 class ActorType;
-class Form;
+class IForm;
 class IState;
 
 /*!
@@ -18,7 +18,7 @@ class IState;
 class Model {
 public:
 	static Action*       createAction(const string&, Actor*, RunFunc);
-	static Actor*        createActor(const string&, Form*);
+	static Actor*        createActor(const string&, IForm*);
 	static ActorType*    createActorType(const string&);
 	template<class T>
 	static IState*       createState(const string& name, T value)

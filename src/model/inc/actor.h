@@ -9,7 +9,7 @@ namespace bk {
 
 class Action;
 class ActorType;
-class Form;
+class IForm;
 class IContext;
 class Event;
 class IState;
@@ -20,8 +20,8 @@ class Input;
  */
 class Actor : public Managed, public IObserver {
 public:
-	Form* form() const;
-	void setForm(Form*);
+	IForm* form() const;
+	void setForm(IForm*);
 
 	Actor* parent() const;
 	void setParent(Actor*);
@@ -61,7 +61,7 @@ public:
 
 private:
 	friend class Model;
-	Actor(const string&, Form*);
+	Actor(const string&, IForm*);
 	BK_IMPL(Actor);
 };
 

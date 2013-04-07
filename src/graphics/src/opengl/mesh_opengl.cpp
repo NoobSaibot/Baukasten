@@ -40,7 +40,8 @@ namespace bk {
 
 class MeshOpenGLPrivate {
 public:
-	MeshOpenGLPrivate() : m_vbo(0), m_vao(0), m_active(false), m_dirty(false)
+	MeshOpenGLPrivate() : m_vbo(0), m_vao(0), m_active(false), m_dirty(false),
+		m_program(nullptr)
 	{
 	}
 
@@ -115,6 +116,8 @@ public:
 private:
 	void initBuffer()
 	{
+		BK_ASSERT(m_program != nullptr, "Shader Program must be set.");
+
 		if (m_vao == 0) {
 			BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
 		}
@@ -154,25 +157,25 @@ private:
 		// object is dirty -- and the glbuffer has to be set again
 		if (m_vertices.data != nullptr) {
 			_set_attrib(m_program, m_vertices,
-					m_program->getVariableName(ProgramVariableType::VERTEX), 0, offset);
+				m_program->getVariableName(ProgramVariableType::VERTEX), 0, offset);
 			offset += m_vertices.byteSize();
 		}
 
 		if (m_colors.data != nullptr) {
 			_set_attrib(m_program, m_colors,
-					m_program->getVariableName(ProgramVariableType::COLOR), 0, offset);
+				m_program->getVariableName(ProgramVariableType::COLOR), 0, offset);
 			offset += m_colors.byteSize();
 		}
 
 		if (m_texture.data != nullptr) {
 			_set_attrib(m_program, m_texture,
-					m_program->getVariableName(ProgramVariableType::TEXTURE0), 0, offset);
+				m_program->getVariableName(ProgramVariableType::TEXTURE0), 0, offset);
 			offset += m_texture.byteSize();
 		}
 
 		if (m_normals.data != nullptr) {
 			_set_attrib(m_program, m_normals,
-					m_program->getVariableName(ProgramVariableType::NORMAL), 0, offset);
+				m_program->getVariableName(ProgramVariableType::NORMAL), 0, offset);
 			offset += m_normals.byteSize();
 		}
 

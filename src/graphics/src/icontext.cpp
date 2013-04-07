@@ -10,7 +10,8 @@ namespace bk {
 class IContextPrivate {
 public:
 	IContextPrivate() :
-		m_enable3d(true), m_enableBlend(false), m_activeCam(0)
+		m_enableDepth(true), m_enableBlend(false), m_enableCulling(false),
+		m_activeCam(0)
 	{
 	}
 
@@ -21,23 +22,24 @@ public:
 		}
 	}
 
-	void setOption(ContextOption option, bool value)
+	void setOption(GraphicsOption option, bool value)
 	{
 		switch( option ) {
-		case ContextOption::ENABLE_3D:
-			m_enable3d = value;
-			break;
-		case ContextOption::ENABLE_BLEND:
-			m_enableBlend = value;
-			break;
+		case GraphicsOption::DEPTH:
+			m_enableDepth = value; break;
+		case GraphicsOption::BLEND:
+			m_enableBlend = value; break;
+		case GraphicsOption::CULLING:
+			m_enableCulling = value; break;
 		}
 	}
 
-	bool option(ContextOption option)
+	bool option(GraphicsOption option)
 	{
 		switch( option ) {
-		case ContextOption::ENABLE_3D:    return m_enable3d;
-		case ContextOption::ENABLE_BLEND: return m_enableBlend;
+		case GraphicsOption::DEPTH:   return m_enableDepth;
+		case GraphicsOption::BLEND:   return m_enableBlend;
+		case GraphicsOption::CULLING: return m_enableCulling;
 		default:
 			return false;
 		}
@@ -68,8 +70,9 @@ public:
 	}
 
 private:
-	bool m_enable3d;
+	bool m_enableDepth;
 	bool m_enableBlend;
+	bool m_enableCulling;
 	map<string, Camera*> m_cams;
 	Camera* m_activeCam;
 };
@@ -86,13 +89,13 @@ IContext::~IContext()
 }
 
 void
-IContext::setOption(const ContextOption option, bool value)
+IContext::setOption(const GraphicsOption option, bool value)
 {
 	m_impl->setOption(option, value);
 }
 
 bool
-IContext::option(const ContextOption option) const
+IContext::option(const GraphicsOption option) const
 {
 	return m_impl->option(option);
 }

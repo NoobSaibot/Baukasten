@@ -1,6 +1,8 @@
 #include "graphics/inc/opengl/context_opengl.h"
 
 #include "core/Assert"
+#include "graphics/IGraphics"
+#include "graphics/Graphics"
 
 #include "graphics/inc/opengl/assert_opengl.h"
 
@@ -15,18 +17,22 @@ public:
 
 	void activate()
 	{
-		if (m_object->option(ContextOption::ENABLE_3D)) {
-			BK_GL_ASSERT(glEnable(GL_DEPTH_TEST));
-			BK_GL_ASSERT(glDepthFunc(GL_LESS));
+		if (m_object->option(GraphicsOption::DEPTH)) {
+			Graphics::graphics()->enable(GraphicsOption::DEPTH);
 		} else {
-			BK_GL_ASSERT(glDisable(GL_DEPTH_TEST));
+			Graphics::graphics()->disable(GraphicsOption::DEPTH);
 		}
 
-		if (m_object->option(ContextOption::ENABLE_BLEND)) {
-			BK_GL_ASSERT(glEnable(GL_BLEND));
-			BK_GL_ASSERT(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		if (m_object->option(GraphicsOption::BLEND)) {
+			Graphics::graphics()->enable(GraphicsOption::BLEND);
 		} else {
-			BK_GL_ASSERT(glDisable(GL_BLEND));
+			Graphics::graphics()->disable(GraphicsOption::BLEND);
+		}
+
+		if (m_object->option(GraphicsOption::CULLING)) {
+			Graphics::graphics()->enable(GraphicsOption::CULLING);
+		} else {
+			Graphics::graphics()->disable(GraphicsOption::CULLING);
 		}
 	}
 

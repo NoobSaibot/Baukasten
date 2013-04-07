@@ -1,3 +1,5 @@
+include_directories( "/usr/include/freetype2" )
+
 set(graphics_SRCS
   graphics/src/animation.cpp
   graphics/src/bitmap.cpp
@@ -5,8 +7,10 @@ set(graphics_SRCS
   graphics/src/form.cpp
   graphics/src/graphics.cpp
   graphics/src/icontext.cpp
+  graphics/src/iform.cpp
   graphics/src/opengl/context_opengl.cpp
   graphics/src/opengl/display_opengl.cpp
+  graphics/src/opengl/graphics_opengl.cpp
   graphics/src/opengl/mesh_opengl.cpp
   graphics/src/opengl/program_opengl.cpp
   graphics/src/opengl/shader_opengl.cpp

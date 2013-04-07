@@ -6,6 +6,7 @@
 #include "graphics/Camera"
 #include "graphics/ContextImpl"
 #include "graphics/DisplayImpl"
+#include "graphics/GraphicsImpl"
 #include "graphics/MeshImpl"
 #include "graphics/Form"
 #include "graphics/ProgramImpl"
@@ -17,6 +18,8 @@
 #include "3rdparty/stb_image.c"
 
 namespace bk {
+
+static IGraphics* s_graphics = new GraphicsImpl();
 
 Bitmap*
 Graphics::createBitmapFromFile(const string& path)
@@ -90,10 +93,11 @@ Graphics::createRect(const string& name, IProgram* program, const float x,
 	return impl;
 }
 
-Form*
-Graphics::createForm(const string& name, IMesh* mesh, IProgram* program, ITexture* texture)
+IForm*
+Graphics::createForm(const string& name, IMesh* mesh, IProgram* program,
+		ITexture* texture, IDisplay* display)
 {
-	return new Form(name, mesh, program, texture);
+	return new Form(name, mesh, program, texture, display);
 }
 
 IProgram*
@@ -127,6 +131,12 @@ Graphics::createTextureFromBitmap(const string& name, const Bitmap& bitmap)
 	ITexture* t = new TextureImpl(name);
 	t->init(bitmap);
 	return t;
+}
+
+IGraphics*
+Graphics::graphics()
+{
+	return s_graphics;
 }
 
 } /* bk */

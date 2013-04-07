@@ -4,7 +4,7 @@
 
 #include "graphics/IContext"
 #include "graphics/Graphics"
-#include "graphics/Form"
+#include "graphics/IForm"
 #include "input/Input"
 #include "input/IKeyboard"
 #include "model/Action"
@@ -17,7 +17,7 @@ typedef std::map<string, IState*> StateMap;
 
 class ActorPrivate {
 public:
-	ActorPrivate(Actor *object, Form* form) :
+	ActorPrivate(Actor *object, IForm* form) :
 		m_actorType(nullptr), m_context(nullptr), m_object(object), m_form(form),
 		m_input(nullptr)
 	{
@@ -70,12 +70,12 @@ public:
 		return m_parent;
 	}
 
-	void setForm(Form* form)
+	void setForm(IForm* form)
 	{
 		m_form = form;
 	}
 
-	Form* form() const
+	IForm* form() const
 	{
 		return m_form;
 	}
@@ -260,7 +260,7 @@ private:
 	ActorType* m_actorType;
 	mutable IContext* m_context;
 	Actor*   m_object;
-	Form*   m_form;
+	IForm*   m_form;
 	Input* m_input;
 	std::map<string, IState*> m_states;
 	std::map<string, Action*> m_actions;
@@ -268,7 +268,7 @@ private:
 	HandlerFunc m_eventHandler;
 };
 
-Actor::Actor( const string& id, Form* form ) :
+Actor::Actor( const string& id, IForm* form ) :
 	Managed(id, "Actor"), m_impl(new ActorPrivate(this, form))
 {
 }
@@ -278,14 +278,14 @@ Actor::~Actor()
 	SAFE_DELETE( m_impl );
 }
 
-Form*
+IForm*
 Actor::form() const
 {
 	return m_impl->form();
 }
 
 void
-Actor::setForm(Form* form)
+Actor::setForm(IForm* form)
 {
 	m_impl->setForm(form);
 }
