@@ -18,8 +18,8 @@ public:
 
 	virtual void activate() = 0;
 
-	void setOption(const ContextOption, const bool);
-	bool option(const ContextOption) const;
+	void setOption(const GraphicsOption, const bool);
+	bool option(const GraphicsOption) const;
 
 	void addCamera(Camera*, bool setActive = true);
 	void setActiveCamera(const string&);
