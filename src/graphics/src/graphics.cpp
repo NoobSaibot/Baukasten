@@ -24,7 +24,7 @@ static IGraphics* s_graphics = new GraphicsImpl();
 Bitmap*
 Graphics::createBitmapFromFile(const string& path)
 {
-	BK_ASSERT(Filesystem::exists(path), "File must be present.");
+	BK_ASSERT(Filesystem::exists(path), "File " << path << " must be present.");
 	int width, height, channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
@@ -123,6 +123,15 @@ Graphics::createTextureFromFile(const string& name, const string& path)
 {
 	auto b = Graphics::createBitmapFromFile(path);
 	return Graphics::createTextureFromBitmap(name, *b);
+}
+
+ITexture*
+Graphics::createTextureFromData(const string& name, const unsigned int width,
+		const unsigned int height, unsigned char* data, const VertexDataType type)
+{
+	ITexture* t = new TextureImpl(name);
+	t->init(width, height, data, type);
+	return t;
 }
 
 ITexture*

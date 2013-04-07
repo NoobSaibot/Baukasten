@@ -8,7 +8,7 @@ namespace bk {
 
 class DisplayOpenGLPrivate {
 public:
-	void init(const int width, const int height)
+	void init(const u16 width, const u16 height)
 	{
 		m_width = width;
 		m_height = height;
@@ -18,11 +18,16 @@ public:
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
 		glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-		glfwOpenWindow(width, height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
 
-		glewInit();
+		auto err = glfwOpenWindow(width, height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
+		BK_ASSERT(err == GL_TRUE, "Window couldn't be created.");
+
+		err = glewInit();
+		BK_ASSERT(err == GLEW_OK, "OpenGL Extensions couldn't be loaded.");
+
 		BK_GL_ASSERT(glViewport(0, 0, width, height));
 
+		// TODO flexibler gestalten
 		glfwDisable(GLFW_MOUSE_CURSOR);
 		glfwSetMousePos(0, 0);
 		glfwSetMouseWheel(0);
@@ -30,8 +35,8 @@ public:
 
 	void clear()
 	{
-		BK_GL_ASSERT(glClearColor(0, 0, 0, 1));
-		BK_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		BK_GL_ASSERT(glClearColor(m_r, m_g, m_b, 1));
+		BK_GL_ASSERT(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 	}
 
 	void display()
