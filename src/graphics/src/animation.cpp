@@ -1,5 +1,7 @@
 #include "graphics/Animation"
 
+#include "core/Debug"
+
 namespace bk {
 
 class AnimationPrivate {
@@ -49,6 +51,7 @@ Animation::Animation(const string& name, initializer_list<Animation::Frame> fram
 
 Animation::~Animation()
 {
+	SAFE_DELETE(m_impl);
 }
 
 void
