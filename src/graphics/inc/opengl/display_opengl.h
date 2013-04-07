@@ -14,8 +14,10 @@ public:
 	void clear();
 	void display();
 	void exit();
-	void init(const int, const int);
+	void init(const u16, const u16);
 	void setBackgroundColor(const float, const float, const float);
+	u16  width() const override;
+	u16 height() const override;
 
 private:
 	BK_IMPL(DisplayOpenGL);

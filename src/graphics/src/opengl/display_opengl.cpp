@@ -39,13 +39,29 @@ public:
 		glfwSwapBuffers();
 	}
 
+	void setBGColor(f32 r, f32 g, f32 b)
+	{
+		m_r = r; m_g = g; m_b = b;
+	}
+
 	void exit()
 	{
 		glfwCloseWindow();
 	}
 
+	u16 width() const
+	{
+		return m_width;
+	}
+
+	u16 height() const
+	{
+		return m_height;
+	}
+
 private:
-	int m_width, m_height;
+	u16 m_width, m_height;
+	f32 m_r, m_g, m_b;
 };
 
 DisplayOpenGL::DisplayOpenGL() :
@@ -77,14 +93,27 @@ DisplayOpenGL::exit()
 }
 
 void
-DisplayOpenGL::init(const int width, const int height)
+DisplayOpenGL::init(const u16 width, const u16 height)
 {
 	m_impl->init(width, height);
 }
 
 void
-DisplayOpenGL::setBackgroundColor(const float r, const float g, const float b)
+DisplayOpenGL::setBackgroundColor(const f32 r, const f32 g, const f32 b)
 {
+	m_impl->setBGColor(r, g, b);
+}
+
+u16
+DisplayOpenGL::width() const
+{
+	return m_impl->width();
+}
+
+u16
+DisplayOpenGL::height() const
+{
+	return m_impl->height();
 }
 
 } /* bk */
