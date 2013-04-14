@@ -19,6 +19,8 @@ public:
 	{
 		Animation::Frame frame = m_frames[m_currFrame];
 
+		// TODO use timeDelta to progress in the animation frames, instead
+		// of the frames that have passed.
 		if (m_counter++ >= frame.duration) {
 			if (!frame.final) {
 				m_currFrame = (m_currFrame + 1) % m_frames.size();

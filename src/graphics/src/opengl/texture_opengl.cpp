@@ -7,6 +7,7 @@
 #include "graphics/inc/opengl/assert_opengl.h"
 
 namespace {
+
 static bk::VertexDataType _bk_format(bk::BitmapFormat format)
 {
 	switch (format) {
@@ -52,9 +53,9 @@ public:
 	{
 	}
 
-	virtual ~TextureOpenGLPrivate()
+	~TextureOpenGLPrivate()
 	{
-		// TODO destroy texture
+		BK_GL_ASSERT(glDeleteTextures(1, &m_txt));
 	}
 
 	void init(const Bitmap& bitmap)

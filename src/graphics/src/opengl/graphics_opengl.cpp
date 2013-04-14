@@ -4,15 +4,6 @@
 
 #include "graphics/inc/opengl/assert_opengl.h"
 
-namespace {
-	static GLenum _bk_toGLType(bk::PrimitiveType type)
-	{
-		switch ( type ) {
-		case bk::PrimitiveType::TRIANGLES: return GL_TRIANGLES;
-		}
-	}
-}
-
 namespace bk {
 
 /*!
@@ -20,7 +11,7 @@ namespace bk {
  */
 class GraphicsOpenGLPrivate {
 public:
-	GraphicsOpenGLPrivate()
+	GraphicsOpenGLPrivate() : m_mode(DisplayMode::FULL)
 	{
 	}
 

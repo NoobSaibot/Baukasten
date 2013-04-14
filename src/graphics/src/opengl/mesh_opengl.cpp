@@ -134,6 +134,7 @@ private:
 		if (m_vao == 0) {
 			BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
 		}
+
 		BK_GL_ASSERT( glBindVertexArray(m_vao) );
 
 		if (m_vbo == 0) {
@@ -166,8 +167,8 @@ private:
 		SAFE_ARR_DELETE(data);
 
 		int offset = 0;
-		// have to keep the data around in case any field is set -- therefor the
-		// object is dirty -- and the glbuffer has to be set again
+		// have to keep the data around in case any of the fields is set -- therefor the
+		// object is dirty -- and the glbuffer has to be repopulated with data again
 		if (m_vertices.data != nullptr) {
 			_set_attrib(m_program, m_vertices,
 				m_program->getVariableName(ProgramVariableType::VERTEX), 0, offset);
