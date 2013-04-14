@@ -4,6 +4,11 @@ namespace bk {
 
 class EventPrivate {
 public:
+	EventPrivate(float timeStamp) :
+		m_timeStamp(timeStamp), m_streamFunc(nullptr)
+	{
+	}
+
 	EventPrivate(float timeStamp, StreamFunc f) :
 		m_timeStamp(timeStamp), m_streamFunc(f)
 	{
@@ -20,13 +25,30 @@ public:
 
 	void serialize(std::ostream& stream) const
 	{
-		m_streamFunc(stream);
+		if ( m_streamFunc != nullptr ) {
+			m_streamFunc(stream);
+		}
+	}
+
+	void setStreamFunction(StreamFunc f)
+	{
+		m_streamFunc = f;
+	}
+
+	StreamFunc streamFunction() const
+	{
+		return m_streamFunc;
 	}
 
 private:
 	float m_timeStamp;
 	StreamFunc m_streamFunc;
 };
+
+Event::Event(const string& name, float timeStamp) :
+	Identity(name, "Event"), m_impl(new EventPrivate(timeStamp))
+{
+}
 
 Event::Event(const string& name, float timeStamp, StreamFunc f) :
 	Identity(name, "Event"), m_impl(new EventPrivate(timeStamp, f))
@@ -48,6 +70,18 @@ void
 Event::serialize(std::ostream& stream) const
 {
 	m_impl->serialize(stream);
+}
+
+void
+Event::setStreamFunction(StreamFunc func)
+{
+	m_impl->setStreamFunction(func);
+}
+
+StreamFunc
+Event::streamFunction() const
+{
+	return m_impl->streamFunction();
 }
 
 } /* bk */

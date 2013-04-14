@@ -3,17 +3,26 @@
 #include "core/Debug"
 #include "io/Event"
 #include "io/EventManager"
+#include "io/InputEvent"
 
 #include <GL/glfw.h>
 
 #include <sstream>
 
+namespace {
+static bk::Key _bk_toKey(u32 key)
+{
+	switch ( key ) {
+	case GLFW_KEY_ESC: return bk::KEY_ESC;
+	}
+	return bk::Key( key );
+}
+}
+
 #define EMIT_EVENT(CHAR) \
 	if (glfwGetKey(CHAR)) {\
 		EventManager::instance().emit(\
-			"event.keyPressed", new Event("event.keyPressed", 0.0, [](std::ostream& s) {\
-				s << CHAR;\
-			})\
+			"event.keyPressed", new InputEvent("event.keyPressed", 0.0, _bk_toKey( CHAR ) )\
 		);\
 	}
 
@@ -32,33 +41,9 @@ public:
 
 	void update()
 	{
-		EMIT_EVENT('A');
-		EMIT_EVENT('B');
-		EMIT_EVENT('C');
-		EMIT_EVENT('D');
-		EMIT_EVENT('E');
-		EMIT_EVENT('F');
-		EMIT_EVENT('G');
-		EMIT_EVENT('H');
-		EMIT_EVENT('I');
-		EMIT_EVENT('J');
-		EMIT_EVENT('K');
-		EMIT_EVENT('L');
-		EMIT_EVENT('M');
-		EMIT_EVENT('N');
-		EMIT_EVENT('O');
-		EMIT_EVENT('P');
-		EMIT_EVENT('Q');
-		EMIT_EVENT('R');
-		EMIT_EVENT('S');
-		EMIT_EVENT('T');
-		EMIT_EVENT('U');
-		EMIT_EVENT('V');
-		EMIT_EVENT('W');
-		EMIT_EVENT('X');
-		EMIT_EVENT('Y');
-		EMIT_EVENT('Z');
-		EMIT_EVENT(GLFW_KEY_ESC);
+		for ( u32 i = 32; i < 265; ++i ) {
+			EMIT_EVENT(i);
+		}
 	}
 };
 
