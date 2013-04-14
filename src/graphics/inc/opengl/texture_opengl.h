@@ -16,8 +16,8 @@ public:
 	void bind() const override;
 	void activate(const IProgram&) const;
 	void deactivate() const;
+	void setFiltering(const ITexture::Filtering, bool min = true);
 	void setWrapping(const ITexture::Wrapping);
-	void setFiltering(const ITexture::Filtering);
 	void generateMipmaps() const override;
 	void setData(const u32, const u32, const u32, const u32, u8*);
 	void init(const Bitmap&);

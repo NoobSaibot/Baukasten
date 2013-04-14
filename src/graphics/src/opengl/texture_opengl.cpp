@@ -29,6 +29,19 @@ static GLenum _opengl_format(bk::VertexDataType type)
 	default: return GL_RGB;
 	}
 }
+
+static GLenum _opengl_filter(bk::ITexture::Filtering filter)
+{
+	switch ( filter ) {
+	case bk::ITexture::Filtering::NEAREST: return GL_NEAREST;
+	case bk::ITexture::Filtering::LINEAR:  return GL_LINEAR;
+	case bk::ITexture::Filtering::NEAREST_MIPMAP_NEAREST: return GL_NEAREST_MIPMAP_NEAREST;
+	case bk::ITexture::Filtering::LINEAR_MIPMAP_NEAREST: return GL_LINEAR_MIPMAP_NEAREST;
+	case bk::ITexture::Filtering::NEAREST_MIPMAP_LINEAR: return GL_NEAREST_MIPMAP_LINEAR;
+	case bk::ITexture::Filtering::LINEAR_MIPMAP_LINEAR: return GL_LINEAR_MIPMAP_LINEAR;
+	}
+}
+
 }
 
 namespace bk {
@@ -77,7 +90,13 @@ public:
 	{
 		BK_GL_ASSERT(glActiveTexture(GL_TEXTURE0));
 		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, m_txt));
-		m_bound = true;
+	}
+
+	bool bound() const
+	{
+		u32 id;
+		BK_GL_ASSERT(glGetIntegerv(GL_TEXTURE_BINDING_2D, &id));
+		return id == m_txt;
 	}
 
 	void activate(const IProgram& program) const
@@ -99,6 +118,39 @@ public:
 		BK_ASSERT(m_bound, "Texture must be bound first.");
 		BK_GL_ASSERT(glTexSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset,
 			width, height, GL_ALPHA, GL_UNSIGNED_BYTE, data));
+	}
+
+	void setFiltering(ITexture::Filtering filter, bool min)
+	{
+		u32 id = 0;
+		if (!bound()) {
+			// store the currently bound texture
+			BK_GL_ASSERT(glGetIntegerv(GL_TEXTURE_BINDING_2D, &id));
+		}
+
+		// bind our texture
+		bind();
+
+		// set parameter
+		if (min) {
+			BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _opengl_filter(filter)));
+		} else {
+			BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _opengl_filter(filter)));
+		}
+
+		// restore the previous texture
+		if (id) {
+			BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, id));
+		}
+	}
+
+	void setWrapping(ITexture::Wrapping wrapping)
+	{
+		u32 id;
+		// store the currently bound texture
+		BK_GL_ASSERT(glGetIntegerv(GL_TEXTURE_BINDING_2D, &id));
+		// bind our texture
+		bind();
 	}
 
 	void generateMipmaps() const
@@ -162,10 +214,12 @@ void TextureOpenGL::deactivate() const
 
 void TextureOpenGL::setWrapping(const ITexture::Wrapping wrapping)
 {
+	m_impl->setWrapping(wrapping);
 }
 
-void TextureOpenGL::setFiltering(const ITexture::Filtering filtering)
+void TextureOpenGL::setFiltering(const ITexture::Filtering filtering, bool min)
 {
+	m_impl->setFiltering(filtering, min);
 }
 
 void

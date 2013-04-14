@@ -16,7 +16,7 @@ public:
 		REPEAT, MIRRORED_REPEAT
 	};
 
-	enum Filtering {
+	enum class Filtering {
 		NEAREST, LINEAR, NEAREST_MIPMAP_NEAREST,
 		LINEAR_MIPMAP_NEAREST, NEAREST_MIPMAP_LINEAR,
 		LINEAR_MIPMAP_LINEAR
@@ -27,7 +27,7 @@ public:
 	virtual void bind() const = 0;
 	virtual void activate(const IProgram&) const = 0;
 	virtual void deactivate() const = 0;
-	virtual void setFiltering(const Filtering) = 0;
+	virtual void setFiltering(const Filtering, bool min = true) = 0;
 	virtual void setWrapping(const Wrapping) = 0;
 	virtual void setData(const u32, const u32, const u32, const u32, u8*) = 0;
 	virtual void generateMipmaps() const = 0;
