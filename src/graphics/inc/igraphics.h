@@ -16,7 +16,6 @@ public:
 
 	virtual  void         disable(GraphicsOption) = 0;
 	virtual  DisplayMode  displayMode() const = 0;
-	virtual  void         drawMesh(IMesh*, PrimitiveType) const = 0;
 	virtual  void         enable(GraphicsOption) = 0;
 	virtual  bool         isEnabled(GraphicsOption) const = 0;
 	virtual  void         setDisplayMode(DisplayMode) = 0;

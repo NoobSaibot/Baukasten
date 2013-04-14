@@ -50,12 +50,6 @@ public:
 		return m_mode;
 	}
 
-	void drawMesh(IMesh* mesh, PrimitiveType type) const
-	{
-		BK_GL_ASSERT(glDrawArrays(_bk_toGLType(type), 0, mesh->count()));
-		//BK_GL_ASSERT(glDrawArrays(GL_TRIANGLES, 0, m_mesh->count()));
-	}
-
 private:
 	DisplayMode m_mode;
 };
@@ -123,12 +117,6 @@ GraphicsOpenGL::disable(GraphicsOption option)
 		BK_GL_ASSERT(glDisable(GL_CULL_FACE));
 		break;
 	}
-}
-
-void
-GraphicsOpenGL::drawMesh(IMesh* mesh, PrimitiveType type) const
-{
-	m_impl->drawMesh(mesh, type);
 }
 
 DisplayMode

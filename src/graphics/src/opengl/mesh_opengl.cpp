@@ -34,14 +34,22 @@ _set_attrib(const bk::IProgram* program, Data d,
 	));
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }
+
+static GLenum _bk_toGLType(bk::PrimitiveType type)
+{
+	switch ( type ) {
+	case bk::PrimitiveType::TRIANGLES: return GL_TRIANGLES;
+	}
+	return GL_TRIANGLES;
+}
 }
 
 namespace bk {
 
 class MeshOpenGLPrivate {
 public:
-	MeshOpenGLPrivate() : m_vbo(0), m_vao(0), m_active(false), m_dirty(false),
-		m_program(nullptr)
+	MeshOpenGLPrivate(IMesh* mesh) : m_vbo(0), m_vao(0), m_active(false), m_dirty(false),
+		m_program(nullptr), m_mesh(mesh)
 	{
 	}
 
@@ -81,6 +89,11 @@ public:
 		BK_GL_ASSERT(glBindVertexArray(0));
 		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		m_active = false;
+	}
+
+	void render()
+	{
+		BK_GL_ASSERT(glDrawArrays(_bk_toGLType(m_mesh->primitiveType()), 0, m_mesh->count()));
 	}
 
 	void setProgram(IProgram* program)
@@ -232,10 +245,11 @@ private:
 	Data m_normals;
 	bool m_dirty;
 	IProgram* m_program;
+	IMesh* m_mesh;
 };
 
 MeshOpenGL::MeshOpenGL(const string& name) :
-	IMesh(name), m_impl(new MeshOpenGLPrivate())
+	IMesh(name), m_impl(new MeshOpenGLPrivate(this))
 {
 }
 
@@ -265,6 +279,12 @@ void
 MeshOpenGL::deactivate() const
 {
 	m_impl->deactivate();
+}
+
+void
+MeshOpenGL::render()
+{
+	m_impl->render();
 }
 
 void

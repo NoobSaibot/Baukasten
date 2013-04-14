@@ -66,7 +66,7 @@ public:
 		Graphics::graphics()->setDisplayMode( m_form->displayMode() );
 
 		// draw the mesh
-		Graphics::graphics()->drawMesh(m_mesh, PrimitiveType::TRIANGLES);
+		m_mesh->render();
 
 		// clean up
 		Graphics::graphics()->setDisplayMode( displayMode );

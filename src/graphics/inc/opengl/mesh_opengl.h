@@ -15,6 +15,7 @@ public:
 	bool isActive() const;
 	void deactivate() const;
 
+	void render();
 	void setProgram(IProgram*);
 	void setVertices(const unsigned int, const unsigned int, const float*);
 	void setVertices(const unsigned int, const unsigned int, std::initializer_list<float>);

@@ -18,7 +18,6 @@ public:
 
 	void disable(GraphicsOption) override;
 	DisplayMode displayMode() const override;
-	void drawMesh(IMesh*, PrimitiveType) const override;
 	void enable(GraphicsOption) override;
 	bool isEnabled(GraphicsOption) const override;
 	void setDisplayMode(DisplayMode);

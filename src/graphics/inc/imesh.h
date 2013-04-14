@@ -18,6 +18,7 @@ public:
 	virtual int count() const = 0;
 	virtual void deactivate() const = 0;
 
+	virtual void render() = 0;
 	virtual void setProgram(IProgram*) = 0;
 	virtual void setVertices(const unsigned int, const unsigned int, const float*) = 0;
 	virtual void setVertices(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
@@ -27,6 +28,11 @@ public:
 	virtual void setTexture(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
 	virtual void setNormals(const unsigned int, const unsigned int, const float*) = 0;
 	virtual void setNormals(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
+
+	void setPrimitiveType(PrimitiveType type) { m_type = type; }
+	PrimitiveType primitiveType() const { return m_type; }
+private:
+	PrimitiveType m_type;
 };
 
 }
