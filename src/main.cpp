@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
 
 	meshRamza->setProgram(program);
 	meshRamza->setVertices(18, 3, {
-		-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
 
 	meshRamza->setTexture(12, 2, {
@@ -133,7 +133,9 @@ int main(int argc, char const *argv[])
 		return false;
 	});
 
-	auto box = Model::createActor("actor.box", Graphics::createForm( "form.box", meshBox, program, tex ));
+	auto box = Model::createActor("actor.box",
+		Graphics::createForm( "form.box", meshBox, program, tex, display ));
+
 	box->form()->translate(0, -5.5, 0);
 	box->setActorType(blockType);
 	box->setEventHandler([&box](Event* event) {
@@ -167,9 +169,16 @@ int main(int argc, char const *argv[])
 		}
 	);
 
-	auto surface = Model::createActor("actor.surface", Graphics::createForm("form.surface", meshBox, program, texWater ));
+	auto surface = Model::createActor("actor.surface",
+		Graphics::createForm("form.surface", meshBox, program, texWater, display ));
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
+
+	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 20);
+	auto text = Model::createActor("actor.text",
+		Graphics::createTextForm("form.text", "hallo", font, program, display ));
+	(static_cast<TextForm*>(text->form()))->setColor(Vector3(1.0f, 0.0, 0.0));
+	//text->form()->scale(0.2, 0.2, 1);
 
 	auto cam = Graphics::createCamera("camera.front");
 
@@ -192,6 +201,7 @@ int main(int argc, char const *argv[])
 	scene->addChild(box);
 	scene->addChild(surface);
 	scene->addChild(ramza);
+	scene->addChild(text);
 
 	scene->addAction(
 		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
@@ -255,21 +265,33 @@ int main(int argc, char const *argv[])
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
 	context->addCamera(cam2, false);
-	context->setOption(ContextOption::ENABLE_BLEND, true);
+	context->setOption(GraphicsOption::BLEND, true);
+	context->setOption(GraphicsOption::CULLING, true);
 
 	scene->setContext(context);
 
 	double lastTime = glfwGetTime();
+	double pastTime = lastTime;
+	unsigned int frameCount = 0;
 
 	const float zoomSensitivity = -2.0;
 
 	Camera* activeCam = cam;
 
+	display->setBackgroundColor(1.0f, 1.0f, 1.0f);
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		display->clear();
 
 		double thisTime = glfwGetTime();
 		float secondsElapsed = thisTime - lastTime;
+
+		// framerate berechnen
+		if ((thisTime - pastTime) >= 1.0) {
+			pastTime = thisTime;
+			BK_DEBUG("fps: " << frameCount);
+			frameCount = 0;
+		}
+		frameCount++;
 
 		float fieldOfView = activeCam->fieldOfView() + zoomSensitivity * (float)glfwGetMouseWheel();
 		if(fieldOfView < 5.0f) fieldOfView = 5.0f;
