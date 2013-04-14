@@ -7,6 +7,7 @@
 namespace bk {
 
 class Bitmap;
+class Font;
 class IProgram;
 
 class ITexture : public Managed {

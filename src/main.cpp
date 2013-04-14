@@ -9,6 +9,8 @@
 #include "graphics/IMesh"
 #include "graphics/ITexture"
 #include "graphics/IForm"
+#include "graphics/Font"
+#include "graphics/TextForm"
 #include "input/Input"
 #include "input/IKeyboard"
 #include "input/IMouse"

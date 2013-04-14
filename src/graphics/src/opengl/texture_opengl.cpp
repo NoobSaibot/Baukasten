@@ -22,12 +22,20 @@ static bk::VertexDataType _bk_format(bk::BitmapFormat format)
 static GLenum _opengl_format(bk::VertexDataType type)
 {
 	switch ( type ) {
+	case bk::VertexDataType::DEPTH_COMPONENT: return GL_DEPTH_COMPONENT;
+	case bk::VertexDataType::DEPTH_STENCIL:   return GL_DEPTH_STENCIL;
+	case bk::VertexDataType::INTENSITY:       return GL_INTENSITY;
+	case bk::VertexDataType::RED:             return GL_RED;
+	case bk::VertexDataType::RG:              return GL_RG;
+	case bk::VertexDataType::RGB:             return GL_RGB;
+	case bk::VertexDataType::RGBA:            return GL_RGBA;
+	case bk::VertexDataType::COMPRESSED_RED:  return GL_COMPRESSED_RED;
+	case bk::VertexDataType::COMPRESSED_RG:   return GL_COMPRESSED_RG;
+
+	/* DEPRECATED */
 	case bk::VertexDataType::LUMINANCE:       return GL_LUMINANCE;
 	case bk::VertexDataType::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
 	case bk::VertexDataType::ALPHA:           return GL_ALPHA;
-	case bk::VertexDataType::RGB:             return GL_RGB;
-	case bk::VertexDataType::RGBA:            return GL_RGBA;
-	case bk::VertexDataType::RED:             return GL_RED;
 	default: return GL_RGB;
 	}
 }
@@ -72,13 +80,6 @@ public:
 		BK_GL_ASSERT(glGenTextures(1, &m_txt));
 		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, m_txt));
 		BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-		//BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ROW_LENGTH, 0));
-		//BK_GL_ASSERT(glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0));
-		//BK_GL_ASSERT(glPixelStorei(GL_UNPACK_SKIP_ROWS, 0));
-		//BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-		//BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		//BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-		//BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 		BK_GL_ASSERT(glTexImage2D(
 			GL_TEXTURE_2D, 0, _opengl_format(type), (GLsizei)width, (GLsizei)height,
 			0, _opengl_format(type), GL_UNSIGNED_BYTE, data

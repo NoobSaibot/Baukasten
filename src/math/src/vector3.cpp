@@ -11,25 +11,29 @@ using namespace std;
 
 Vector3::Vector3() :
 	Vector(),
-	x( m_data[0] ), y( m_data[1] ), z( m_data[2] )
+	x( m_data[0] ), y( m_data[1] ), z( m_data[2] ),
+	r( m_data[0] ), g( m_data[1] ), b( m_data[2] )
 {
 }
 
 Vector3::Vector3( const Vector3 &other ) :
 	Vector({ other.x, other.y, other.z }),
-	x( m_data[0] ), y( m_data[1] ), z( m_data[2] )
+	x( m_data[0] ), y( m_data[1] ), z( m_data[2] ),
+	r( m_data[0] ), g( m_data[1] ), b( m_data[2] )
 {
 }
 
 Vector3::Vector3( const f32 value ) :
 	Vector({ value, value, value }),
-	x( m_data[0] ), y( m_data[1] ), z( m_data[2] )
+	x( m_data[0] ), y( m_data[1] ), z( m_data[2] ),
+	r( m_data[0] ), g( m_data[1] ), b( m_data[2] )
 {
 }
 
 Vector3::Vector3( const f32 _f, const f32 _s, const f32 _t ) :
 	Vector({ _f, _s, _t }),
-	x( m_data[0] ), y( m_data[1] ), z( m_data[2] )
+	x( m_data[0] ), y( m_data[1] ), z( m_data[2] ),
+	r( m_data[0] ), g( m_data[1] ), b( m_data[2] )
 {
 }
 

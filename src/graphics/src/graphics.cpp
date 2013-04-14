@@ -9,6 +9,8 @@
 #include "graphics/GraphicsImpl"
 #include "graphics/MeshImpl"
 #include "graphics/Form"
+#include "graphics/TextForm"
+#include "graphics/Font"
 #include "graphics/ProgramImpl"
 #include "graphics/ShaderImpl"
 #include "graphics/TextureImpl"
@@ -98,6 +100,26 @@ Graphics::createForm(const string& name, IMesh* mesh, IProgram* program,
 		ITexture* texture, IDisplay* display)
 {
 	return new Form(name, mesh, program, texture, display);
+}
+
+IForm*
+Graphics::createTextForm(const string& name, const string& text,
+		Font* font, IProgram* program, IDisplay* display)
+{
+	return new TextForm(name, text, font, program, display);
+}
+
+IForm*
+Graphics::createTextForm(const string& name, const string& text,
+		Font* font, IDisplay* display)
+{
+	return new TextForm(name, text, font, display);
+}
+
+Font*
+Graphics::createFont(const string& name, const u32 pixelSize)
+{
+	return new Font(name, pixelSize);
 }
 
 IProgram*

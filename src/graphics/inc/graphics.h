@@ -12,6 +12,7 @@ class IDisplay;
 class IGraphics;
 class IMesh;
 class IForm;
+class Font;
 class IProgram;
 class IShader;
 class ITexture;
@@ -34,6 +35,7 @@ public:
 			IProgram*, ITexture*, IDisplay*);
 	static IForm* createTextForm(const string&, const string&, Font*,
 			IProgram*, IDisplay*);
+	static IForm* createTextForm(const string&, const string&, Font*, IDisplay*);
 	static Font* createFont(const string&, const u32);
 	static IProgram* createProgram(const string&, const ShaderList&);
 	static IShader* createShaderFromFile( const string&, const string&,
