@@ -2,6 +2,7 @@
 #define GLOBAL_H_8PLKMLEZ
 
 #include <string>
+#include <memory>
 #include <vector>
 
 using namespace std;

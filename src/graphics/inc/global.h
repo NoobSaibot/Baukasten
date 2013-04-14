@@ -59,6 +59,12 @@ enum class VertexDataType {
 class IShader;
 typedef std::vector<IShader*> ShaderList;
 
+class IMesh;
+typedef std::shared_ptr<IMesh> IMeshPtr;
+
+class ITexture;
+typedef std::shared_ptr<ITexture> ITexturePtr;
+
 } /* bk */
 
 #endif /* end of include guard: GRAPHICS_H_06HZXMTV */
