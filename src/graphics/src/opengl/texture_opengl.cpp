@@ -22,11 +22,12 @@ static bk::VertexDataType _bk_format(bk::BitmapFormat format)
 static GLenum _opengl_format(bk::VertexDataType type)
 {
 	switch ( type ) {
-	case bk::VertexDataType::LUMINANCE: return GL_LUMINANCE;
+	case bk::VertexDataType::LUMINANCE:       return GL_LUMINANCE;
 	case bk::VertexDataType::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-	case bk::VertexDataType::ALPHA: return GL_ALPHA;
-	case bk::VertexDataType::RGB: return GL_RGB;
-	case bk::VertexDataType::RGBA: return GL_RGBA;
+	case bk::VertexDataType::ALPHA:           return GL_ALPHA;
+	case bk::VertexDataType::RGB:             return GL_RGB;
+	case bk::VertexDataType::RGBA:            return GL_RGBA;
+	case bk::VertexDataType::RED:             return GL_RED;
 	default: return GL_RGB;
 	}
 }
