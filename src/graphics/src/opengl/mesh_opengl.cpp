@@ -15,17 +15,17 @@ struct Data {
 
 	int byteSize()
 	{
-		return size * sizeof(float);
+		return size * sizeof(bk::f32);
 	}
 
-	float* data;
-	unsigned int size;
-	unsigned int count;
+	bk::f32* data;
+	bk::u32 size;
+	bk::u32 count;
 };
 
 static void
 _set_attrib(const bk::IProgram* program, Data d,
-		const string& attrib, int stride, unsigned int offset)
+		const string& attrib, int stride, bk::u32 offset)
 {
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
@@ -91,9 +91,9 @@ public:
 		m_active = false;
 	}
 
-	void render()
+	void render(const u32 count, const u32 offset)
 	{
-		BK_GL_ASSERT(glDrawArrays(_bk_toGLType(m_mesh->primitiveType()), 0, m_mesh->count()));
+		BK_GL_ASSERT(glDrawArrays(_bk_toGLType(m_mesh->primitiveType()), offset, count));
 	}
 
 	void setProgram(IProgram* program)
@@ -102,26 +102,26 @@ public:
 		m_program->addRef();
 	}
 
-	void setVertices(const float* data, const unsigned int size,
-			const unsigned int count)
+	void setVertices(const f32* data, const u32 size,
+			const u32 count)
 	{
 		setData(0, data, size, count);
 	}
 
-	void setColors(const float* data, const unsigned int size,
-			const unsigned int count)
+	void setColors(const f32* data, const u32 size,
+			const u32 count)
 	{
 		setData(1, data, size, count);
 	}
 
-	void setTexture(const float* data, const unsigned int size,
-			const unsigned int count)
+	void setTexture(const f32* data, const u32 size,
+			const u32 count)
 	{
 		setData(2, data, size, count);
 	}
 
-	void setNormals(const float* data, const unsigned int size,
-			const unsigned int count)
+	void setNormals(const f32* data, const u32 size,
+			const u32 count)
 	{
 		setData(3, data, size, count);
 	}
@@ -143,15 +143,15 @@ private:
 		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
 
 		// compute the size of data
-		unsigned int size = m_vertices.byteSize() + m_colors.byteSize() +
+		u32 size = m_vertices.byteSize() + m_colors.byteSize() +
 			m_texture.byteSize() + m_normals.byteSize();
 
 		// reserve memory for all the data that is actually
 		// set (VERTICES, NORMALS, TEXTURE, ...)
-		float* data = new float[size];
+		f32* data = new f32[size];
 
 		// set everything to 0
-		memset(data, 0, size * sizeof(float));
+		memset(data, 0, size * sizeof(f32));
 
 		// copy the set data to the "data" container {{
 		std::copy(m_vertices.data, m_vertices.data + m_vertices.size, data);
@@ -196,13 +196,13 @@ private:
 		m_dirty = false;
 	}
 
-	void setData(int type, const float* data, const unsigned int size,
-			const unsigned int count)
+	void setData(int type, const f32* data, const u32 size,
+			const u32 count)
 	{
 		switch (type) {
 		case 0: // vertices
 			SAFE_ARR_DELETE(m_vertices.data);
-			m_vertices.data = new float[size];
+			m_vertices.data = new f32[size];
 			std::copy(data, data + size, m_vertices.data);
 			m_vertices.size = size;
 			m_vertices.count = count;
@@ -210,7 +210,7 @@ private:
 			break;
 		case 1: // colors
 			SAFE_ARR_DELETE(m_colors.data);
-			m_colors.data = new float[size];
+			m_colors.data = new f32[size];
 			std::copy(data, data + size, m_colors.data);
 			m_colors.size = size;
 			m_colors.count = count;
@@ -218,7 +218,7 @@ private:
 			break;
 		case 2: // texture
 			SAFE_ARR_DELETE(m_texture.data);
-			m_texture.data = new float[size];
+			m_texture.data = new f32[size];
 			std::copy(data, data + size, m_texture.data);
 			m_texture.size = size;
 			m_texture.count = count;
@@ -226,7 +226,7 @@ private:
 			break;
 		case 3: // normals
 			SAFE_ARR_DELETE(m_normals.data);
-			m_normals.data = new float[size];
+			m_normals.data = new f32[size];
 			std::copy(data, data + size, m_normals.data);
 			m_normals.size = size;
 			m_normals.count = count;
@@ -283,9 +283,15 @@ MeshOpenGL::deactivate() const
 }
 
 void
+MeshOpenGL::render(const u32 count, const u32 offset)
+{
+	m_impl->render(count, offset);
+}
+
+void
 MeshOpenGL::render()
 {
-	m_impl->render();
+	m_impl->render(count(), 0);
 }
 
 void
@@ -295,57 +301,57 @@ MeshOpenGL::setProgram(IProgram* program)
 }
 
 void
-MeshOpenGL::setVertices(const unsigned int size, const unsigned int count,
-		const float* data)
+MeshOpenGL::setVertices(const u32 size, const u32 count,
+		const f32* data)
 {
 	m_impl->setVertices(data, size, count);
 }
 
 void
-MeshOpenGL::setVertices(const unsigned int size, const unsigned int count,
-		std::initializer_list<float> data)
+MeshOpenGL::setVertices(const u32 size, const u32 count,
+		std::initializer_list<f32> data)
 {
 	m_impl->setVertices(data.begin(), size, count);
 }
 
 void
-MeshOpenGL::setColors(const unsigned int size, const unsigned int count,
-		const float* data)
+MeshOpenGL::setColors(const u32 size, const u32 count,
+		const f32* data)
 {
 	m_impl->setColors(data, size, count);
 }
 
 void
-MeshOpenGL::setColors(const unsigned int size, const unsigned int count,
-		std::initializer_list<float> data)
+MeshOpenGL::setColors(const u32 size, const u32 count,
+		std::initializer_list<f32> data)
 {
 	m_impl->setColors(data.begin(), size, count);
 }
 
 void
-MeshOpenGL::setTexture(const unsigned int size, const unsigned int count,
-		const float* data)
+MeshOpenGL::setTexture(const u32 size, const u32 count,
+		const f32* data)
 {
 	m_impl->setTexture(data, size, count);
 }
 
 void
-MeshOpenGL::setTexture(const unsigned int size, const unsigned int count,
-		std::initializer_list<float> data)
+MeshOpenGL::setTexture(const u32 size, const u32 count,
+		std::initializer_list<f32> data)
 {
 	m_impl->setTexture(data.begin(), size, count);
 }
 
 void
-MeshOpenGL::setNormals(const unsigned int size, const unsigned int count,
-		const float* data)
+MeshOpenGL::setNormals(const u32 size, const u32 count,
+		const f32* data)
 {
 	m_impl->setNormals(data, size, count);
 }
 
 void
-MeshOpenGL::setNormals(const unsigned int size, const unsigned int count,
-		std::initializer_list<float> data)
+MeshOpenGL::setNormals(const u32 size, const u32 count,
+		std::initializer_list<f32> data)
 {
 	m_impl->setNormals(data.begin(), size, count);
 }

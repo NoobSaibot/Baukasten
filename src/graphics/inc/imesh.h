@@ -19,15 +19,16 @@ public:
 	virtual void deactivate() const = 0;
 
 	virtual void render() = 0;
+	virtual void render(const u32, const u32 offset = 0) = 0;
 	virtual void setProgram(IProgram*) = 0;
-	virtual void setVertices(const unsigned int, const unsigned int, const float*) = 0;
-	virtual void setVertices(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
-	virtual void setColors(const unsigned int, const unsigned int, const float*) = 0;
-	virtual void setColors(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
-	virtual void setTexture(const unsigned int, const unsigned int, const float*) = 0;
-	virtual void setTexture(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
-	virtual void setNormals(const unsigned int, const unsigned int, const float*) = 0;
-	virtual void setNormals(const unsigned int, const unsigned int, std::initializer_list<float>) = 0;
+	virtual void setVertices(const u32, const u32, const f32*) = 0;
+	virtual void setVertices(const u32, const u32, std::initializer_list<f32>) = 0;
+	virtual void setColors(const u32, const u32, const f32*) = 0;
+	virtual void setColors(const u32, const u32, std::initializer_list<f32>) = 0;
+	virtual void setTexture(const u32, const u32, const f32*) = 0;
+	virtual void setTexture(const u32, const u32, std::initializer_list<f32>) = 0;
+	virtual void setNormals(const u32, const u32, const f32*) = 0;
+	virtual void setNormals(const u32, const u32, std::initializer_list<f32>) = 0;
 
 	void setPrimitiveType(PrimitiveType type) { m_type = type; }
 	PrimitiveType primitiveType() const { return m_type; }

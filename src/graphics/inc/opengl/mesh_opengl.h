@@ -16,15 +16,16 @@ public:
 	void deactivate() const;
 
 	void render();
+	void render(const u32, const u32 offset = 0);
 	void setProgram(IProgram*);
-	void setVertices(const unsigned int, const unsigned int, const float*);
-	void setVertices(const unsigned int, const unsigned int, std::initializer_list<float>);
-	void setColors(const unsigned int, const unsigned int, const float*);
-	void setColors(const unsigned int, const unsigned int, std::initializer_list<float>);
-	void setTexture(const unsigned int, const unsigned int, const float*);
-	void setTexture(const unsigned int, const unsigned int, std::initializer_list<float>);
-	void setNormals(const unsigned int, const unsigned int, const float*);
-	void setNormals(const unsigned int, const unsigned int, std::initializer_list<float>);
+	void setVertices(const u32, const u32, const f32*);
+	void setVertices(const u32, const u32, std::initializer_list<f32>);
+	void setColors(const u32, const u32, const f32*);
+	void setColors(const u32, const u32, std::initializer_list<f32>);
+	void setTexture(const u32, const u32, const f32*);
+	void setTexture(const u32, const u32, std::initializer_list<f32>);
+	void setNormals(const u32, const u32, const f32*);
+	void setNormals(const u32, const u32, std::initializer_list<f32>);
 
 private:
 	MeshOpenGL(const string&);
