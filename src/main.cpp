@@ -176,7 +176,7 @@ int main(int argc, char const *argv[])
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
-	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 50);
+	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 30);
 	auto text = Model::createActor("actor.text",
 		Graphics::createTextForm("form.text", "WILLKOMMEN!! Zu Final Fantasy Tactics", font, display ));
 
