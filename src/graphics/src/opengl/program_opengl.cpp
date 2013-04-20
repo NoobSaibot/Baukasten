@@ -38,6 +38,7 @@ public:
 		BK_ASSERT(status == GL_TRUE, "OpenGL Program linkage failed.");
 		for( auto s: shader ) {
 			BK_GL_ASSERT(glDetachShader(m_program, s->handler()));
+			BK_GL_ASSERT(glDeleteShader(s->handler()));
 		}
 	}
 
