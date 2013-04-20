@@ -176,11 +176,9 @@ int main(int argc, char const *argv[])
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
-	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 20);
+	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 50);
 	auto text = Model::createActor("actor.text",
-		Graphics::createTextForm("form.text", "hallo", font, program, display ));
-	(static_cast<TextForm*>(text->form()))->setColor(Vector3(1.0f, 0.0, 0.0));
-	//text->form()->scale(0.2, 0.2, 1);
+		Graphics::createTextForm("form.text", "WILLKOMMEN!! Zu Final Fantasy Tactics", font, display ));
 
 	auto cam = Graphics::createCamera("camera.front");
 
