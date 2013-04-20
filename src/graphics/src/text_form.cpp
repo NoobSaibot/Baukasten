@@ -98,45 +98,7 @@ public:
 
 	void initProgram()
 	{
-		ShaderList shader;
-		shader.push_back( Graphics::createShaderFromSource("shader.v.text", R"(
-			#version 130
-
-			uniform mat4 projection;
-			uniform mat4 camera;
-			uniform mat4 transformation;
-
-			in vec4 bk_vertex;
-			in vec2 bk_texture0;
-			in vec3 bk_color;
-
-			out vec2 bk_fragTex0;
-			out vec3 bk_Color;
-
-			void main() {
-				bk_fragTex0 = bk_texture0;
-				bk_Color = bk_color;
-				gl_Position = camera * transformation * bk_vertex;
-			}
-
-			)", ShaderType::VERTEX) );
-
-		shader.push_back( Graphics::createShaderFromSource("shader.f.text", R"(
-			#version 130
-
-			uniform sampler2D tex;
-			uniform vec2 bk_texOffset0;
-			uniform vec2 bk_texSize0;
-			in vec2 bk_fragTex0;
-			in vec3 bk_Color;
-
-			void main() {
-				gl_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
-			}
-
-			)", ShaderType::FRAGMENT) );
-
-		m_program = Graphics::createProgram("program.main", shader);
+		m_program = Graphics::stockProgram(StockProgramName::MVP_BASIC_ALPHA);
 	}
 
 	void initMesh()

@@ -25,7 +25,6 @@ public:
 			const float, const float, const float, const float,
 			const float, const vec3);
 	static IContext* createContext(const string&);
-	static IDisplay* createDisplay();
 	static IMesh* createMesh(const string&);
 	static IMesh* createQuad(const string&, IProgram*,
 			const float, const float, const float);
@@ -38,6 +37,7 @@ public:
 	static IForm* createTextForm(const string&, const string&, Font*, IDisplay*);
 	static Font* createFont(const string&, const u32);
 	static IProgram* createProgram(const string&, const ShaderList&);
+	static IProgram* stockProgram(const StockProgramName);
 	static IShader* createShaderFromFile( const string&, const string&,
 			const ShaderType );
 	static IShader* createShaderFromSource( const string&, const string&,
@@ -50,7 +50,7 @@ public:
 	static IGraphics* graphics();
 
 	// erstelle fenster hier
-	static void init(const u16, const u16, const string&);
+	static IDisplay* init(const u16, const u16, const string&);
 };
 
 } /* bk */

@@ -23,6 +23,98 @@ namespace bk {
 
 static IGraphics* s_graphics = new GraphicsImpl();
 
+static IProgram* s_mvpBasic      = nullptr;
+static IProgram* s_mvpBasicAlpha = nullptr;
+
+static IProgram*
+createStockProgram(const string& name, const string& vShader, const string& fShader)
+{
+	ShaderList shader;
+	shader.push_back( Graphics::createShaderFromSource("v."+name, vShader, ShaderType::VERTEX) );
+	shader.push_back( Graphics::createShaderFromSource("f."+name, fShader, ShaderType::FRAGMENT) );
+
+	return Graphics::createProgram("program." + name, shader);
+}
+
+IDisplay*
+Graphics::init(const u16 width, const u16 height, const string&)
+{
+	IDisplay* display = new DisplayImpl();
+	display->init(width, height);
+
+	// mvp_basic {{{
+	s_mvpBasic = createStockProgram("shader.mvp_basic", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+
+		void main() {
+			gl_FragColor = texture(tex,  (bk_texSize0 * bk_fragTex0) + bk_texOffset0);
+		}
+	)");
+	// }}}
+
+	// mvb_basic_alpha {{{
+	s_mvpBasicAlpha = createStockProgram("shader.mvp_basic", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+
+		void main() {
+			gl_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
+
+	return display;
+}
+
 Bitmap*
 Graphics::createBitmapFromFile(const string& path)
 {
@@ -53,12 +145,6 @@ IContext*
 Graphics::createContext(const string& name)
 {
 	return new ContextImpl(name);
-}
-
-IDisplay*
-Graphics::createDisplay()
-{
-	return new DisplayImpl();
 }
 
 IMesh*
@@ -126,6 +212,17 @@ IProgram*
 Graphics::createProgram(const string& name, const ShaderList& shader)
 {
 	return new ProgramImpl(name, shader);
+}
+
+IProgram*
+Graphics::stockProgram(const StockProgramName progName)
+{
+	BK_ASSERT(s_mvpBasicAlpha != nullptr, "Graphics has not been initialized properly! Did you forget to run Graphics::init()?");
+
+	switch ( progName ) {
+	case StockProgramName::MVP_BASIC:       return s_mvpBasic;
+	case StockProgramName::MVP_BASIC_ALPHA: return s_mvpBasicAlpha;
+	}
 }
 
 IShader*
