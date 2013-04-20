@@ -28,8 +28,7 @@ using namespace bk;
 
 int main(int argc, char const *argv[])
 {
-	auto display = Graphics::createDisplay();
-	display->init(800, 600);
+	auto display = Graphics::init(800, 600, "demo");
 
 	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
 	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
@@ -43,11 +42,7 @@ int main(int argc, char const *argv[])
 	auto texRamza = Graphics::createTextureFromBitmap("texture.ramza", *ramzaBitmap);
 	ramzaBitmap->release();
 
-	ShaderList shader;
-	shader.push_back( Graphics::createShaderFromFile("Standard Vertex", "default.vert", ShaderType::VERTEX) );
-	shader.push_back( Graphics::createShaderFromFile("Standard Fragment", "default.frag", ShaderType::FRAGMENT) );
-
-	auto program = Graphics::createProgram("program.main", shader);
+	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC);
 
 	auto meshBox = Graphics::createMesh("mesh.box");
 
