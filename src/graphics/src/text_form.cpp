@@ -18,23 +18,25 @@ namespace bk {
 class TextFormPrivate {
 public:
 	TextFormPrivate(const string& text, Font* font, IProgram* program, TextForm* form) :
-		m_font(font), m_text(text), m_program(program), m_form(form), m_dirty(false),
+		m_font(font), m_text(text), m_form(form), m_dirty(false),
 		m_color(Vector3(0.0, 0.0, 0.0))
 	{
+		m_form->setProgram(program);
+
 		m_mesh = Graphics::createMesh("mesh.font");
-		m_mesh->setProgram(m_program);
+		m_mesh->setProgram(program);
 
 		initMesh();
 	}
 
 	TextFormPrivate(const string& text, Font* font, TextForm* form) :
-		m_font(font), m_text(text), m_program(nullptr), m_form(form), m_dirty(false),
+		m_font(font), m_text(text), m_form(form), m_dirty(false),
 		m_color(Vector3(0.0, 0.0, 0.0))
 	{
 		initProgram();
 
 		m_mesh = Graphics::createMesh("mesh.font");
-		m_mesh->setProgram(m_program);
+		m_mesh->setProgram(m_form->program());
 
 		initMesh();
 	}
@@ -67,24 +69,25 @@ public:
 			initMesh();
 		}
 
-		m_program->activate();
+		auto program = m_form->program();
+		program->activate();
 
 		if ( m_mesh ) {
 			m_mesh->activate();
 		}
 
 		// set camera matrix
-		m_program->setConstant("camera", cam->matrix());
-		m_program->setConstant("transformation", m_form->translation());
+		program->setConstant("camera", cam->matrix());
+		program->setConstant("transformation", m_form->translation());
 
 		// set default value if no animation is present
-		m_program->setConstant("bk_texSize0", vec2(1.0, 1.0));
+		program->setConstant("bk_texSize0", vec2(1.0, 1.0));
 
 		auto text = m_text.c_str();
 		Glyph glyph;
 		for ( u32 i = 0; i < m_text.size(); ++i ) {
 			glyph = m_font->glyph(text[i]);
-			glyph.tex->activate(*m_program);
+			glyph.tex->activate(*program);
 			m_mesh->render(6, 6*i);
 			glyph.tex->deactivate();
 		}
@@ -93,12 +96,12 @@ public:
 			m_mesh->deactivate();
 		}
 
-		m_program->deactivate();
+		program->deactivate();
 	}
 
 	void initProgram()
 	{
-		m_program = Graphics::stockProgram(StockProgramName::M_BASIC_RED);
+		m_form->setProgram( Graphics::stockProgram(StockProgramName::M_BASIC_RED) );
 	}
 
 	void initMesh()
@@ -169,7 +172,6 @@ public:
 private:
 	Font* m_font;
 	string m_text;
-	IProgram* m_program;
 	TextForm* m_form;
 	IMesh* m_mesh;
 	bool m_dirty;

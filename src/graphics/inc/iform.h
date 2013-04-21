@@ -26,9 +26,11 @@ public:
 	Animation*  animation() const;
 	IDisplay*   display()  const;
 	DisplayMode displayMode() const;
+	IProgram*   program() const;
 	void        scale(const float, const float, const float);
 	void        scale(const vec3&);
 	void        setDisplayMode(DisplayMode);
+	void        setProgram(IProgram*);
 	void        setTranslation(const mat4&);
 	void        startAnimation(const string&);
 	void        stopAnimation();

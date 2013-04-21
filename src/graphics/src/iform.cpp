@@ -16,7 +16,8 @@ namespace bk {
 class IFormPrivate {
 public:
 	IFormPrivate(IDisplay* display) :
-		m_currAnimation(nullptr), m_display(display), m_mode(DisplayMode::FULL)
+		m_currAnimation(nullptr), m_display(display), m_mode(DisplayMode::FULL),
+		m_program(nullptr)
 	{
 	}
 
@@ -99,6 +100,16 @@ public:
 	void stopAnimation()
 	{
 		m_currAnimation = 0;
+	}
+
+	void setProgram(IProgram* program)
+	{
+		m_program = program;
+	}
+
+	IProgram* program() const
+	{
+		return m_program;
 	}
 
 	Animation* animation()
@@ -215,10 +226,22 @@ IForm::animation() const
 	return m_impl->animation();
 }
 
+IProgram*
+IForm::program() const
+{
+	return m_impl->program();
+}
+
 void
 IForm::setDisplayMode(DisplayMode mode)
 {
 	m_impl->setDisplayMode(mode);
+}
+
+void
+IForm::setProgram(IProgram* program)
+{
+	m_impl->setProgram(program);
 }
 
 ITexture*
