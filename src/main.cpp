@@ -171,9 +171,21 @@ int main(int argc, char const *argv[])
 	surface->form()->translate(-3, -7, 0);
 	surface->form()->scale(10, 0.5, 10);
 
-	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 30);
-	auto text = Model::createActor("actor.text",
-		Graphics::createTextForm("form.text", "WILLKOMMEN!! Zu Final Fantasy Tactics", font, display ));
+	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 12);
+	auto debug = Model::createActor("actor.debug",
+		Graphics::createTextForm("form.debug", "60 fps", font,
+			Graphics::stockProgram(StockProgramName::M_BASIC_RED), display )
+	);
+	debug->form()->translate(0.01f, 0.92f, 0.0f);
+
+	auto fontBeschriftung = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 90);
+	auto kisteBeschriftung = Model::createActor("actor.beschriftung",
+		Graphics::createTextForm("form.beschriftung", "HAZARDOUS", fontBeschriftung,
+			Graphics::stockProgram(StockProgramName::MVP_BASIC_RED), display )
+	);
+
+	kisteBeschriftung->form()->translate(0.1f, -5.0f, 1.1f);
+	static_cast<TextForm*>(kisteBeschriftung->form())->setColor({1.0f, 0.0f, 0.0f});
 
 	auto cam = Graphics::createCamera("camera.front");
 
@@ -196,7 +208,8 @@ int main(int argc, char const *argv[])
 	scene->addChild(box);
 	scene->addChild(surface);
 	scene->addChild(ramza);
-	scene->addChild(text);
+	scene->addChild(debug);
+	scene->addChild(kisteBeschriftung);
 
 	scene->addAction(
 		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
@@ -283,7 +296,7 @@ int main(int argc, char const *argv[])
 		// framerate berechnen
 		if ((thisTime - pastTime) >= 1.0) {
 			pastTime = thisTime;
-			BK_DEBUG("fps: " << frameCount);
+			static_cast<TextForm*>(debug->form())->setText(to_string(frameCount) + " fps");
 			frameCount = 0;
 		}
 		frameCount++;
