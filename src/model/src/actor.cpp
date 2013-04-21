@@ -224,7 +224,7 @@ public:
 		if (m_form)
 			m_form->render(context()->camera(), 1.0);
 
-		for ( auto m: m_children ) {
+		for ( auto m : m_children ) {
 			m->render();
 		}
 	}
