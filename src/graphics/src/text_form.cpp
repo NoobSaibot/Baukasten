@@ -90,6 +90,9 @@ public:
 		for ( u32 i = 0; i < m_text.size(); ++i ) {
 			glyph = m_font->glyph(text[i]);
 			glyph.tex->activate(*program);
+
+			// draw 6 mesh coordinates, for every char is represented by
+			// 6 vertices
 			m_mesh->render(6, 6*i);
 			glyph.tex->deactivate();
 		}
