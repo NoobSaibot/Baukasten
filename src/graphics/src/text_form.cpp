@@ -47,6 +47,8 @@ public:
 
 	void setText(const string& text)
 	{
+		if ( text == m_text ) return;
+
 		m_text = text;
 		m_dirty = true;
 	}
