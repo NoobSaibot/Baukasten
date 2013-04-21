@@ -21,25 +21,27 @@ public:
 	IForm(const string&, IDisplay*);
 	virtual ~IForm();
 
-	void        addAnimation(Animation*);
-	void        addTexture(ITexture*);
-	Animation*  animation() const;
-	IDisplay*   display()  const;
-	DisplayMode displayMode() const;
-	IProgram*   program() const;
-	void        scale(const float, const float, const float);
-	void        scale(const vec3&);
-	void        setDisplayMode(DisplayMode);
-	void        setProgram(IProgram*);
-	void        setTranslation(const mat4&);
-	void        startAnimation(const string&);
-	void        stopAnimation();
-	ITexture*   texture(const string&) const;
-	ITexture*   texture() const;
-	void        translate(const float, const float, const float);
-	void        translate(const mat4&);
-	mat4        translation() const;
-	void        update(const int);
+	void           addAnimation(Animation*);
+	void           addTexture(ITexture*);
+	Animation*     animation() const;
+	IDisplay*      display()  const;
+	DisplayMode    displayMode() const;
+	IProgram*      program() const;
+	pair<f32, f32> polygonOffset() const;
+	void           scale(const float, const float, const float);
+	void           scale(const vec3&);
+	void           setDisplayMode(DisplayMode);
+	void           setPolygonOffset(const f32, const f32);
+	void           setProgram(IProgram*);
+	void           setTranslation(const mat4&);
+	void           startAnimation(const string&);
+	void           stopAnimation();
+	ITexture*      texture(const string&) const;
+	ITexture*      texture() const;
+	void           translate(const float, const float, const float);
+	void           translate(const mat4&);
+	mat4           translation() const;
+	void           update(const int);
 
 	virtual void render(const Camera*, const f32) = 0;
 

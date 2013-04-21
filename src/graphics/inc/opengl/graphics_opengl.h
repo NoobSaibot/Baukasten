@@ -21,6 +21,7 @@ public:
 	void enable(GraphicsOption) override;
 	bool isEnabled(GraphicsOption) const override;
 	void setDisplayMode(DisplayMode);
+	void setPolygonOffset(const f32, const f32) override;
 
 private:
 	BK_IMPL(GraphicsOpenGL);

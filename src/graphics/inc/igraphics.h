@@ -19,6 +19,7 @@ public:
 	virtual  void         enable(GraphicsOption) = 0;
 	virtual  bool         isEnabled(GraphicsOption) const = 0;
 	virtual  void         setDisplayMode(DisplayMode) = 0;
+	virtual  void         setPolygonOffset(const f32, const f32) = 0;
 };
 
 } /* bk */

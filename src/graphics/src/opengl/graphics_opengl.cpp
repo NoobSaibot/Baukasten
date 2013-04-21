@@ -36,6 +36,11 @@ public:
 		}
 	}
 
+	void setPolygonOffset(const f32 factor, const f32 units)
+	{
+		BK_GL_ASSERT(glPolygonOffset(factor, units));
+	}
+
 	DisplayMode displayMode() const
 	{
 		return m_mode;
@@ -77,6 +82,11 @@ GraphicsOpenGL::enable(GraphicsOption option)
 		BK_GL_ASSERT(glEnable(GL_CULL_FACE));
 		BK_GL_ASSERT(glCullFace(GL_BACK));
 		break;
+	case GraphicsOption::POLYGON_OFFSET:
+		BK_GL_ASSERT(glEnable(GL_POLYGON_OFFSET_FILL));
+		BK_GL_ASSERT(glEnable(GL_POLYGON_OFFSET_LINE));
+		BK_GL_ASSERT(glEnable(GL_POLYGON_OFFSET_POINT));
+		break;
 	}
 }
 
@@ -90,6 +100,8 @@ GraphicsOpenGL::isEnabled(GraphicsOption option) const
 		BK_GL_ASSERT(return glIsEnabled(GL_BLEND));
 	case GraphicsOption::CULLING:
 		BK_GL_ASSERT(return glIsEnabled(GL_CULL_FACE));
+	case GraphicsOption::POLYGON_OFFSET:
+		BK_GL_ASSERT(return glIsEnabled(GL_POLYGON_OFFSET_LINE));
 	}
 	return false;
 }
@@ -107,6 +119,11 @@ GraphicsOpenGL::disable(GraphicsOption option)
 	case GraphicsOption::CULLING:
 		BK_GL_ASSERT(glDisable(GL_CULL_FACE));
 		break;
+	case GraphicsOption::POLYGON_OFFSET:
+		BK_GL_ASSERT(glDisable(GL_POLYGON_OFFSET_FILL));
+		BK_GL_ASSERT(glDisable(GL_POLYGON_OFFSET_LINE));
+		BK_GL_ASSERT(glDisable(GL_POLYGON_OFFSET_POINT));
+		break;
 	}
 }
 
@@ -120,6 +137,12 @@ void
 GraphicsOpenGL::setDisplayMode(DisplayMode mode)
 {
 	m_impl->setDisplayMode(mode);
+}
+
+void
+GraphicsOpenGL::setPolygonOffset(const f32 factor, const f32 units)
+{
+	m_impl->setPolygonOffset(factor, units);
 }
 
 } /* bk */

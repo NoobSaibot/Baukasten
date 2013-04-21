@@ -31,7 +31,7 @@ enum class DisplayMode {
 };
 
 enum class GraphicsOption {
-	DEPTH, BLEND, CULLING
+	DEPTH, BLEND, CULLING, POLYGON_OFFSET
 };
 
 enum class ShaderType {

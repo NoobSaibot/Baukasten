@@ -102,6 +102,12 @@ public:
 		m_currAnimation = 0;
 	}
 
+	void setPolygonOffset(const f32 factor, const f32 units)
+	{
+		m_polygonOffset.first = factor;
+		m_polygonOffset.second  = units;
+	}
+
 	void setProgram(IProgram* program)
 	{
 		m_program = program;
@@ -110,6 +116,11 @@ public:
 	IProgram* program() const
 	{
 		return m_program;
+	}
+
+	pair<f32, f32> polygonOffset() const
+	{
+		return m_polygonOffset;
 	}
 
 	Animation* animation()
@@ -142,6 +153,8 @@ private:
 	Animation* m_currAnimation;
 	IDisplay* m_display;
 	std::vector<ITexture*> m_textures;
+
+	pair<f32, f32> m_polygonOffset;
 
 	mat4 m_translation;
 
@@ -232,10 +245,22 @@ IForm::program() const
 	return m_impl->program();
 }
 
+pair<f32, f32>
+IForm::polygonOffset() const
+{
+	return m_impl->polygonOffset();
+}
+
 void
 IForm::setDisplayMode(DisplayMode mode)
 {
 	m_impl->setDisplayMode(mode);
+}
+
+void
+IForm::setPolygonOffset(const f32 factor, const f32 units)
+{
+	m_impl->setPolygonOffset(factor, units);
 }
 
 void

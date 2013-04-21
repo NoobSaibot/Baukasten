@@ -6,6 +6,7 @@
 #include "graphics/Font"
 #include "graphics/Graphics"
 #include "graphics/IDisplay"
+#include "graphics/IGraphics"
 #include "graphics/IProgram"
 #include "graphics/ITexture"
 #include "graphics/IMesh"
@@ -78,6 +79,19 @@ public:
 			m_mesh->activate();
 		}
 
+		bool pOffsetEnabled = false;
+		if ( m_form->polygonOffset().first != 0 ) {
+			if ( !Graphics::graphics()->isEnabled(GraphicsOption::POLYGON_OFFSET) ) {
+				pOffsetEnabled = true;
+				Graphics::graphics()->enable(GraphicsOption::POLYGON_OFFSET);
+			}
+
+			Graphics::graphics()->setPolygonOffset(
+				m_form->polygonOffset().first,
+				m_form->polygonOffset().second
+			);
+		}
+
 		// set camera matrix
 		program->setConstant("camera", cam->matrix());
 		program->setConstant("transformation", m_form->translation());
@@ -102,6 +116,10 @@ public:
 		}
 
 		program->deactivate();
+
+		if (pOffsetEnabled) {
+			Graphics::graphics()->disable(GraphicsOption::POLYGON_OFFSET);
+		}
 	}
 
 	void initProgram()
