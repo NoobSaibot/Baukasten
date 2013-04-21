@@ -23,8 +23,9 @@ namespace bk {
 
 static IGraphics* s_graphics = new GraphicsImpl();
 
+static IProgram* s_mBasicRed     = nullptr;
 static IProgram* s_mvpBasic      = nullptr;
-static IProgram* s_mvpBasicAlpha = nullptr;
+static IProgram* s_mvpBasicRed   = nullptr;
 
 static IProgram*
 createStockProgram(const string& name, const string& vShader, const string& fShader)
@@ -41,6 +42,41 @@ Graphics::init(const u16 width, const u16 height, const string&)
 {
 	IDisplay* display = new DisplayImpl();
 	display->init(width, height);
+
+	// m_basic_red {{{
+	s_mBasicRed = createStockProgram("shader.mvp_basic", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			gl_Position = transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+
+		void main() {
+			gl_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
 
 	// mvp_basic {{{
 	s_mvpBasic = createStockProgram("shader.mvp_basic", R"(
@@ -77,8 +113,8 @@ Graphics::init(const u16 width, const u16 height, const string&)
 	)");
 	// }}}
 
-	// mvb_basic_alpha {{{
-	s_mvpBasicAlpha = createStockProgram("shader.mvp_basic", R"(
+	// mvb_basic_red {{{
+	s_mvpBasicRed = createStockProgram("shader.mvp_basic", R"(
 		#version 130
 
 		uniform mat4 projection;
@@ -217,11 +253,12 @@ Graphics::createProgram(const string& name, const ShaderList& shader)
 IProgram*
 Graphics::stockProgram(const StockProgramName progName)
 {
-	BK_ASSERT(s_mvpBasicAlpha != nullptr, "Graphics has not been initialized properly! Did you forget to run Graphics::init()?");
+	BK_ASSERT(s_mBasicRed != nullptr, "Graphics has not been initialized properly! Did you forget to run Graphics::init()?");
 
 	switch ( progName ) {
-	case StockProgramName::MVP_BASIC:       return s_mvpBasic;
-	case StockProgramName::MVP_BASIC_ALPHA: return s_mvpBasicAlpha;
+	case StockProgramName::M_BASIC_RED:   return s_mBasicRed;
+	case StockProgramName::MVP_BASIC:     return s_mvpBasic;
+	case StockProgramName::MVP_BASIC_RED: return s_mvpBasicRed;
 	}
 }
 

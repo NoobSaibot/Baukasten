@@ -53,7 +53,7 @@ enum class ProgramVariableType {
 };
 
 enum class StockProgramName {
-	MVP_BASIC, MVP_BASIC_ALPHA
+	M_BASIC_RED, MVP_BASIC, MVP_BASIC_RED
 };
 
 enum class VertexDataType {

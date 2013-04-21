@@ -98,7 +98,7 @@ public:
 
 	void initProgram()
 	{
-		m_program = Graphics::stockProgram(StockProgramName::MVP_BASIC_ALPHA);
+		m_program = Graphics::stockProgram(StockProgramName::M_BASIC_RED);
 	}
 
 	void initMesh()
