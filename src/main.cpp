@@ -178,13 +178,14 @@ int main(int argc, char const *argv[])
 	);
 	debug->form()->translate(0.01f, 0.92f, 0.0f);
 
-	auto fontBeschriftung = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 90);
+	auto fontBeschriftung = Graphics::createFont("/usr/share/fonts/infected/INFECTED.ttf", 90);
 	auto kisteBeschriftung = Model::createActor("actor.beschriftung",
 		Graphics::createTextForm("form.beschriftung", "HAZARDOUS", fontBeschriftung,
 			Graphics::stockProgram(StockProgramName::MVP_BASIC_RED), display )
 	);
 
-	kisteBeschriftung->form()->translate(0.1f, -5.0f, 1.1f);
+	kisteBeschriftung->form()->translate(0.1f, -5.0f, 1.0f);
+	kisteBeschriftung->form()->setPolygonOffset(-1.0f, -1.0f);
 	static_cast<TextForm*>(kisteBeschriftung->form())->setColor({1.0f, 0.0f, 0.0f});
 
 	auto cam = Graphics::createCamera("camera.front");
