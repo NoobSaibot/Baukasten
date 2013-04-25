@@ -15,17 +15,17 @@ struct Data {
 
 	int byteSize()
 	{
-		return size * sizeof(bk::f32);
+		return size * sizeof(f32);
 	}
 
-	bk::f32* data;
-	bk::u32 size;
-	bk::u32 count;
+	f32* data;
+	u32 size;
+	u32 count;
 };
 
 static void
 _set_attrib(const bk::IProgram* program, Data d,
-		const string& attrib, int stride, bk::u32 offset)
+		const string& attrib, int stride, u32 offset)
 {
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
