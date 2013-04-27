@@ -17,6 +17,7 @@
 #include "io/Filesystem"
 #include "io/Event"
 #include "io/EventManager"
+#include "io/InputEvent"
 #include "math/Vector3"
 #include "model/Action"
 #include "model/Actor"
@@ -115,15 +116,14 @@ int main(int argc, char const *argv[])
 	ramza->form()->startAnimation("animation.stand");
 
 	ramza->setEventHandler([&ramza](Event* e) {
-		std::stringstream s;
-		e->serialize(s);
-		string key = s.str();
+		InputEvent* iEvent = static_cast<InputEvent*>( e );
+		auto key = iEvent->key();
 
-		if (key == "I") {
+		if (key == KEY_I) {
 			ramza->form()->startAnimation("animation.die");
 		}
 
-		if (key == "O") {
+		if (key == KEY_O) {
 			ramza->form()->startAnimation("animation.walk_right");
 		}
 
@@ -135,36 +135,37 @@ int main(int argc, char const *argv[])
 
 	box->form()->translate(0, -5.5, 0);
 	box->setActorType(blockType);
-	box->setEventHandler([&box](Event* event) {
-			float rotationY = 0.0f;
-			float rotationX = 0.0f;
+	box->setEventHandler([&box](Event* e) {
+		InputEvent* iEvent = static_cast<InputEvent*>( e );
+		auto key = iEvent->key();
 
-			auto owner = box;
-			stringstream s;
-			event->serialize(s);
-			string key = s.str();
+		float rotationY = 0.0f;
+		float rotationX = 0.0f;
 
-			if (key == "K") {
-				rotationY += 0.5f;
-			}
-			if (key == "J") {
-				rotationY -= 0.5f;
-			}
-			if (key == "U") {
-				rotationX += 0.5f;
-			}
+		auto owner = box;
 
-			if (key == "M") {
-				rotationX -= 0.5f;
-			}
-
-			owner->form()->translate(
-				rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
-			);
-
-			return false;
+		if (key == KEY_K) {
+			rotationY += 0.5f;
 		}
-	);
+
+		if (key == KEY_J) {
+			rotationY -= 0.5f;
+		}
+
+		if (key == KEY_U) {
+			rotationX += 0.5f;
+		}
+
+		if (key == KEY_M) {
+			rotationX -= 0.5f;
+		}
+
+		owner->form()->translate(
+			rotate(mat4(), rotationY, vec3(0,1,0)) * rotate(mat4(), rotationX, vec3(1,0,0))
+		);
+
+		return false;
+	});
 
 	auto surface = Model::createActor("actor.surface",
 		Graphics::createForm("form.surface", meshBox, program, texWater, display ));
@@ -235,33 +236,32 @@ int main(int argc, char const *argv[])
 			auto owner = scene;
 			auto context = owner->context();
 			auto activeCam = context->camera();
-			stringstream s;
-			event->serialize(s);
-			int key = (int)(*(s.str().c_str()));
+			InputEvent* iEvent = static_cast<InputEvent*>( event );
+			bk::Key key = iEvent->key();
 
-			if (key == 'G') {
+			if (key == KEY_G) {
 				context->setActiveCamera((activeCam->name() == "camera.front") ?  "camera.right" : "camera.front");
 			}
 
-			if (key == 'S') {
+			if (key == KEY_S) {
 				context->camera()->move(moveSpeed * activeCam->back());
-			} else if(key == 'W') {
+			} else if(key == KEY_W) {
 				context->camera()->move(moveSpeed * activeCam->forward());
 			}
 
-			if (key == 'A') {
+			if (key == KEY_A) {
 				context->camera()->move(moveSpeed * activeCam->left());
-			} else if(key == 'D') {
+			} else if(key == KEY_D) {
 				context->camera()->move(moveSpeed * activeCam->right());
 			}
 
-			if (key == 'Y') {
+			if (key == KEY_Y) {
 				context->camera()->move(moveSpeed * -vec3(0,1,0));
-			} else if(key == 'X') {
+			} else if(key == KEY_X) {
 				context->camera()->move(moveSpeed * vec3(0,1,0));
 			}
 
-			if (key == 50) {
+			if (key == KEY_ESC) {
 				display->exit();
 			}
 
