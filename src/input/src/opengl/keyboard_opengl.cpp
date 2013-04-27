@@ -1,7 +1,6 @@
 #include "input/inc/opengl/keyboard_opengl.h"
 
 #include "core/Debug"
-#include "io/Event"
 #include "io/EventManager"
 #include "io/InputEvent"
 
