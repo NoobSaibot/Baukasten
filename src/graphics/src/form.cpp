@@ -20,16 +20,27 @@ public:
 	FormPrivate(IMesh* mesh, IProgram* program, ITexture* texture, Form* form) :
 		m_mesh(mesh), m_program(program), m_texture(texture), m_form(form)
 	{
-		m_mesh->addRef();
 		m_program->addRef();
-		m_texture->addRef();
+		if ( mesh ) {
+			m_mesh->addRef();
+		}
+
+		if (texture) {
+			m_texture->addRef();
+		}
 	}
 
 	~FormPrivate()
 	{
-		m_mesh->release();
+		if ( m_mesh ) {
+			m_mesh->release();
+		}
+
 		m_program->release();
-		m_texture->release();
+
+		if ( m_texture != nullptr ) {
+			m_texture->release();
+		}
 	}
 
 	void render(const Camera* cam, const f32 timeDelta)
@@ -70,7 +81,11 @@ public:
 
 		// clean up
 		Graphics::graphics()->setDisplayMode( displayMode );
-		m_texture->deactivate();
+
+		if ( m_texture != nullptr ) {
+			m_texture->deactivate();
+		}
+
 		m_mesh->deactivate();
 		m_program->deactivate();
 	}
