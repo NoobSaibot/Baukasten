@@ -26,6 +26,8 @@ public:
 	void setTexture(const u32, const u32, std::initializer_list<f32>);
 	void setNormals(const u32, const u32, const f32*);
 	void setNormals(const u32, const u32, std::initializer_list<f32>);
+	void setIndices(const u32, const u16*);
+	void setIndices(const u32, std::initializer_list<u16>);
 
 private:
 	MeshOpenGL(const string&);

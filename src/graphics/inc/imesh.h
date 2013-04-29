@@ -29,6 +29,8 @@ public:
 	virtual void setTexture(const u32, const u32, std::initializer_list<f32>) = 0;
 	virtual void setNormals(const u32, const u32, const f32*) = 0;
 	virtual void setNormals(const u32, const u32, std::initializer_list<f32>) = 0;
+	virtual void setIndices(const u32, const u16*) = 0;
+	virtual void setIndices(const u32, std::initializer_list<u16>) = 0;
 
 	void setPrimitiveType(PrimitiveType type) { m_type = type; }
 	PrimitiveType primitiveType() const { return m_type; }

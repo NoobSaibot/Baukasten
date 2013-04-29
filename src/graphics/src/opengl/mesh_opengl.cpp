@@ -8,6 +8,7 @@
 #include <algorithm>
 
 namespace {
+template<typename T>
 struct Data {
 	Data() : data(nullptr), size(0), count(0)
 	{
@@ -15,16 +16,16 @@ struct Data {
 
 	int byteSize()
 	{
-		return size * sizeof(f32);
+		return size * sizeof(T);
 	}
 
-	f32* data;
+	T* data;
 	u32 size;
 	u32 count;
 };
 
 static void
-_set_attrib(const bk::IProgram* program, Data d,
+_set_attrib(const bk::IProgram* program, Data<f32> d,
 		const string& attrib, int stride, u32 offset)
 {
 	GLint pos;
@@ -49,18 +50,23 @@ namespace bk {
 class MeshOpenGLPrivate {
 public:
 	MeshOpenGLPrivate(IMesh* mesh) : m_vbo(0), m_vao(0), m_active(false), m_dirty(false),
-		m_program(nullptr), m_mesh(mesh)
+		m_program(nullptr), m_mesh(mesh), m_drawIndexed(false)
 	{
+		BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
+		BK_GL_ASSERT( glGenBuffers(1, &m_vbo) );
+		BK_GL_ASSERT( glGenBuffers(1, &m_eabo) );
 	}
 
 	virtual ~MeshOpenGLPrivate()
 	{
 		BK_GL_ASSERT(glDeleteBuffers(1, &m_vbo));
+		BK_GL_ASSERT(glDeleteBuffers(1, &m_eabo));
 		BK_GL_ASSERT(glDeleteVertexArrays(1, &m_vao));
 		SAFE_ARR_DELETE(m_vertices.data);
 		SAFE_ARR_DELETE(m_colors.data);
 		SAFE_ARR_DELETE(m_texture.data);
 		SAFE_ARR_DELETE(m_normals.data);
+		SAFE_ARR_DELETE(m_indices.data);
 	}
 
 	int count() const
@@ -75,7 +81,8 @@ public:
 			initBuffer();
 		}
 
-		BK_GL_ASSERT(glBindVertexArray(m_vao));
+		BK_GL_ASSERT( glBindVertexArray(m_vao) );
+		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_eabo) );
 		m_active = true;
 	}
 
@@ -88,12 +95,20 @@ public:
 	{
 		BK_GL_ASSERT(glBindVertexArray(0));
 		BK_GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		BK_GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
 		m_active = false;
 	}
 
 	void render(const u32 count, const u32 offset)
 	{
-		BK_GL_ASSERT(glDrawArrays(_bk_toGLType(m_mesh->primitiveType()), offset, count));
+		auto type = _bk_toGLType(m_mesh->primitiveType());
+
+		if ( m_drawIndexed ) {
+			BK_GL_ASSERT(glDrawElements(type, m_indices.size, GL_UNSIGNED_BYTE, (GLvoid*)0));
+		} else {
+			BK_GL_ASSERT(glDrawArrays(type, offset, count));
+		}
 	}
 
 	void setProgram(IProgram* program)
@@ -126,21 +141,19 @@ public:
 		setData(3, data, size, count);
 	}
 
+	void setIndices(const u16* data, const u32 size)
+	{
+		setData(4, data, size, 0);
+	}
+
 private:
 	void initBuffer()
 	{
 		BK_ASSERT(m_program != nullptr, "Shader Program must be set.");
 
-		if (m_vao == 0) {
-			BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
-		}
-
 		BK_GL_ASSERT( glBindVertexArray(m_vao) );
-
-		if (m_vbo == 0) {
-			BK_GL_ASSERT( glGenBuffers(1, &m_vbo) );
-		}
 		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
+		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_eabo));
 
 		// compute the size of data
 		u32 size = m_vertices.byteSize() + m_colors.byteSize() +
@@ -193,6 +206,12 @@ private:
 			offset += m_normals.byteSize();
 		}
 
+		if (m_indices.data != nullptr) {
+			m_drawIndexed = true;
+			BK_GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size,
+				m_indices.data, GL_STATIC_DRAW ) );
+		}
+
 		m_dirty = false;
 	}
 
@@ -237,16 +256,33 @@ private:
 		m_dirty = true;
 	}
 
-	GLuint m_vbo, m_vao;
+	void setData(int type, const u16* data, const u32 size, const u32 count)
+	{
+		switch (type) {
+		case 4: // indices
+			SAFE_ARR_DELETE(m_indices.data);
+			m_indices.data = new u16[size];
+			std::copy(data, data + size, m_indices.data);
+			m_indices.size = size;
+
+			break;
+		}
+
+		m_dirty = true;
+	}
+
+	GLuint m_vbo, m_vao, m_eabo;
 	int m_size;
 	mutable bool m_active;
-	Data m_vertices;
-	Data m_colors;
-	Data m_texture;
-	Data m_normals;
+	Data<f32> m_vertices;
+	Data<f32> m_colors;
+	Data<f32> m_texture;
+	Data<f32> m_normals;
+	Data<u16> m_indices;
 	bool m_dirty;
 	IProgram* m_program;
 	IMesh* m_mesh;
+	bool m_drawIndexed;
 };
 
 MeshOpenGL::MeshOpenGL(const string& name) :
@@ -354,6 +390,18 @@ MeshOpenGL::setNormals(const u32 size, const u32 count,
 		std::initializer_list<f32> data)
 {
 	m_impl->setNormals(data.begin(), size, count);
+}
+
+void
+MeshOpenGL::setIndices(const u32 size, const u16* data)
+{
+	m_impl->setIndices(data, size);
+}
+
+void
+MeshOpenGL::setIndices(const u32 size, std::initializer_list<u16> data)
+{
+	m_impl->setIndices(data.begin(), size);
 }
 
 }
