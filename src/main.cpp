@@ -67,11 +67,15 @@ int main(int argc, char const *argv[])
 	});
 
 	auto meshRamza = Graphics::createMesh("mesh.ramza");
-
 	meshRamza->setProgram(program);
 	meshRamza->setVertices(18, 3, {
 		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
+
+	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 5.0, 10, 20);
+	auto sphere = Model::createActor("actor.sphere",
+		Graphics::createForm("form.sphere", meshSphere, program, nullptr, display ));
+	sphere->form()->translate(0.0, 5.0, 0.0);
 
 	meshRamza->setTexture(12, 2, {
 		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
@@ -212,6 +216,7 @@ int main(int argc, char const *argv[])
 	scene->addChild(ramza);
 	scene->addChild(debug);
 	scene->addChild(kisteBeschriftung);
+	scene->addChild(sphere);
 
 	scene->addAction(
 		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
