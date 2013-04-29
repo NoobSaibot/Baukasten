@@ -2,6 +2,7 @@
 #define GRAPHICS_H_2SOCX0AI
 
 #include "graphics/Global"
+#include "math/Vector3"
 
 namespace bk {
 
@@ -30,6 +31,8 @@ public:
 			const float, const float, const float);
 	static IMesh* createRect(const string&, IProgram*,
 			const float, const float, const float, const float);
+	static IMesh* createSphere(const string&, IProgram*, const u32,
+		const u32, const u32, const Vector3& color = Vector3(0.5, 0.5, 0.5));
 	static IForm* createForm(const string&, IMesh*,
 			IProgram*, ITexture*, IDisplay*);
 	static IForm* createTextForm(const string&, const string&, Font*,

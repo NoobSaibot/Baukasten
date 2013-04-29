@@ -201,20 +201,150 @@ IMesh*
 Graphics::createRect(const string& name, IProgram* program, const float x,
 		const float y, const float width, const float height)
 {
-	IMesh* impl = new MeshImpl(name);
+	IMesh* mesh = new MeshImpl(name);
 
-	impl->setProgram(program);
+	mesh->setProgram(program);
 
-	impl->setVertices(18, 3, {
+	mesh->setVertices(18, 3, {
 		x + width, y, 0.0f, x + width, y + height, 0.0f, x, y,  0.0f,
 		x + width, y + height, 0.0f, x, y + height, 0.0f, x, y, 0.0f,
 	});
 
-	impl->setTexture(12, 2, {
+	mesh->setTexture(12, 2, {
 		1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 	});
 
-	return impl;
+	return mesh;
+}
+
+IMesh*
+Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
+	const u32 rings, const u32 segments, const Vector3& color)
+{
+	IMesh *mesh = new MeshImpl(name);
+	mesh->setProgram(program);
+
+	vector<f32> vertices;
+	vector<f32> colors;
+	vector<f32> normals;
+	vector<f32> texcoords;
+	vector<u16> indices;
+
+	BK_ASSERT(rings > 1, "The amount of rings must be greater than 1.");
+	BK_ASSERT(segments > 1, "The amount of segments must be greater than 1.");
+
+	vertices.resize(rings * segments * 3 * 6);
+	colors.resize(rings * segments * 3 * 6);
+	//indices.resize(6 * rings * (segments + 1));
+
+	auto v = vertices.begin();
+	auto c = colors.begin();
+	//auto i = indices.begin();
+
+	auto dTheta = M_PI / (f32)rings;
+	auto dPhi   = 2 * M_PI / (f32)segments;
+
+	for ( u32 ring = 0; ring < rings; ++ring ) {
+		auto r0 = radius * sinf(ring * dTheta);
+		auto y0 = radius * cosf(ring * dTheta);
+		for ( u32 segment = 0; segment < segments; ++segment ) {
+			auto x0 = r0 * sinf(segment * dPhi);
+			auto z0 = r0 * cosf(segment * dPhi);
+
+			// VERT -1.0, 1.0
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// VERT -1.0, -1.0
+			r0 = radius * sinf((ring+1) * dTheta);
+			y0 = radius * cosf((ring+1) * dTheta);
+			x0 = r0 * sinf(segment * dPhi);
+			z0 = r0 * cosf(segment * dPhi);
+
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// VERT 1.0, -1.0
+			r0 = radius * sinf((ring+1) * dTheta);
+			y0 = radius * cosf((ring+1) * dTheta);
+			x0 = r0 * sinf((segment+1) * dPhi);
+			z0 = r0 * cosf((segment+1) * dPhi);
+
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// end first triangle
+			// start second triangle
+
+			// VERT 1.0, -1.0
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// VERT 1.0, 1.0
+			r0 = radius * sinf((ring) * dTheta);
+			y0 = radius * cosf((ring) * dTheta);
+			x0 = r0 * sinf((segment+1) * dPhi);
+			z0 = r0 * cosf((segment+1) * dPhi);
+
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// VERT -1.0, 1.0
+			r0 = radius * sinf((ring) * dTheta);
+			y0 = radius * cosf((ring) * dTheta);
+			x0 = r0 * sinf((segment) * dPhi);
+			z0 = r0 * cosf((segment) * dPhi);
+
+			*v++ = x0;
+			*v++ = y0;
+			*v++ = z0;
+
+			*c++ = color.r;
+			*c++ = color.g;
+			*c++ = color.b;
+
+			// index based painting didn't work :/ ... will look later into it
+			//if (ring != rings) {
+				//*i++ = ( (ring  ) * segments ) + segment;
+				//*i++ = ( (ring+1) * segments ) + segment;
+				//*i++ = ( (ring+1) * segments ) + segment + 1;
+				//*i++ = ( (ring+1) * segments ) + segment + 1;
+				//*i++ = ( (ring  ) * segments ) + segment + 1;
+				//*i++ = ( (ring  ) * segments ) + segment;
+			//}
+		}
+	}
+
+	mesh->setVertices(vertices.size(), 3, vertices.data());
+	mesh->setColors(colors.size(), 3, colors.data());
+	//mesh->setIndices(indices.size(), indices.data());
+
+	return mesh;
 }
 
 IForm*
