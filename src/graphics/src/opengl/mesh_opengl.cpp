@@ -124,26 +124,22 @@ public:
 		m_program->addRef();
 	}
 
-	void setVertices(const f32* data, const u32 size,
-			const u32 count)
+	void setVertices(const f32* data, const u32 size, const u32 count)
 	{
 		setData(0, data, size, count);
 	}
 
-	void setColors(const f32* data, const u32 size,
-			const u32 count)
+	void setColors(const f32* data, const u32 size, const u32 count)
 	{
 		setData(1, data, size, count);
 	}
 
-	void setTexture(const f32* data, const u32 size,
-			const u32 count)
+	void setTexture(const f32* data, const u32 size, const u32 count)
 	{
 		setData(2, data, size, count);
 	}
 
-	void setNormals(const f32* data, const u32 size,
-			const u32 count)
+	void setNormals(const f32* data, const u32 size, const u32 count)
 	{
 		setData(3, data, size, count);
 	}
@@ -222,8 +218,7 @@ private:
 		m_dirty = false;
 	}
 
-	void setData(int type, const f32* data, const u32 size,
-			const u32 count)
+	void setData(int type, const f32* data, const u32 size, const u32 count)
 	{
 		switch (type) {
 		case 0: // vertices
