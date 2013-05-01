@@ -39,7 +39,14 @@ _set_attrib(const bk::IProgram* program, Data<f32> d,
 static GLenum _bk_toGLType(bk::PrimitiveType type)
 {
 	switch ( type ) {
-	case bk::PrimitiveType::TRIANGLES: return GL_TRIANGLES;
+	case bk::PrimitiveType::PATCHES:         return GL_PATCHES;
+	case bk::PrimitiveType::POINTS:          return GL_POINTS;
+	case bk::PrimitiveType::LINES:           return GL_LINES;
+	case bk::PrimitiveType::LINE_LOOP:       return GL_LINE_LOOP;
+	case bk::PrimitiveType::LINE_STRIP:      return GL_LINE_STRIP;
+	case bk::PrimitiveType::TRIANGLES:       return GL_TRIANGLES;
+	case bk::PrimitiveType::TRIANGLE_FAN:    return GL_TRIANGLE_FAN;
+	case bk::PrimitiveType::TRIANGLE_STRIP:  return GL_TRIANGLE_STRIP;
 	}
 	return GL_TRIANGLES;
 }

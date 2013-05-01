@@ -44,7 +44,7 @@ enum class MeshUsageHint {
 
 enum class PrimitiveType {
 	POINTS, LINE_STRIP, LINE_LOOP, LINES,
-	TRIANGLE_STRIP, TRIANGLE_FAN, TRIANGLES, PATCH
+	TRIANGLE_STRIP, TRIANGLE_FAN, TRIANGLES, PATCHES
 };
 
 enum class ProgramVariableType {

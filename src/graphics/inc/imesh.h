@@ -11,7 +11,8 @@ class VertexFormat;
 
 class IMesh : public Managed {
 public:
-	IMesh(const string& name) : Managed(name, "Mesh") {}
+	IMesh(const string& name) : Managed(name, "Mesh"),
+		m_type( PrimitiveType::TRIANGLES ) {}
 
 	virtual void activate() = 0;
 	virtual bool isActive() const = 0;

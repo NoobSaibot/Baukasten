@@ -80,8 +80,6 @@ public:
 		m_mesh->render();
 
 		// clean up
-		Graphics::graphics()->setDisplayMode( displayMode );
-
 		if ( m_texture != nullptr ) {
 			m_texture->deactivate();
 		}
