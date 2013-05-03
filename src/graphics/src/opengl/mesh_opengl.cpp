@@ -279,6 +279,7 @@ private:
 			m_indices.data = new u16[size];
 			std::copy(data, data + size, m_indices.data);
 			m_indices.size = size;
+			m_indices.count = count;
 
 			break;
 		}
