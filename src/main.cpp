@@ -44,6 +44,7 @@ int main(int argc, char const *argv[])
 	ramzaBitmap->release();
 
 	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC_TEX);
+	auto pColor  = Graphics::stockProgram(StockProgramName::MVP_BASIC_COL);
 
 	auto meshBox = Graphics::createMesh("mesh.box");
 
@@ -72,9 +73,9 @@ int main(int argc, char const *argv[])
 		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
 
-	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 3.0, 50, 100, Vector3(0.5, 1.0, 0.0));
+	auto meshSphere = Graphics::createSphere("mesh.sphere", pColor, 5.0, 50, 100, Vector3(0.5, 1.0, 0.0));
 	auto sphere = Model::createActor("actor.sphere",
-		Graphics::createForm("form.sphere", meshSphere, program, nullptr, display ));
+		Graphics::createForm("form.sphere", meshSphere, pColor, nullptr, display ));
 	sphere->form()->translate(0.0, 3.0, 0.0);
 	sphere->form()->setDisplayMode(DisplayMode::WIREFRAME);
 
