@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
 	auto texRamza = Graphics::createTextureFromBitmap("texture.ramza", *ramzaBitmap);
 	ramzaBitmap->release();
 
-	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC);
+	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC_TEX);
 
 	auto meshBox = Graphics::createMesh("mesh.box");
 
@@ -72,10 +72,11 @@ int main(int argc, char const *argv[])
 		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
 
-	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 5.0, 10, 20);
+	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 3.0, 50, 100, Vector3(0.5, 1.0, 0.0));
 	auto sphere = Model::createActor("actor.sphere",
 		Graphics::createForm("form.sphere", meshSphere, program, nullptr, display ));
-	sphere->form()->translate(0.0, 5.0, 0.0);
+	sphere->form()->translate(0.0, 3.0, 0.0);
+	sphere->form()->setDisplayMode(DisplayMode::WIREFRAME);
 
 	meshRamza->setTexture(12, 2, {
 		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
