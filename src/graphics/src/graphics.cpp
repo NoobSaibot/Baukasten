@@ -107,7 +107,7 @@ Graphics::init(const u16 width, const u16 height, const string&)
 		in vec3 bk_Normal;
 
 		void main() {
-			gl_FragColor = vec4(0.5, 1.0, 0.3, 1.0);
+			gl_FragColor = vec4(bk_Color, 1.0);
 		}
 	)");
 	// }}}
