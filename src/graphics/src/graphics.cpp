@@ -24,7 +24,8 @@ namespace bk {
 static IGraphics* s_graphics = new GraphicsImpl();
 
 static IProgram* s_mBasicRed     = nullptr;
-static IProgram* s_mvpBasic      = nullptr;
+static IProgram* s_mvpBasicCol   = nullptr;
+static IProgram* s_mvpBasicTex   = nullptr;
 static IProgram* s_mvpBasicRed   = nullptr;
 
 static IProgram*
@@ -79,8 +80,40 @@ Graphics::init(const u16 width, const u16 height, const string&)
 	)");
 	// }}}
 
-	// mvp_basic {{{
-	s_mvpBasic = createStockProgram("shader.mvp_basic", R"(
+	// mvp_basic_col {{{
+	s_mvpBasicCol = createStockProgram("shader.mvp_basic_col", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec3 bk_color;
+		in vec3 bk_normal;
+
+		out vec3 bk_Color;
+		out vec3 bk_Normal;
+
+		void main() {
+			bk_Color = bk_color;
+			bk_Normal = bk_normal;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		in vec3 bk_Color;
+		in vec3 bk_Normal;
+
+		void main() {
+			gl_FragColor = vec4(0.5, 1.0, 0.3, 1.0);
+		}
+	)");
+	// }}}
+
+	// mvp_basic_tex {{{
+	s_mvpBasicTex = createStockProgram("shader.mvp_basic_tex", R"(
 		#version 130
 
 		uniform mat4 projection;
@@ -393,7 +426,8 @@ Graphics::stockProgram(const StockProgramName progName)
 
 	switch ( progName ) {
 	case StockProgramName::M_BASIC_RED:   return s_mBasicRed;
-	case StockProgramName::MVP_BASIC:     return s_mvpBasic;
+	case StockProgramName::MVP_BASIC_TEX: return s_mvpBasicTex;
+	case StockProgramName::MVP_BASIC_COL: return s_mvpBasicCol;
 	case StockProgramName::MVP_BASIC_RED: return s_mvpBasicRed;
 	}
 }
