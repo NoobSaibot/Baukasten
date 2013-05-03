@@ -20,7 +20,9 @@ public:
 	FormPrivate(IMesh* mesh, IProgram* program, ITexture* texture, Form* form) :
 		m_mesh(mesh), m_program(program), m_texture(texture), m_form(form)
 	{
+		BK_ASSERT(program, "Program must not be null.");
 		m_program->addRef();
+
 		if ( mesh ) {
 			m_mesh->addRef();
 		}
