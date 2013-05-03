@@ -64,7 +64,7 @@ public:
 		BK_GL_ASSERT( glGenBuffers(1, &m_eabo) );
 	}
 
-	virtual ~MeshOpenGLPrivate()
+	~MeshOpenGLPrivate()
 	{
 		BK_GL_ASSERT(glDeleteBuffers(1, &m_vbo));
 		BK_GL_ASSERT(glDeleteBuffers(1, &m_eabo));
