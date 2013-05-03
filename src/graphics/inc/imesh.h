@@ -22,7 +22,9 @@ public:
 	virtual void render() = 0;
 	virtual void render(const u32, const u32 offset = 0) = 0;
 	virtual void setProgram(IProgram*) = 0;
+	virtual void addVertices(const u32, const f32*) = 0;
 	virtual void setVertices(const u32, const u32, const f32*) = 0;
+	virtual void addVertices(const u32, std::initializer_list<f32>) = 0;
 	virtual void setVertices(const u32, const u32, std::initializer_list<f32>) = 0;
 	virtual void setColors(const u32, const u32, const f32*) = 0;
 	virtual void setColors(const u32, const u32, std::initializer_list<f32>) = 0;

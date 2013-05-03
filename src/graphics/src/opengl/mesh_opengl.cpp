@@ -124,6 +124,19 @@ public:
 		m_program->addRef();
 	}
 
+	void addVertices(const f32* data, const u32 size)
+	{
+		auto sizeNew  = m_vertices.size + size;
+		auto dataNew  = new f32[sizeNew * sizeof(f32)];
+
+		memcpy(dataNew, m_vertices.data, m_vertices.size * sizeof(f32));
+		memcpy(dataNew + m_vertices.size, data, size * sizeof(f32));
+
+		setData( 0, dataNew, sizeNew, m_vertices.count );
+
+		delete dataNew;
+	}
+
 	void setVertices(const f32* data, const u32 size, const u32 count)
 	{
 		setData(0, data, size, count);
@@ -339,10 +352,22 @@ MeshOpenGL::setProgram(IProgram* program)
 }
 
 void
+MeshOpenGL::addVertices(const u32 size, const f32* data)
+{
+	m_impl->addVertices(data, size);
+}
+
+void
 MeshOpenGL::setVertices(const u32 size, const u32 count,
 		const f32* data)
 {
 	m_impl->setVertices(data, size, count);
+}
+
+void
+MeshOpenGL::addVertices(const u32 size, std::initializer_list<f32> data)
+{
+	m_impl->addVertices(data.begin(), size);
 }
 
 void

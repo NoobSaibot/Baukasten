@@ -18,7 +18,9 @@ public:
 	void render();
 	void render(const u32, const u32 offset = 0);
 	void setProgram(IProgram*);
+	void addVertices(const u32, const f32*);
 	void setVertices(const u32, const u32, const f32*);
+	void addVertices(const u32, std::initializer_list<f32>);
 	void setVertices(const u32, const u32, std::initializer_list<f32>);
 	void setColors(const u32, const u32, const f32*);
 	void setColors(const u32, const u32, std::initializer_list<f32>);
