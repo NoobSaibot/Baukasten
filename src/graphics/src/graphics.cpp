@@ -257,6 +257,96 @@ Graphics::createRect(const string& name, IProgram* program, const float x,
 }
 
 IMesh*
+Graphics::createCube(const string& name, IProgram* program, const u32 size,
+	const Vector3& color)
+{
+	IMesh *mesh = new MeshImpl(name);
+	mesh->setProgram(program);
+
+	vector<f32> vertices;
+	vector<f32> colors;
+	vector<f32> normals;
+	vector<f32> texture;
+	vector<u16> indices;
+
+	BK_ASSERT(size > 0, "The size must be greater than 0.");
+
+	vertices.resize(8 * 3);
+	colors.resize(8 * 3);
+	indices.resize(6 * 3 * 2);
+	texture.resize(8 * 2);
+
+	mesh->setVertices(108, 3, {
+		-1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f, 1.0f, -1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f, -1.0f, 1.0f,-1.0f, -1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f
+	});
+
+	mesh->setColors(108, 3, {
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b,
+		color.r, color.g, color.b
+	});
+
+	// how to map texture to indexed cube
+	//mesh->setIndices(36, {
+		//3, 1, 2, 3, 0, 1,
+		//0, 3, 4, 4, 5, 0,
+		//0, 5, 6, 6, 1, 0,
+		//1, 6, 7, 7, 2, 1,
+		//7, 4, 3, 3, 2, 7,
+		//4, 7, 6, 6, 5, 4
+	//});
+
+	mesh->setTexture(72, 2, {
+		0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+	});
+
+	return mesh;
+}
+
+IMesh*
 Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	const u32 rings, const u32 segments, const Vector3& color)
 {
