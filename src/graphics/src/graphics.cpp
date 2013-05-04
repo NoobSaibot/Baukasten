@@ -272,9 +272,9 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	BK_ASSERT(rings > 1, "The amount of rings must be greater than 1.");
 	BK_ASSERT(segments > 1, "The amount of segments must be greater than 1.");
 
-	vertices.resize(rings * segments * 3);
-	colors.resize(rings * segments * 3);
-	indices.resize(6 * rings * segments);
+	vertices.resize((rings + 1) * segments * 3);
+	colors.resize((rings + 1) * segments * 3);
+	indices.resize(6 * (rings + 1) * segments);
 
 	auto v = vertices.begin();
 	auto c = colors.begin();
@@ -283,7 +283,9 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	auto dTheta = M_PI / (f32)rings;
 	auto dPhi   = 2 * M_PI / (f32)segments;
 
-	for ( u32 ring = 0; ring < rings; ++ring ) {
+	// loop has to go from 0 to rings (not rings-1) so that the
+	// dTheta goes "full" half circle to close the sphere at the bottom
+	for ( u32 ring = 0; ring <= rings; ++ring ) {
 		auto r0 = radius * sinf(ring * dTheta);
 		auto y0 = radius * cosf(ring * dTheta);
 		for ( u32 segment = 0; segment < segments; ++segment ) {
@@ -294,7 +296,7 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 			*v++ = y0;  *c++ = color.g;
 			*v++ = z0;  *c++ = color.b;
 
-			if ((ring + 1) < rings) {
+			if (ring < rings) {
 				*i++ = ( (ring  ) * segments ) + segment;
 				*i++ = ( (ring+1) * segments ) + segment;
 				*i++ = ( (ring+1) * segments ) + (segment + 1) % segments;
