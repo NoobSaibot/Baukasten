@@ -356,7 +356,7 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	vector<f32> vertices;
 	vector<f32> colors;
 	vector<f32> normals;
-	vector<f32> texcoords;
+	vector<f32> texture;
 	vector<u16> indices;
 
 	BK_ASSERT(rings > 1, "The amount of rings must be greater than 1.");
@@ -365,10 +365,12 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	vertices.resize((rings + 1) * segments * 3);
 	colors.resize((rings + 1) * segments * 3);
 	indices.resize(6 * (rings + 1) * segments);
+	texture.resize(2 * (rings + 1) * (segments + 1));
 
 	auto v = vertices.begin();
 	auto c = colors.begin();
 	auto i = indices.begin();
+	auto t = texture.begin();
 
 	auto dTheta = M_PI / (f32)rings;
 	auto dPhi   = 2 * M_PI / (f32)segments;
@@ -386,6 +388,9 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 			*v++ = y0;  *c++ = color.g;
 			*v++ = z0;  *c++ = color.b;
 
+			*t++ = (f32)segment / (f32)segments;
+			*t++ = (f32)ring / (f32)rings;
+
 			if (ring < rings) {
 				*i++ = ( (ring  ) * segments ) + segment;
 				*i++ = ( (ring+1) * segments ) + segment;
@@ -400,6 +405,7 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	mesh->setVertices(vertices.size(), 3, vertices.data());
 	mesh->setColors(colors.size(), 3, colors.data());
 	mesh->setIndices(indices.size(), indices.data());
+	mesh->setTexture(texture.size(), 2, texture.data());
 
 	return mesh;
 }
