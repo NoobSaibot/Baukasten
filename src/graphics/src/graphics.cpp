@@ -414,6 +414,71 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	return mesh;
 }
 
+IMesh*
+Graphics::createTorus(const string& name, IProgram* program, const f32 oRadius,
+	const f32 iRadius, const u32 rings, const u32 segments, const Vector3& color)
+{
+	IMesh *mesh = new MeshImpl(name);
+	mesh->setProgram(program);
+
+	vector<f32> vertices;
+	vector<f32> colors;
+	vector<f32> normals;
+	vector<f32> texture;
+	vector<u16> indices;
+
+	vertices.resize( (rings + 1) * segments * 3 );
+	indices.resize(  (rings + 1) * segments * 6 );
+	colors.resize(   (rings + 1) * segments * 3 );
+	texture.resize(  (rings + 1) * (segments + 1) * 2 );
+
+	auto dTheta = 2 * M_PI / rings;
+	auto dPhi   = 2 * M_PI / segments;
+
+	auto r  = oRadius - iRadius;
+	auto r0 = oRadius - r;
+
+	auto v = vertices.begin();
+	auto i = indices.begin();
+	auto c = colors.begin();
+	auto t = texture.begin();
+
+	for ( u32 ring = 0; ring <= rings; ++ring ) {
+		auto theta = ring * dTheta;
+
+		for ( u32 segment = 0; segment < segments; ++segment ) {
+			auto phi = segment * dPhi;
+
+			auto x0 = ( ( r0 + r * cosf(phi) ) * cosf(theta) );
+			auto y0 = ( ( r0 + r * cosf(phi) ) * sinf(theta) );
+			auto z0 = r * sinf(phi);
+
+			*v++ = x0; *c++ = color.r;
+			*v++ = y0; *c++ = color.g;
+			*v++ = z0; *c++ = color.b;
+
+			*t++ = (f32)segment / (f32)segments;
+			*t++ = (f32)ring / (f32)rings;
+
+			if (ring < rings) {
+				*i++ = ( (ring  ) * segments ) + segment;
+				*i++ = ( (ring+1) * segments ) + segment;
+				*i++ = ( (ring+1) * segments ) + (segment + 1) % segments;
+				*i++ = ( (ring+1) * segments ) + (segment + 1) % segments;
+				*i++ = ( (ring  ) * segments ) + (segment + 1) % segments;
+				*i++ = ( (ring  ) * segments ) + segment;
+			}
+		}
+	}
+
+	mesh->setVertices(vertices.size(), 3, vertices.data());
+	mesh->setIndices(indices.size(), indices.data());
+	mesh->setColors(colors.size(), 3, colors.data());
+	mesh->setTexture(texture.size(), 2, texture.data());
+
+	return mesh;
+}
+
 IForm*
 Graphics::createForm(const string& name, IMesh* mesh, IProgram* program,
 		ITexture* texture, IDisplay* display)
