@@ -227,6 +227,10 @@ private:
 				m_indices.data, GL_STATIC_DRAW ) );
 		}
 
+		BK_GL_ASSERT( glBindVertexArray(0) );
+		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
+		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
 		m_dirty = false;
 	}
 
