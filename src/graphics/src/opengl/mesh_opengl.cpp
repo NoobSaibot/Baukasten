@@ -61,13 +61,13 @@ public:
 	{
 		BK_GL_ASSERT( glGenVertexArrays(1, &m_vao) );
 		BK_GL_ASSERT( glGenBuffers(1, &m_vbo) );
-		BK_GL_ASSERT( glGenBuffers(1, &m_eabo) );
+		BK_GL_ASSERT( glGenBuffers(1, &m_ebo) );
 	}
 
 	~MeshOpenGLPrivate()
 	{
 		BK_GL_ASSERT(glDeleteBuffers(1, &m_vbo));
-		BK_GL_ASSERT(glDeleteBuffers(1, &m_eabo));
+		BK_GL_ASSERT(glDeleteBuffers(1, &m_ebo));
 		BK_GL_ASSERT(glDeleteVertexArrays(1, &m_vao));
 		SAFE_ARR_DELETE(m_vertices.data);
 		SAFE_ARR_DELETE(m_colors.data);
@@ -169,7 +169,7 @@ private:
 
 		BK_GL_ASSERT( glBindVertexArray(m_vao) );
 		BK_GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, m_vbo) );
-		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_eabo));
+		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo));
 
 		// compute the size of data
 		u32 size = m_vertices.byteSize() + m_colors.byteSize() +
@@ -287,7 +287,7 @@ private:
 		m_dirty = true;
 	}
 
-	GLuint m_vbo, m_vao, m_eabo;
+	GLuint m_vbo, m_vao, m_ebo;
 	int m_size;
 	mutable bool m_active;
 	Data<f32> m_vertices;
