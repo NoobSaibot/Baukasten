@@ -366,10 +366,10 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 	BK_ASSERT(rings > 1, "The amount of rings must be greater than 1.");
 	BK_ASSERT(segments > 1, "The amount of segments must be greater than 1.");
 
-	vertices.resize((rings + 1) * segments * 3);
-	colors.resize((rings + 1) * segments * 3);
-	indices.resize(6 * (rings + 1) * segments);
-	texture.resize(2 * (rings + 1) * (segments + 1));
+	vertices.resize((rings + 1) * (segments    ) * 3 );
+	colors.resize(  (rings + 1) * (segments    ) * 3 );
+	indices.resize( (rings + 1) * (segments    ) * 6 );
+	texture.resize( (rings + 1) * (segments + 1) * 2 );
 
 	auto v = vertices.begin();
 	auto c = colors.begin();
