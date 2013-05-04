@@ -223,7 +223,7 @@ private:
 
 		if (m_indices.data != nullptr) {
 			m_drawIndexed = true;
-			BK_GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size,
+			BK_GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.byteSize(),
 				m_indices.data, GL_STATIC_DRAW ) );
 		}
 
