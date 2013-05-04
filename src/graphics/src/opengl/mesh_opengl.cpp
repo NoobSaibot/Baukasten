@@ -111,7 +111,7 @@ public:
 		auto type = _bk_toGLType(m_mesh->primitiveType());
 
 		if ( m_drawIndexed ) {
-			BK_GL_ASSERT(glDrawElements(type, m_indices.size, GL_UNSIGNED_BYTE, (GLvoid*)0));
+			BK_GL_ASSERT(glDrawElements(type, m_indices.size, GL_UNSIGNED_SHORT, (GLvoid*)0));
 		} else {
 			BK_GL_ASSERT(glDrawArrays(type, offset, count));
 		}
