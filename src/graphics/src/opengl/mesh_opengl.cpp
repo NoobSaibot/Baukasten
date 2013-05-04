@@ -89,7 +89,6 @@ public:
 		}
 
 		BK_GL_ASSERT( glBindVertexArray(m_vao) );
-		BK_GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_eabo) );
 		m_active = true;
 	}
 
