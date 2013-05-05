@@ -436,7 +436,6 @@ Graphics::createTorus(const string& name, IProgram* program, const f32 oRadius,
 	auto dPhi   = 2 * M_PI / segments;
 
 	auto r  = oRadius - iRadius;
-	auto r0 = oRadius - r;
 
 	auto v = vertices.begin();
 	auto i = indices.begin();
@@ -449,8 +448,8 @@ Graphics::createTorus(const string& name, IProgram* program, const f32 oRadius,
 		for ( u32 segment = 0; segment < segments; ++segment ) {
 			auto phi = segment * dPhi;
 
-			auto x0 = ( ( r0 + r * cosf(phi) ) * cosf(theta) );
-			auto y0 = ( ( r0 + r * cosf(phi) ) * sinf(theta) );
+			auto x0 = ( ( iRadius + r * cosf(phi) ) * cosf(theta) );
+			auto y0 = ( ( iRadius + r * cosf(phi) ) * sinf(theta) );
 			auto z0 = r * sinf(phi);
 
 			*v++ = x0; *c++ = color.r;
