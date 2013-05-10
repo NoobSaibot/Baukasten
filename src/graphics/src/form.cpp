@@ -58,7 +58,8 @@ public:
 		}
 
 		// set camera matrix
-		m_program->setConstant("camera", cam->matrix());
+		m_program->setConstant("camera", cam->matrix(
+					m_form->option(GraphicsOption::ROTATION_MATRIX)));
 		m_program->setConstant("transformation", m_form->translation());
 
 		// set default value if no animation is present
