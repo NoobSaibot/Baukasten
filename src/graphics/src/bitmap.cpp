@@ -41,31 +41,24 @@ unsigned char* Bitmap::pixels() const
 	return m_pixels;
 }
 
-void Bitmap::flip(const BitmapFlipMode mode)
+void
+Bitmap::flip(const BitmapFlipMode mode)
 {
-	// flip vertikal für den anfang
-	//unsigned long rowSize = m_format * m_width;
-	//BK_PRINT("rowSize: " << rowSize);
-	//unsigned char* rowBuffer = new unsigned char[rowSize];
-	//unsigned halfRows = m_height / 2;
-	//BK_PRINT("halfRows: " << halfRows);
+	// TODO mind the mode
+	u32 rowSize = (u32)m_format * m_width;
+	u8* rowBuffer = new u8[rowSize];
+	u32 halfRows = m_height / 2;
 
-	//for (unsigned rowIdx = 0; rowIdx < halfRows; ++rowIdx) {
-		//BK_PRINT(1);
-		//unsigned char* row = m_pixels + _pixelOffset(0, rowIdx, m_width, m_height, m_format);
-		//BK_PRINT(2);
-		//unsigned char* oppositeRow = m_pixels + _pixelOffset(0, m_height - rowIdx - 1, m_width, m_height, m_format);
-		//BK_PRINT(3);
+	for (u32 rowIdx = 0; rowIdx < halfRows; ++rowIdx) {
+		u8* row = m_pixels + _pixelOffset(0, rowIdx, m_width, m_height, m_format);
+		u8* oppositeRow = m_pixels + _pixelOffset(0, m_height - rowIdx - 1, m_width, m_height, m_format);
 
-		//memcpy(rowBuffer, row, rowSize);
-		//BK_PRINT(4);
-		//memcpy(row, oppositeRow, rowSize);
-		//BK_PRINT(5);
-		//memcpy(oppositeRow, rowBuffer, rowSize);
-		//BK_PRINT(6);
-	//}
+		memcpy(rowBuffer, row, rowSize);
+		memcpy(row, oppositeRow, rowSize);
+		memcpy(oppositeRow, rowBuffer, rowSize);
+	}
 
-	//delete rowBuffer;
+	SAFE_DELETE( rowBuffer );
 }
 
 }

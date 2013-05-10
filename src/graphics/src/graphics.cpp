@@ -198,10 +198,12 @@ Bitmap*
 Graphics::createBitmapFromFile(const string& path)
 {
 	BK_ASSERT(Filesystem::exists(path), "File " << path << " must be present.");
-	int width, height, channels;
-	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
+	u32 width, height, channels;
+	u8* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
-	return new Bitmap(path, pixels, (BitmapFormat)channels, width, height);
+	auto bitmap = new Bitmap(path, pixels, (BitmapFormat)channels, width, height);
+	bitmap->flip(BitmapFlipMode::VERTICALLY);
+	return bitmap;
 }
 
 Camera*
@@ -254,7 +256,12 @@ Graphics::createRect(const string& name, IProgram* program, const float x,
 	});
 
 	mesh->setTexture(12, 2, {
-		1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f
 	});
 
 	return mesh;
@@ -328,23 +335,43 @@ Graphics::createCube(const string& name, IProgram* program, const u32 size,
 		color.r, color.g, color.b
 	});
 
-	// how to map texture to indexed cube
-	//mesh->setIndices(36, {
-		//3, 1, 2, 3, 0, 1,
-		//0, 3, 4, 4, 5, 0,
-		//0, 5, 6, 6, 1, 0,
-		//1, 6, 7, 7, 2, 1,
-		//7, 4, 3, 3, 2, 7,
-		//4, 7, 6, 6, 5, 4
-	//});
-
 	mesh->setTexture(72, 2, {
-		0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 1.0f
 	});
 
 	return mesh;
