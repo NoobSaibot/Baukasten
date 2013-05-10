@@ -10,7 +10,6 @@ namespace bk {
 class IContextPrivate {
 public:
 	IContextPrivate() :
-		m_enableDepth(true), m_enableBlend(false), m_enableCulling(false),
 		m_activeCam(0)
 	{
 	}
@@ -19,29 +18,6 @@ public:
 	{
 		for ( auto pair: m_cams ) {
 			pair.second->release();
-		}
-	}
-
-	void setOption(GraphicsOption option, bool value)
-	{
-		switch( option ) {
-		case GraphicsOption::DEPTH:
-			m_enableDepth = value; break;
-		case GraphicsOption::BLEND:
-			m_enableBlend = value; break;
-		case GraphicsOption::CULLING:
-			m_enableCulling = value; break;
-		}
-	}
-
-	bool option(GraphicsOption option)
-	{
-		switch( option ) {
-		case GraphicsOption::DEPTH:   return m_enableDepth;
-		case GraphicsOption::BLEND:   return m_enableBlend;
-		case GraphicsOption::CULLING: return m_enableCulling;
-		default:
-			return false;
 		}
 	}
 
@@ -70,9 +46,6 @@ public:
 	}
 
 private:
-	bool m_enableDepth;
-	bool m_enableBlend;
-	bool m_enableCulling;
 	map<string, Camera*> m_cams;
 	Camera* m_activeCam;
 };
@@ -86,18 +59,6 @@ IContext::IContext(const string& name) :
 IContext::~IContext()
 {
 	delete m_impl;
-}
-
-void
-IContext::setOption(const GraphicsOption option, bool value)
-{
-	m_impl->setOption(option, value);
-}
-
-bool
-IContext::option(const GraphicsOption option) const
-{
-	return m_impl->option(option);
 }
 
 void

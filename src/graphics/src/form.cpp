@@ -77,6 +77,7 @@ public:
 		}
 
 		Graphics::graphics()->setDisplayMode( m_form->displayMode() );
+		Graphics::graphics()->set(GraphicsOption::DEPTH, m_form->option(GraphicsOption::DEPTH));
 		Graphics::graphics()->set(GraphicsOption::CULLING, m_form->option(GraphicsOption::CULLING));
 		Graphics::graphics()->set(GraphicsOption::BLEND, m_form->option(GraphicsOption::BLEND));
 

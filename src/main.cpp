@@ -306,8 +306,6 @@ int main(int argc, char const *argv[])
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
 	context->addCamera(cam2, false);
-	context->setOption(GraphicsOption::BLEND, true);
-	context->setOption(GraphicsOption::CULLING, true);
 
 	scene->setContext(context);
 

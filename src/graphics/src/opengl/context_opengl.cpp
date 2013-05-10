@@ -17,23 +17,6 @@ public:
 
 	void activate()
 	{
-		if (m_object->option(GraphicsOption::DEPTH)) {
-			Graphics::graphics()->enable(GraphicsOption::DEPTH);
-		} else {
-			Graphics::graphics()->disable(GraphicsOption::DEPTH);
-		}
-
-		if (m_object->option(GraphicsOption::BLEND)) {
-			Graphics::graphics()->enable(GraphicsOption::BLEND);
-		} else {
-			Graphics::graphics()->disable(GraphicsOption::BLEND);
-		}
-
-		if (m_object->option(GraphicsOption::CULLING)) {
-			Graphics::graphics()->enable(GraphicsOption::CULLING);
-		} else {
-			Graphics::graphics()->disable(GraphicsOption::CULLING);
-		}
 	}
 
 private:
