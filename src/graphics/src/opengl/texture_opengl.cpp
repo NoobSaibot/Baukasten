@@ -231,6 +231,7 @@ public:
 		BK_GL_ASSERT(glGetIntegerv(GL_TEXTURE_BINDING_2D, &id));
 		// bind our texture
 		bind();
+		// TODO set wrapping
 	}
 
 	void generateMipmaps() const
