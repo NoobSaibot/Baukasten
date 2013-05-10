@@ -36,6 +36,32 @@ public:
 		return m_mode;
 	}
 
+	void setOption(GraphicsOption option, bool value)
+	{
+		switch( option ) {
+		case GraphicsOption::DEPTH:
+			m_enableDepth = value; break;
+		case GraphicsOption::BLEND:
+			m_enableBlend = value; break;
+		case GraphicsOption::CULLING:
+			m_enableCulling = value; break;
+		case GraphicsOption::ROTATION_MATRIX:
+			m_rotationMatrix = value; break;
+		}
+	}
+
+	bool option(GraphicsOption option)
+	{
+		switch( option ) {
+		case GraphicsOption::DEPTH:           return m_enableDepth;
+		case GraphicsOption::BLEND:           return m_enableBlend;
+		case GraphicsOption::CULLING:         return m_enableCulling;
+		case GraphicsOption::ROTATION_MATRIX: return m_rotationMatrix;
+		default:
+			return false;
+		}
+	}
+
 	ITexture* texture(const string& name) const
 	{
 		for ( ITexture* t: m_textures ) {
@@ -159,7 +185,11 @@ private:
 	mat4 m_translation;
 
 	// options
-	bool m_enable3d, m_enableBlend, m_enableDepth;
+	bool m_enableDepth;
+	bool m_enableBlend;
+	bool m_enableCulling;
+	bool m_rotationMatrix;
+
 	DisplayMode m_mode;
 };
 
@@ -183,6 +213,18 @@ void
 IForm::setTranslation(const mat4& translation)
 {
 	m_impl->setTranslation(translation);
+}
+
+void
+IForm::setOption(const GraphicsOption option, bool value)
+{
+	m_impl->setOption(option, value);
+}
+
+bool
+IForm::option(const GraphicsOption option) const
+{
+	return m_impl->option(option);
 }
 
 mat4

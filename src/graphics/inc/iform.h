@@ -26,11 +26,13 @@ public:
 	Animation*     animation() const;
 	IDisplay*      display()  const;
 	DisplayMode    displayMode() const;
+	bool           option(const GraphicsOption) const;
 	IProgram*      program() const;
 	pair<f32, f32> polygonOffset() const;
 	void           scale(const float, const float, const float);
 	void           scale(const vec3&);
 	void           setDisplayMode(DisplayMode);
+	void           setOption(const GraphicsOption, const bool);
 	void           setPolygonOffset(const f32, const f32);
 	void           setProgram(IProgram*);
 	void           setTranslation(const mat4&);
