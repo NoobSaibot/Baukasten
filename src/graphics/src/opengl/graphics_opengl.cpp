@@ -134,6 +134,16 @@ GraphicsOpenGL::displayMode() const
 }
 
 void
+GraphicsOpenGL::set(const GraphicsOption option, const bool active)
+{
+	if ( active ) {
+		enable(option);
+	} else {
+		disable(option);
+	}
+}
+
+void
 GraphicsOpenGL::setDisplayMode(DisplayMode mode)
 {
 	m_impl->setDisplayMode(mode);

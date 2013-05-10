@@ -18,6 +18,7 @@ public:
 	virtual  DisplayMode  displayMode() const = 0;
 	virtual  void         enable(GraphicsOption) = 0;
 	virtual  bool         isEnabled(GraphicsOption) const = 0;
+	virtual  void         set(const GraphicsOption, const bool) = 0;
 	virtual  void         setDisplayMode(DisplayMode) = 0;
 	virtual  void         setPolygonOffset(const f32, const f32) = 0;
 };

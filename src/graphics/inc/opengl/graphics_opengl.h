@@ -20,6 +20,7 @@ public:
 	DisplayMode displayMode() const override;
 	void enable(GraphicsOption) override;
 	bool isEnabled(GraphicsOption) const override;
+	void set(const GraphicsOption, const bool) override;
 	void setDisplayMode(DisplayMode);
 	void setPolygonOffset(const f32, const f32) override;
 
