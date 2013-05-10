@@ -18,7 +18,7 @@ Bitmap::Bitmap(const string& path, unsigned char* pixels,
 
 Bitmap::~Bitmap()
 {
-	delete[] m_pixels;
+	SAFE_ARR_DELETE( m_pixels );
 }
 
 BitmapFormat Bitmap::format() const

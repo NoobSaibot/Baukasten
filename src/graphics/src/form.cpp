@@ -106,7 +106,7 @@ Form::Form(const string& name, IMesh* mesh, IProgram* program,
 
 Form::~Form()
 {
-	delete m_impl;
+	SAFE_DELETE( m_impl );
 }
 
 void
