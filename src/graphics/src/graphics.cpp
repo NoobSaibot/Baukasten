@@ -280,6 +280,13 @@ Graphics::createCube(const string& name, IProgram* program, const u32 size,
 	vector<f32> texture;
 	vector<u16> indices;
 
+	auto maxX =  1.0f * size / 2;
+	auto minX = -1.0f * size / 2;
+	auto maxY =  1.0f * size / 2;
+	auto minY = -1.0f * size / 2;
+	auto maxZ =  1.0f * size / 2;
+	auto minZ = -1.0f * size / 2;
+
 	BK_ASSERT(size > 0, "The size must be greater than 0.");
 
 	vertices.resize(8 * 3);
@@ -288,12 +295,50 @@ Graphics::createCube(const string& name, IProgram* program, const u32 size,
 	texture.resize(8 * 2);
 
 	mesh->setVertices(108, 3, {
-		-1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f, 1.0f, -1.0f,-1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f,-1.0f,-1.0f, 1.0f,-1.0f,-1.0f, -1.0f, 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,
-		-1.0f,-1.0f, 1.0f, -1.0f, 1.0f,-1.0f, -1.0f,-1.0f,-1.0f, -1.0f,-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f,-1.0f,
-		 1.0f,-1.0f, 1.0f, 1.0f,-1.0f,-1.0f, 1.0f, 1.0f,-1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f
+		// bottom
+		minX,minY,minZ,
+		maxX,minY,minZ,
+		minX,minY,maxZ,
+		maxX,minY,minZ,
+		maxX,minY,maxZ,
+		minX,minY,maxZ,
+
+		// top
+		minX,maxY,minZ,
+		minX,maxY,maxZ,
+		maxX,maxY,minZ,
+		maxX,maxY,minZ,
+		minX,maxY,maxZ,
+		maxX,maxY,maxZ,
+
+		// front
+		minX,minY,maxZ,
+		maxX,minY,maxZ,
+		minX,maxY,maxZ,
+		maxX,minY,maxZ,
+		maxX,maxY,maxZ,
+		minX,maxY,maxZ,
+
+		minX,minY,minZ,
+		minX,maxY,minZ,
+		maxX,minY,minZ,
+		maxX,minY,minZ,
+		minX,maxY,minZ,
+		maxX,maxY,minZ,
+
+		minX,minY,maxZ,
+		minX,maxY,minZ,
+		minX,minY,minZ,
+		minX,minY,maxZ,
+		minX,maxY,maxZ,
+		minX,maxY,minZ,
+
+		maxX,minY,maxZ,
+		maxX,minY,minZ,
+		maxX,maxY,minZ,
+		maxX,minY,maxZ,
+		maxX,maxY,minZ,
+		maxX,maxY,maxZ
 	});
 
 	mesh->setColors(108, 3, {
