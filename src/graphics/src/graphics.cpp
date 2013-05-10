@@ -213,9 +213,9 @@ Graphics::createCamera(const string& name)
 }
 
 Camera*
-Graphics::createCamera(const string& name, const float fieldOfView,
-		const float aspectRatio, const float nearPlane, const float farPlane,
-		const float horizontalAngle, const float verticalAngle,
+Graphics::createCamera(const string& name, const f32 fieldOfView,
+		const f32 aspectRatio, const f32 nearPlane, const f32 farPlane,
+		const f32 horizontalAngle, const f32 verticalAngle,
 		const vec3 position)
 {
 	return new Camera(name, fieldOfView, aspectRatio, nearPlane, farPlane,
@@ -237,14 +237,14 @@ Graphics::createMesh(const string& name)
 
 IMesh*
 Graphics::createQuad(const string& name, IProgram* program,
-		const float x, const float y, const float width)
+		const f32 x, const f32 y, const f32 width)
 {
 	return createRect(name, program, x, y, width, width);
 }
 
 IMesh*
-Graphics::createRect(const string& name, IProgram* program, const float x,
-		const float y, const float width, const float height)
+Graphics::createRect(const string& name, IProgram* program, const f32 x,
+		const f32 y, const f32 width, const f32 height)
 {
 	IMesh* mesh = new MeshImpl(name);
 

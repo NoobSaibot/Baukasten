@@ -15,9 +15,9 @@ public:
 	}
 
 	CameraPrivate(
-		const float fieldOfView, const float aspectRatio,
-		const float nearPlane, const float farPlane,
-		const float horizontalAngle, const float verticalAngle,
+		const f32 fieldOfView, const f32 aspectRatio,
+		const f32 nearPlane, const f32 farPlane,
+		const f32 horizontalAngle, const f32 verticalAngle,
 		const vec3 position) :
 
 		m_fieldOfView(fieldOfView),
@@ -38,23 +38,23 @@ public:
 	{
 	}
 
-	float fieldOfView() const
+	f32 fieldOfView() const
 	{
 		return m_fieldOfView;
 	}
 
-	void setFieldOfView(const float fieldOfView)
+	void setFieldOfView(const f32 fieldOfView)
 	{
 		BK_ASSERT(fieldOfView > 0.0f && fieldOfView < 180.0f, "fieldOfView must be in a range of (0.0, 180)");
 		m_fieldOfView = fieldOfView;
 	}
 
-	float aspectRatio() const
+	f32 aspectRatio() const
 	{
 		return m_aspectRatio;
 	}
 
-	void setAspectRatio(const float aspectRatio)
+	void setAspectRatio(const f32 aspectRatio)
 	{
 		m_aspectRatio = aspectRatio;
 	}
@@ -71,7 +71,7 @@ public:
 		return translate(m, -m_position);
 	}
 
-	void pan(const float up, const float right)
+	void pan(const f32 up, const f32 right)
 	{
 		m_horizontalAngle += right;
 		while(m_horizontalAngle > 360.0f) m_horizontalAngle -= 360.0;
@@ -136,12 +136,12 @@ public:
 	}
 
 private:
-	float m_fieldOfView;
-	float m_aspectRatio;
-	float m_nearPlane;
-	float m_farPlane;
-	float m_horizontalAngle;
-	float m_verticalAngle;
+	f32 m_fieldOfView;
+	f32 m_aspectRatio;
+	f32 m_nearPlane;
+	f32 m_farPlane;
+	f32 m_horizontalAngle;
+	f32 m_verticalAngle;
 	vec3  m_position;
 };
 
@@ -153,9 +153,9 @@ Camera::Camera(const string& name) :
 
 Camera::Camera(
 		const string& name,
-	const float fieldOfView, const float aspectRatio,
-	const float nearPlane, const float farPlane,
-	const float horizontalAngle, const float verticalAngle,
+	const f32 fieldOfView, const f32 aspectRatio,
+	const f32 nearPlane, const f32 farPlane,
+	const f32 horizontalAngle, const f32 verticalAngle,
 	const vec3 position) :
 
 	Managed(name, "Camera"),
@@ -174,7 +174,7 @@ float Camera::fieldOfView() const
 	return m_impl->fieldOfView();
 }
 
-void Camera::setFieldOfView(const float fieldOfView)
+void Camera::setFieldOfView(const f32 fieldOfView)
 {
 	m_impl->setFieldOfView(fieldOfView);
 }
@@ -184,7 +184,7 @@ float Camera::aspectRatio() const
 	return m_impl->aspectRatio();
 }
 
-void Camera::setAspectRatio(const float aspectRatio)
+void Camera::setAspectRatio(const f32 aspectRatio)
 {
 	m_impl->setAspectRatio(aspectRatio);
 }
@@ -195,7 +195,7 @@ Camera::matrix(const bool rotationOnly) const
 	return m_impl->matrix(rotationOnly);
 }
 
-void Camera::pan(const float up, const float right)
+void Camera::pan(const f32 up, const f32 right)
 {
 	m_impl->pan(up, right);
 }

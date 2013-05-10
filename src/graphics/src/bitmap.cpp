@@ -26,17 +26,19 @@ BitmapFormat Bitmap::format() const
 	return m_format;
 }
 
-int Bitmap::height() const
+u32
+Bitmap::height() const
 {
 	return m_height;
 }
 
-int Bitmap::width() const
+u32
+Bitmap::width() const
 {
 	return m_width;
 }
 
-unsigned char* Bitmap::pixels() const
+u8* Bitmap::pixels() const
 {
 	return m_pixels;
 }

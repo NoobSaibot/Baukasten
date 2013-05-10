@@ -11,16 +11,15 @@ public:
 	static Bitmap* fromFile(const string&);
 
 	BitmapFormat format() const;
-	int height() const;
-	int width() const;
-	unsigned char* pixels() const;
+	u32 height() const;
+	u32 width() const;
+	u8* pixels() const;
 	void flip(const BitmapFlipMode);
 
 	virtual ~Bitmap();
 
 private:
-	Bitmap(const string&, unsigned char*, const BitmapFormat,
-			const int, const int);
+	Bitmap(const string&, u8*, const BitmapFormat, const u32, const u32);
 
 	friend class Graphics;
 	unsigned char* m_pixels;
