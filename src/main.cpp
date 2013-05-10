@@ -29,15 +29,15 @@ using namespace bk;
 
 int main(int argc, char const *argv[])
 {
-	auto display = Graphics::init(800, 600, "demo");
+	auto display = Graphics::init(1280, 1024, "demo");
 
 	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
 	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
 	bitmap->release();
 
-	auto waterBitmap = Graphics::createBitmapFromFile("water4xw1.png");
-	auto texWater = Graphics::createTextureFromBitmap("texture.water", *waterBitmap);
-	waterBitmap->release();
+	auto footballBitmap = Graphics::createBitmapFromFile("football.jpg");
+	auto texFootball = Graphics::createTextureFromBitmap("texture.football", *footballBitmap);
+	footballBitmap->release();
 
 	auto ramzaBitmap = Graphics::createBitmapFromFile("ramza_tex.png");
 	auto texRamza = Graphics::createTextureFromBitmap("texture.ramza", *ramzaBitmap);
@@ -46,7 +46,40 @@ int main(int argc, char const *argv[])
 	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC_TEX);
 	auto pColor  = Graphics::stockProgram(StockProgramName::MVP_BASIC_COL);
 
-	auto meshBox = Graphics::createCube("mesh.box", program, 5.0);
+	ShaderList shader;
+	shader.emplace_back(Graphics::createShaderFromSource("s.v", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+
+		out vec3 bk_fragTex0;
+
+		void main() {
+			bk_fragTex0 = normalize(bk_vertex.xyz);
+			gl_Position = camera * bk_vertex;
+		}
+	)", ShaderType::VERTEX));
+	shader.emplace_back(Graphics::createShaderFromSource("s.f", R"(
+		#version 130
+
+		uniform samplerCube tex;
+		in vec3 bk_fragTex0;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = texture(tex,  bk_fragTex0);
+		}
+	)", ShaderType::FRAGMENT));
+
+	auto pSkyBox = Graphics::createProgram("program.skybox", shader);
+
+	auto meshBox = Graphics::createCube("mesh.box", program, 3.0);
 
 	auto meshRamza = Graphics::createMesh("mesh.ramza");
 	meshRamza->setProgram(program);
@@ -54,82 +87,19 @@ int main(int argc, char const *argv[])
 		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
 
-	auto meshSphere = Graphics::createSphere("mesh.sphere", pColor, 5.0, 50, 100, Vector3(0.5, 1.0, 0.0));
+	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 1.0, 50, 100, Vector3(0.5, 1.0, 0.0));
 	auto sphere = Model::createActor("actor.sphere",
-		Graphics::createForm("form.sphere", meshSphere, pColor, nullptr, display ));
+		Graphics::createForm("form.sphere", meshSphere, program, texFootball, display ));
 	sphere->form()->translate(0.0, 3.0, 0.0);
-	sphere->form()->setDisplayMode(DisplayMode::WIREFRAME);
 
-	meshRamza->setTexture(12, 2, {
-		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-	});
-
-	auto blockType = Model::createActorType("actortype.block");
-	blockType->addState(Model::createState<int>("state.height", 1));
-	blockType->addState(Model::createState<int>("state.width", 1));
-
-	auto unitType = Model::createActorType("actortype.unit");
-	unitType->addState(Model::createState<int>("state.hp", 10));
-	unitType->addState(Model::createState<int>("state.mp", 10));
-	unitType->addState(Model::createState<int>("state.exp", 0));
-	unitType->addState(Model::createState<int>("state.level", 1));
-
-	auto ramza = Model::createActor("actor.ramza",
-		Graphics::createForm( "form.ramza", meshRamza, program, texRamza, display ));
-
-	ramza->setActorType(unitType);
-	ramza->form()->translate(0, -3.5, -0.5);
-
-	ramza->form()->addAnimation( new Animation("animation.stand", {
-		Animation::Frame(0.0, 0.0, 0.07, 0.25, 1, true),
-	}));
-
-	ramza->form()->addAnimation( new Animation("animation.walk_right", {
-		Animation::Frame(0.07, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.21, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.28, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.35, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.28, 0.0, 0.07, 0.25, 10),
-		Animation::Frame(0.14, 0.0, 0.07, 0.25, 10),
-	}));
-
-	ramza->form()->addAnimation( new Animation("animation.die", {
-		Animation::Frame(0.42, 0.0, 0.07, 0.25, 30),
-		Animation::Frame(0.49, 0.0, 0.07, 0.25, 80),
-		Animation::Frame(0.56, 0.0, 0.07, 0.25, 1, true),
-	}));
-
-	ramza->form()->startAnimation("animation.stand");
-
-	ramza->setEventHandler([&ramza](Event* e) {
-		InputEvent* iEvent = static_cast<InputEvent*>( e );
-		auto key = iEvent->key();
-
-		if (key == KEY_I) {
-			ramza->form()->startAnimation("animation.die");
-		}
-
-		if (key == KEY_O) {
-			ramza->form()->startAnimation("animation.walk_right");
-		}
-
-		return false;
-	});
-
-	auto box = Model::createActor("actor.box",
-		Graphics::createForm( "form.box", meshBox, program, tex, display ));
-
-	box->form()->translate(0, -5.5, 0);
-	box->setActorType(blockType);
-	box->setEventHandler([&box](Event* e) {
+	sphere->setEventHandler([&sphere](Event* e) {
 		InputEvent* iEvent = static_cast<InputEvent*>( e );
 		auto key = iEvent->key();
 
 		float rotationY = 0.0f;
 		float rotationX = 0.0f;
 
-		auto owner = box;
+		auto owner = sphere;
 
 		if (key == KEY_K) {
 			rotationY += 0.5f;
@@ -154,10 +124,83 @@ int main(int argc, char const *argv[])
 		return false;
 	});
 
-	auto surface = Model::createActor("actor.surface",
-		Graphics::createForm("form.surface", meshBox, program, texWater, display ));
-	surface->form()->translate(-3, -7, 0);
-	surface->form()->scale(10, 0.5, 10);
+	auto meshTorus = Graphics::createTorus("mesh.torus", pColor, 2.0, 1.5, 40, 40, Vector3(0.5, 1.0, 0.0));
+	auto torus = Model::createActor("actor.torus",
+		Graphics::createForm("form.torus", meshTorus, pColor, nullptr, display ));
+	torus->form()->translate(-5.0, 3.0, 0.0);
+	torus->form()->setDisplayMode(DisplayMode::WIREFRAME);
+
+	auto meshSkyBox = Graphics::createCube("mesh.skyBox", pSkyBox, 100.0);
+	auto texSkyBox  = Graphics::createSkyBox("texture.skyBox", "pos_x.tga", "neg_x.tga",
+		"pos_y.tga", "neg_y.tga", "pos_z.tga", "neg_z.tga");
+	auto skyBox = Model::createActor("actor.skyBox",
+		Graphics::createForm("form.skyBox", meshSkyBox, pSkyBox, texSkyBox, display ));
+	skyBox->form()->setOption(GraphicsOption::CULLING, false);
+	skyBox->form()->setOption(GraphicsOption::ROTATION_MATRIX, true);
+
+	meshRamza->setTexture(12, 2, {
+		1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	});
+
+	auto blockType = Model::createActorType("actortype.block");
+	blockType->addState(Model::createState<int>("state.height", 1));
+	blockType->addState(Model::createState<int>("state.width", 1));
+
+	auto unitType = Model::createActorType("actortype.unit");
+	unitType->addState(Model::createState<int>("state.hp", 10));
+	unitType->addState(Model::createState<int>("state.mp", 10));
+	unitType->addState(Model::createState<int>("state.exp", 0));
+	unitType->addState(Model::createState<int>("state.level", 1));
+
+	auto ramza = Model::createActor("actor.ramza",
+		Graphics::createForm( "form.ramza", meshRamza, program, texRamza, display ));
+
+	ramza->setActorType(unitType);
+	ramza->form()->translate(0, -3.5, -0.5);
+
+	ramza->form()->addAnimation( new Animation("animation.stand", {
+		Animation::Frame(0.0, 0.75, 0.07, 0.25, 1, true),
+	}));
+
+	ramza->form()->addAnimation( new Animation("animation.walk_right", {
+		//               x     y   width height duration
+		Animation::Frame(0.07, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.14, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.21, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.28, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.35, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.28, 0.75, 0.07, 0.25, 10),
+		Animation::Frame(0.14, 0.75, 0.07, 0.25, 10),
+	}));
+
+	ramza->form()->addAnimation( new Animation("animation.die", {
+		Animation::Frame(0.42, 0.75, 0.07, 0.25, 30),
+		Animation::Frame(0.49, 0.75, 0.07, 0.25, 80),
+		Animation::Frame(0.56, 0.75, 0.07, 0.25, 1, true),
+	}));
+
+	ramza->form()->startAnimation("animation.stand");
+
+	ramza->setEventHandler([&ramza](Event* e) {
+		InputEvent* iEvent = static_cast<InputEvent*>( e );
+		auto key = iEvent->key();
+
+		if (key == KEY_I) {
+			ramza->form()->startAnimation("animation.die");
+		}
+
+		if (key == KEY_O) {
+			ramza->form()->startAnimation("animation.walk_right");
+		}
+
+		return false;
+	});
+
+	auto box = Model::createActor("actor.box",
+		Graphics::createForm( "form.box", meshBox, program, tex, display ));
+
+	box->form()->translate(0, -5.5, 0);
+	box->setActorType(blockType);
 
 	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 12);
 	auto debug = Model::createActor("actor.debug",
@@ -192,14 +235,15 @@ int main(int argc, char const *argv[])
 	scene->setInput(Input::createInput("input.default"));
 
 	EventManager::instance().subscribe("event.keyPressed", ramza);
-	EventManager::instance().subscribe("event.keyPressed", box);
+	EventManager::instance().subscribe("event.keyPressed", sphere);
 
 	scene->addChild(box);
-	scene->addChild(surface);
 	scene->addChild(ramza);
 	scene->addChild(debug);
 	scene->addChild(kisteBeschriftung);
 	scene->addChild(sphere);
+	scene->addChild(torus);
+	scene->addChild(skyBox);
 
 	scene->addAction(
 		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
