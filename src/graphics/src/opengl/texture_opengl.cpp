@@ -73,7 +73,7 @@ public:
 
 	~TextureOpenGLPrivate()
 	{
-		BK_GL_ASSERT(glDeleteTextures(1, &m_txt));
+		BK_GL_ASSERT(glDeleteTextures(1, &m_tex));
 	}
 
 	void init(const Bitmap& bitmap)
@@ -87,8 +87,8 @@ public:
 		m_height = height;
 
 		auto target = _opengl_target(m_target);
-		BK_GL_ASSERT(glGenTextures(1, &m_txt));
-		BK_GL_ASSERT(glBindTexture(target, m_txt));
+		BK_GL_ASSERT(glGenTextures(1, &m_tex));
+		BK_GL_ASSERT(glBindTexture(target, m_tex));
 		BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 		BK_GL_ASSERT(glTexImage2D(
 			GL_TEXTURE_2D, 0, _opengl_format(type), (GLsizei)width, (GLsizei)height,
@@ -96,7 +96,9 @@ public:
 		));
 		BK_GL_ASSERT(glGenerateMipmap(target));
 		BK_GL_ASSERT(glBindTexture(target, 0));
-		BK_ASSERT(m_txt != 0, "OpenGL handler couldn't be acquired.");
+		BK_ASSERT(m_tex != 0, "OpenGL handler couldn't be acquired.");
+
+		m_initialised = true;
 	}
 
 	void bind() const
@@ -104,14 +106,14 @@ public:
 		auto target = _opengl_target(m_target);
 		BK_GL_ASSERT(glEnable(target));
 		BK_GL_ASSERT(glActiveTexture(GL_TEXTURE0));
-		BK_GL_ASSERT(glBindTexture(target, m_txt));
+		BK_GL_ASSERT(glBindTexture(target, m_tex));
 	}
 
 	bool bound() const
 	{
 		u32 id;
 		BK_GL_ASSERT(glGetIntegerv(_opengl_target(m_target), &id));
-		return id == m_txt;
+		return id == m_tex;
 	}
 
 	void activate(const IProgram& program) const
@@ -184,7 +186,7 @@ public:
 	}
 
 private:
-	GLuint m_txt;
+	GLuint m_tex;
 	bool m_bound;
 	u32 m_width, m_height;
 	bool m_initialised;
