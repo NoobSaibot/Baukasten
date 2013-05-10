@@ -30,6 +30,12 @@ _set_attrib(const bk::IProgram* program, Data<f32> d,
 {
 	GLint pos;
 	pos = program->attrib(attrib.c_str());
+
+	if ( pos == -1 ) {
+		BK_DEBUG("attribute " << attrib << " couldn't be set.");
+		return;
+	}
+
 	BK_GL_ASSERT(glVertexAttribPointer(
 		pos, d.count, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)(offset)
 	));
