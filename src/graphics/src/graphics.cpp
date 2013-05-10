@@ -74,8 +74,10 @@ Graphics::init(const u16 width, const u16 height, const string&)
 		in vec2 bk_fragTex0;
 		in vec3 bk_Color;
 
+		out vec4 bk_FragColor;
+
 		void main() {
-			gl_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+			bk_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
 		}
 	)");
 	// }}}
@@ -110,8 +112,10 @@ Graphics::init(const u16 width, const u16 height, const string&)
 		in vec3 bk_Color;
 		in vec3 bk_Normal;
 
+		out vec4 bk_FragColor;
+
 		void main() {
-			gl_FragColor = vec4(bk_Color, 1.0);
+			bk_FragColor = vec4(bk_Color, 1.0);
 		}
 	)");
 	// }}}
@@ -149,8 +153,10 @@ Graphics::init(const u16 width, const u16 height, const string&)
 		in vec3 bk_Color;
 		in vec3 bk_Normal;
 
+		out vec4 bk_FragColor;
+
 		void main() {
-			gl_FragColor = texture(tex,  (bk_texSize0 * bk_fragTex0) + bk_texOffset0);
+			bk_FragColor = texture(tex,  (bk_texSize0 * bk_fragTex0) + bk_texOffset0);
 		}
 	)");
 	// }}}
@@ -185,8 +191,10 @@ Graphics::init(const u16 width, const u16 height, const string&)
 		in vec2 bk_fragTex0;
 		in vec3 bk_Color;
 
+		out vec4 bk_FragColor;
+
 		void main() {
-			gl_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+			bk_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
 		}
 	)");
 	// }}}
