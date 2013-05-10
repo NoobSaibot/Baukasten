@@ -17,7 +17,7 @@ class IFormPrivate {
 public:
 	IFormPrivate(IDisplay* display) :
 		m_currAnimation(nullptr), m_display(display), m_mode(DisplayMode::FULL),
-		m_program(nullptr)
+		m_program(nullptr), m_enableBlend(true), m_rotationMatrix(false)
 	{
 	}
 

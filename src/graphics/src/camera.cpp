@@ -59,10 +59,15 @@ public:
 		m_aspectRatio = aspectRatio;
 	}
 
-	mat4 matrix() const
+	mat4 matrix(const bool rotationOnly) const
 	{
 		mat4 m = perspective(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
 		m *= orientation();
+
+		if (rotationOnly) {
+			return m;
+		}
+
 		return translate(m, -m_position);
 	}
 
@@ -184,9 +189,10 @@ void Camera::setAspectRatio(const float aspectRatio)
 	m_impl->setAspectRatio(aspectRatio);
 }
 
-mat4 Camera::matrix() const
+mat4
+Camera::matrix(const bool rotationOnly) const
 {
-	return m_impl->matrix();
+	return m_impl->matrix(rotationOnly);
 }
 
 void Camera::pan(const float up, const float right)

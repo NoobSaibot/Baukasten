@@ -17,7 +17,7 @@ public:
 	float aspectRatio() const;
 	void setAspectRatio(const float);
 
-	mat4 matrix() const;
+	mat4 matrix(const bool rotationOnly = false) const;
 
 	void pan(const float, const float);
 	mat4 orientation() const;
