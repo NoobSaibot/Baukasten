@@ -65,6 +65,8 @@ public:
 	Matrix&            operator*=( const f32 );
 	bool               operator==( const Matrix& );
 	bool               operator!=( const Matrix& );
+
+	friend ostream& operator<< (ostream&, const Matrix&);
 };
 
 } /* bk */

@@ -514,4 +514,13 @@ Matrix::operator!=( const Matrix &other )
 	return !operator==( other );
 }
 
+ostream& operator<<( ostream& out, const Matrix& m)
+{
+    out << m[0]  << '\t' << m[1]  << '\t' << m[2]  << '\t' << m[3]  << '\n';
+    out << m[4]  << '\t' << m[5]  << '\t' << m[6]  << '\t' << m[7]  << '\n';
+    out << m[8]  << '\t' << m[9]  << '\t' << m[10] << '\t' << m[11] << '\n';
+    out << m[12] << '\t' << m[13] << '\t' << m[14] << '\t' << m[15] << '\n';
+
+	return out;
+}
 } /* Baukasten */
