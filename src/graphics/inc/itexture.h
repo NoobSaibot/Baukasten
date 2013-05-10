@@ -35,6 +35,8 @@ public:
 	virtual void setData(const u32, const u32, const u32, const u32, u8*) = 0;
 	virtual void generateMipmaps() const = 0;
 	virtual void init(const Bitmap&) = 0;
+	virtual void init(const Bitmap&, const Bitmap&, const Bitmap&,
+		const Bitmap&, const Bitmap&, const Bitmap&) = 0;
 	virtual void init(const u32, const u32, u8*, const VertexDataType) = 0;
 	virtual u32 width() const = 0;
 	virtual u32 height() const = 0;

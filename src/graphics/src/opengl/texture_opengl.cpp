@@ -81,6 +81,70 @@ public:
 		init(bitmap.width(), bitmap.height(), bitmap.pixels(), _bk_format(bitmap.format()));
 	}
 
+	void init(const Bitmap& posX, const Bitmap& negX, const Bitmap& posY,
+		const Bitmap& negY, const Bitmap& posZ, const Bitmap& negZ)
+	{
+		BK_GL_ASSERT(glGenTextures(1, &m_tex));
+		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_CUBE_MAP, m_tex));
+
+		BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+		BK_GL_ASSERT(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
+		BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+
+		auto oType = _opengl_format(_bk_format(posX.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, oType,
+			(GLsizei)posX.width(), (GLsizei)posX.height(),
+			0, oType, GL_UNSIGNED_BYTE, posX.pixels()
+		));
+
+		oType = _opengl_format(_bk_format(negX.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, oType,
+			(GLsizei)negX.width(), (GLsizei)negX.height(),
+			0, oType, GL_UNSIGNED_BYTE, negX.pixels()
+		));
+
+		oType = _opengl_format(_bk_format(posY.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, oType,
+			(GLsizei)posY.width(), (GLsizei)posY.height(),
+			0, oType, GL_UNSIGNED_BYTE, posY.pixels()
+		));
+
+		oType = _opengl_format(_bk_format(negY.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, oType,
+			(GLsizei)negY.width(), (GLsizei)negY.height(),
+			0, oType, GL_UNSIGNED_BYTE, negY.pixels()
+		));
+
+		oType = _opengl_format(_bk_format(posZ.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, oType,
+			(GLsizei)posZ.width(), (GLsizei)posZ.height(),
+			0, oType, GL_UNSIGNED_BYTE, posZ.pixels()
+		));
+
+		oType = _opengl_format(_bk_format(negZ.format()));
+		BK_GL_ASSERT(glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, oType,
+			(GLsizei)negZ.width(), (GLsizei)negZ.height(),
+			0, oType, GL_UNSIGNED_BYTE, negZ.pixels()
+		));
+
+		BK_GL_ASSERT(glGenerateMipmap(GL_TEXTURE_CUBE_MAP));
+		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+
+		m_width = posX.width();
+		m_height = posX.height();
+
+		m_initialised = true;
+	}
+
 	void init(const u32 width, const u32 height, u8* data, const VertexDataType type)
 	{
 		m_width  = width;
@@ -208,6 +272,13 @@ TextureOpenGL::~TextureOpenGL()
 void TextureOpenGL::init(const Bitmap& bitmap)
 {
 	m_impl->init(bitmap);
+}
+
+void
+TextureOpenGL::init(const Bitmap& posX, const Bitmap& negX, const Bitmap& posY,
+		const Bitmap& negY, const Bitmap& posZ, const Bitmap& negZ)
+{
+	m_impl->init(posX, negX, posY, negY, posZ, negZ);
 }
 
 void

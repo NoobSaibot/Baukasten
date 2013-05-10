@@ -49,6 +49,8 @@ public:
 			const ShaderType );
 	static IShader* createShaderFromSource( const string&, const string&,
 			const ShaderType );
+	static ITexture* createSkyBox( const string&, const string&, const string&,
+		const string&, const string&, const string&, const string&);
 	static ITexture* createTextureFromFile(const string&, const string&);
 	static ITexture* createTextureFromData(const string&, const unsigned int,
 			const unsigned int, unsigned char*, const VertexDataType);

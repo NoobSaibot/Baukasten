@@ -617,6 +617,30 @@ Graphics::createShaderFromSource( const string& name, const string& source, cons
 }
 
 ITexture*
+Graphics::createSkyBox(const string& name, const string& posX, const string& negX,
+	const string& posY, const string& negY, const string& posZ, const string& negZ )
+{
+	auto bPosX = Graphics::createBitmapFromFile(posX);
+	auto bNegX = Graphics::createBitmapFromFile(negX);
+	auto bPosY = Graphics::createBitmapFromFile(posY);
+	auto bNegY = Graphics::createBitmapFromFile(negY);
+	auto bPosZ = Graphics::createBitmapFromFile(posZ);
+	auto bNegZ = Graphics::createBitmapFromFile(negZ);
+
+	ITexture* t = new TextureImpl(name, TextureTarget::TEXTURE_CUBE_MAP, 0);
+	t->init(*bPosX, *bNegX, *bPosY, *bNegY, *bPosZ, *bNegZ);
+
+	bPosX->release();
+	bNegX->release();
+	bPosY->release();
+	bNegY->release();
+	bPosZ->release();
+	bNegZ->release();
+
+	return t;
+}
+
+ITexture*
 Graphics::createTextureFromFile(const string& name, const string& path)
 {
 	auto b = Graphics::createBitmapFromFile(path);
