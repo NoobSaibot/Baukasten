@@ -52,13 +52,22 @@ static GLenum _opengl_filter(bk::ITexture::Filtering filter)
 	}
 }
 
+static GLenum _opengl_target(bk::TextureTarget target)
+{
+	switch (target) {
+	case bk::TextureTarget::TEXTURE_2D: return GL_TEXTURE_2D;
+	case bk::TextureTarget::TEXTURE_CUBE_MAP: return GL_TEXTURE_CUBE_MAP;
+	}
+}
+
 }
 
 namespace bk {
 
 class TextureOpenGLPrivate {
 public:
-	TextureOpenGLPrivate()
+	TextureOpenGLPrivate(const TextureTarget target, const u32 level) :
+		m_initialised( false ), m_target(target), m_level(level)
 	{
 	}
 
@@ -77,49 +86,51 @@ public:
 		m_width  = width;
 		m_height = height;
 
+		auto target = _opengl_target(m_target);
 		BK_GL_ASSERT(glGenTextures(1, &m_txt));
-		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, m_txt));
+		BK_GL_ASSERT(glBindTexture(target, m_txt));
 		BK_GL_ASSERT(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 		BK_GL_ASSERT(glTexImage2D(
 			GL_TEXTURE_2D, 0, _opengl_format(type), (GLsizei)width, (GLsizei)height,
 			0, _opengl_format(type), GL_UNSIGNED_BYTE, data
 		));
-		BK_GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
-		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, 0));
+		BK_GL_ASSERT(glGenerateMipmap(target));
+		BK_GL_ASSERT(glBindTexture(target, 0));
 		BK_ASSERT(m_txt != 0, "OpenGL handler couldn't be acquired.");
 	}
 
-	void bind()
+	void bind() const
 	{
+		auto target = _opengl_target(m_target);
+		BK_GL_ASSERT(glEnable(target));
 		BK_GL_ASSERT(glActiveTexture(GL_TEXTURE0));
-		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, m_txt));
+		BK_GL_ASSERT(glBindTexture(target, m_txt));
 	}
 
 	bool bound() const
 	{
 		u32 id;
-		BK_GL_ASSERT(glGetIntegerv(GL_TEXTURE_BINDING_2D, &id));
+		BK_GL_ASSERT(glGetIntegerv(_opengl_target(m_target), &id));
 		return id == m_txt;
 	}
 
 	void activate(const IProgram& program) const
 	{
-		GLint location = program.constant("tex");
-		BK_GL_ASSERT(glActiveTexture(GL_TEXTURE0));
-		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, m_txt));
-		BK_GL_ASSERT(glUniform1i(location, 0));
+		bind();
 	}
 
 	void deactivate() const
 	{
-		BK_GL_ASSERT(glBindTexture(GL_TEXTURE_2D, 0));
+		auto target = _opengl_target(m_target);
+		BK_GL_ASSERT(glBindTexture(target, 0));
 	}
 
 	void setData(const u32 xOffset, const u32 yOffset, const u32 width,
 			const u32 height, u8* data)
 	{
+		auto target = _opengl_target(m_target);
 		BK_ASSERT(m_bound, "Texture must be bound first.");
-		BK_GL_ASSERT(glTexSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset,
+		BK_GL_ASSERT(glTexSubImage2D(target, 0, xOffset, yOffset,
 			width, height, GL_ALPHA, GL_UNSIGNED_BYTE, data));
 	}
 
@@ -158,7 +169,8 @@ public:
 
 	void generateMipmaps() const
 	{
-		BK_GL_ASSERT(glGenerateMipmap(GL_TEXTURE_2D));
+		auto target = _opengl_target(m_target);
+		BK_GL_ASSERT(glGenerateMipmap(target));
 	}
 
 	u32 width() const
@@ -175,10 +187,14 @@ private:
 	GLuint m_txt;
 	bool m_bound;
 	u32 m_width, m_height;
+	bool m_initialised;
+	TextureTarget m_target;
+	u32 m_level;
 };
 
-TextureOpenGL::TextureOpenGL(const string& name) :
-	ITexture(name), m_impl(new TextureOpenGLPrivate())
+TextureOpenGL::TextureOpenGL(const string& name, const TextureTarget target,
+	const u32 level) :
+	ITexture(name), m_impl(new TextureOpenGLPrivate(target, level))
 {
 }
 

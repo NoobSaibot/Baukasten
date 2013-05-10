@@ -21,13 +21,15 @@ public:
 	void generateMipmaps() const override;
 	void setData(const u32, const u32, const u32, const u32, u8*);
 	void init(const Bitmap&);
+	void init(const Bitmap&, const Bitmap&, const Bitmap&,
+		const Bitmap&, const Bitmap&, const Bitmap&);
 	void init(const u32, const u32, u8*, const VertexDataType);
 
 	u32 width() const override;
 	u32 height() const override;
 
 private:
-	TextureOpenGL(const string&);
+	TextureOpenGL(const string&, const TextureTarget, const u32);
 	friend class Graphics;
 	BK_IMPL(TextureOpenGL);
 };

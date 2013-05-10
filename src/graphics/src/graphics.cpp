@@ -547,7 +547,7 @@ ITexture*
 Graphics::createTextureFromData(const string& name, const unsigned int width,
 		const unsigned int height, unsigned char* data, const VertexDataType type)
 {
-	ITexture* t = new TextureImpl(name);
+	ITexture* t = new TextureImpl(name, TextureTarget::TEXTURE_2D, 0);
 	t->init(width, height, data, type);
 	return t;
 }
@@ -555,7 +555,7 @@ Graphics::createTextureFromData(const string& name, const unsigned int width,
 ITexture*
 Graphics::createTextureFromBitmap(const string& name, const Bitmap& bitmap)
 {
-	ITexture* t = new TextureImpl(name);
+	ITexture* t = new TextureImpl(name, TextureTarget::TEXTURE_2D, 0);
 	t->init(bitmap);
 	return t;
 }

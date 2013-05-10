@@ -38,6 +38,10 @@ enum class ShaderType {
 	VERTEX, FRAGMENT
 };
 
+enum class TextureTarget {
+	TEXTURE_2D, TEXTURE_CUBE_MAP
+};
+
 enum class MeshUsageHint {
 	DYNAMIC, STATIC, STREAM
 };

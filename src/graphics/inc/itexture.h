@@ -23,7 +23,9 @@ public:
 		LINEAR_MIPMAP_LINEAR
 	};
 
-	ITexture(const string& name) : Managed(name, "Texture") {}
+	ITexture(const string& name,
+		const TextureTarget target = TextureTarget::TEXTURE_2D, const u32 level = 0) :
+		Managed(name, "Texture") {}
 
 	virtual void bind() const = 0;
 	virtual void activate(const IProgram&) const = 0;
