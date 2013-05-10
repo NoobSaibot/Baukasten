@@ -6,12 +6,10 @@
 
 namespace bk {
 
-class Settings;
-
 class Camera : public Managed {
 public:
 	// TODO implement settings class
-	void init(Settings*);
+	void init();
 
 	float fieldOfView() const;
 	void setFieldOfView(const float);
