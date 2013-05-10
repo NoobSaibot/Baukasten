@@ -76,8 +76,9 @@ public:
 			));
 		}
 
-		auto displayMode = Graphics::graphics()->displayMode();
 		Graphics::graphics()->setDisplayMode( m_form->displayMode() );
+		Graphics::graphics()->set(GraphicsOption::CULLING, m_form->option(GraphicsOption::CULLING));
+		Graphics::graphics()->set(GraphicsOption::BLEND, m_form->option(GraphicsOption::BLEND));
 
 		// draw the mesh
 		m_mesh->render();
