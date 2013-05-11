@@ -4,7 +4,7 @@
 #include "core/Debug"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
-#include "graphics/ContextImpl"
+#include "graphics/Context"
 #include "graphics/DisplayImpl"
 #include "graphics/GraphicsImpl"
 #include "graphics/MeshImpl"
@@ -230,10 +230,10 @@ Graphics::createCamera(const string& name, const f32 fieldOfView,
 			horizontalAngle, verticalAngle, position);
 }
 
-IContext*
+Context*
 Graphics::createContext(const string& name)
 {
-	return new ContextImpl(name);
+	return new Context(name);
 }
 
 IMesh*

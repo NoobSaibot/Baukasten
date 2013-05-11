@@ -2,7 +2,7 @@
 #include "graphics/Animation"
 #include "graphics/Bitmap"
 #include "graphics/Camera"
-#include "graphics/IContext"
+#include "graphics/Context"
 #include "graphics/Graphics"
 #include "graphics/IDisplay"
 #include "graphics/IProgram"

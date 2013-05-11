@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "graphics/IContext"
+#include "graphics/Context"
 #include "graphics/Graphics"
 #include "graphics/IForm"
 #include "input/Input"
@@ -80,13 +80,13 @@ public:
 		return m_form;
 	}
 
-	void setContext(IContext* context)
+	void setContext(Context* context)
 	{
 		m_context = context;
 		context->addRef();
 	}
 
-	IContext* context() const
+	Context* context() const
 	{
 		if (m_context) {
 			return m_context;
@@ -219,8 +219,6 @@ public:
 
 	void render()
 	{
-		context()->activate();
-
 		if (m_form)
 			m_form->render(context()->camera(), 1.0);
 
@@ -258,7 +256,7 @@ private:
 	vector<Actor*> m_children;
 	Actor*   m_parent;
 	ActorType* m_actorType;
-	mutable IContext* m_context;
+	mutable Context* m_context;
 	Actor*   m_object;
 	IForm*   m_form;
 	Input* m_input;
@@ -315,12 +313,12 @@ Actor::addChild(Actor* child)
 }
 
 void
-Actor::setContext(IContext* context)
+Actor::setContext(Context* context)
 {
 	m_impl->setContext(context);
 }
 
-IContext*
+Context*
 Actor::context() const
 {
 	return m_impl->context();

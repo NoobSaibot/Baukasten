@@ -10,7 +10,7 @@ namespace bk {
 class Action;
 class ActorType;
 class IForm;
-class IContext;
+class Context;
 class Event;
 class IState;
 class Input;
@@ -33,8 +33,8 @@ public:
 	void setActorType(ActorType*);
 	ActorType* actorType() const;
 
-	void setContext(IContext*);
-	IContext* context() const;
+	void setContext(Context*);
+	Context* context() const;
 
 	void setInput(Input*);
 	Input* input() const;
