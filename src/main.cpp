@@ -31,10 +31,6 @@ int main(int argc, char const *argv[])
 {
 	auto display = Graphics::init(1680, 1050, true, "demo");
 
-	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
-	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );
-	bitmap->release();
-
 	auto footballBitmap = Graphics::createBitmapFromFile("football.jpg");
 	auto texFootball = Graphics::createTextureFromBitmap("texture.football", *footballBitmap);
 	footballBitmap->release();
@@ -78,8 +74,6 @@ int main(int argc, char const *argv[])
 	)", ShaderType::FRAGMENT));
 
 	auto pSkyBox = Graphics::createProgram("program.skybox", shader);
-
-	auto meshBox = Graphics::createCube("mesh.box", program, 3.0);
 
 	auto meshRamza = Graphics::createMesh("mesh.ramza");
 	meshRamza->setProgram(program);
@@ -196,12 +190,6 @@ int main(int argc, char const *argv[])
 		return false;
 	});
 
-	auto box = Model::createActor("actor.box",
-		Graphics::createForm( "form.box", meshBox, program, tex, display ));
-
-	box->form()->translate(0, -5.5, 0);
-	box->setActorType(blockType);
-
 	auto font = Graphics::createFont("/usr/share/fonts/corefonts/georgia.ttf", 12);
 	auto debug = Model::createActor("actor.debug",
 		Graphics::createTextForm("form.debug", "60 fps", font,
@@ -209,27 +197,11 @@ int main(int argc, char const *argv[])
 	);
 	debug->form()->translate(0.01f, 0.92f, 0.0f);
 
-	auto fontBeschriftung = Graphics::createFont("/usr/share/fonts/infected/INFECTED.ttf", 90);
-	auto kisteBeschriftung = Model::createActor("actor.beschriftung",
-		Graphics::createTextForm("form.beschriftung", "HAZARDOUS", fontBeschriftung,
-			Graphics::stockProgram(StockProgramName::MVP_BASIC_RED), display )
-	);
-
-	kisteBeschriftung->form()->translate(0.1f, -5.0f, 1.0f);
-	kisteBeschriftung->form()->setPolygonOffset(-1.0f, -1.0f);
-	static_cast<TextForm*>(kisteBeschriftung->form())->setColor({1.0f, 0.0f, 0.0f});
-
 	auto cam = Graphics::createCamera("camera.front");
 
 	cam->setPosition(vec3(-3, 3, 15));
 	cam->pan(15.0, 0.0);
-	cam->setAspectRatio(800.0f/640.0f);
-
-	auto cam2 = Graphics::createCamera("camera.right");
-
-	cam2->setPosition(vec3(10,0,4));
-	cam2->setAspectRatio(800.0f/640.0f);
-	cam2->pan(0.0, -90.0);
+	cam->setAspectRatio((f32)display->width() / (f32)display->height());
 
 	auto scene = Model::createActor("actor.scene", 0);
 	scene->setInput(Input::createInput("input.default"));
@@ -237,13 +209,11 @@ int main(int argc, char const *argv[])
 	EventManager::instance().subscribe("event.keyPressed", ramza);
 	EventManager::instance().subscribe("event.keyPressed", sphere);
 
-	scene->addChild(box);
-	scene->addChild(ramza);
-	scene->addChild(debug);
-	scene->addChild(kisteBeschriftung);
-	scene->addChild(sphere);
-	scene->addChild(torus);
 	scene->addChild(skyBox);
+	scene->addChild(ramza);
+	scene->addChild(sphere);
+	scene->addChild(debug);
+	scene->addChild(torus);
 
 	scene->addAction(
 		Model::createAction("action.trackMouse", scene, ([] (Action *action, vector<Actor*> targets) {
@@ -305,7 +275,6 @@ int main(int argc, char const *argv[])
 
 	auto context = Graphics::createContext("context.standard");
 	context->addCamera(cam);
-	context->addCamera(cam2, false);
 
 	scene->setContext(context);
 
@@ -317,7 +286,7 @@ int main(int argc, char const *argv[])
 
 	Camera* activeCam = cam;
 
-	display->setBackgroundColor(1.0f, 1.0f, 1.0f);
+	display->setBackgroundColor(0.0f, 0.0f, 0.0f);
 	while (glfwGetWindowParam(GLFW_OPENED)) {
 		display->clear();
 
@@ -346,7 +315,6 @@ int main(int argc, char const *argv[])
 	}
 
 	cam->release();
-	cam2->release();
 	scene->release();
 	context->release();
 
