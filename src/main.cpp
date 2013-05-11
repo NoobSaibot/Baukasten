@@ -29,7 +29,7 @@ using namespace bk;
 
 int main(int argc, char const *argv[])
 {
-	auto display = Graphics::init(1280, 1024, "demo");
+	auto display = Graphics::init(1680, 1050, true, "demo");
 
 	auto bitmap = Graphics::createBitmapFromFile("wooden-crate.jpg");
 	auto tex = Graphics::createTextureFromBitmap( "Wooden Crate", *bitmap );

@@ -8,7 +8,7 @@ namespace bk {
 
 class DisplayOpenGLPrivate {
 public:
-	void init(const u16 width, const u16 height)
+	void init(const u16 width, const u16 height, const bool fullScreen)
 	{
 		m_width = width;
 		m_height = height;
@@ -19,7 +19,8 @@ public:
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
 		glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
 
-		auto err = glfwOpenWindow(width, height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW);
+		auto mode = (fullScreen) ? GLFW_FULLSCREEN : GLFW_WINDOW;
+		auto err = glfwOpenWindow(width, height, 8, 8, 8, 8, 16, 0, mode);
 		BK_ASSERT(err == GL_TRUE, "Window couldn't be created.");
 
 		err = glewInit();
@@ -98,9 +99,9 @@ DisplayOpenGL::exit()
 }
 
 void
-DisplayOpenGL::init(const u16 width, const u16 height)
+DisplayOpenGL::init(const u16 width, const u16 height, const bool fullScreen)
 {
-	m_impl->init(width, height);
+	m_impl->init(width, height, fullScreen);
 }
 
 void

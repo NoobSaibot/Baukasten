@@ -59,7 +59,7 @@ public:
 	static IGraphics* graphics();
 
 	// erstelle fenster hier
-	static IDisplay* init(const u16, const u16, const string&);
+	static IDisplay* init(const u16, const u16, const bool, const string&);
 };
 
 } /* bk */

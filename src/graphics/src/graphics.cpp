@@ -39,10 +39,10 @@ createStockProgram(const string& name, const string& vShader, const string& fSha
 }
 
 IDisplay*
-Graphics::init(const u16 width, const u16 height, const string&)
+Graphics::init(const u16 width, const u16 height, const bool fullScreen, const string&)
 {
 	IDisplay* display = new DisplayImpl();
-	display->init(width, height);
+	display->init(width, height, fullScreen);
 
 	// m_basic_red {{{
 	s_mBasicRed = createStockProgram("shader.mvp_basic", R"(
