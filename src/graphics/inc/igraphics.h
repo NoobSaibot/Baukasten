@@ -6,13 +6,14 @@
 namespace bk {
 
 class IMesh;
+class IProgram;
 
 /*!
  * \brief IGraphics class declaration.
  */
 class IGraphics {
 public:
-	virtual void init(const u16, const u16, const string&) = 0;
+	virtual void init() = 0;
 
 	virtual  void         disable(GraphicsOption) = 0;
 	virtual  DisplayMode  displayMode() const = 0;
@@ -21,6 +22,7 @@ public:
 	virtual  void         set(const GraphicsOption, const bool) = 0;
 	virtual  void         setDisplayMode(DisplayMode) = 0;
 	virtual  void         setPolygonOffset(const f32, const f32) = 0;
+	virtual IProgram*     stockProgram(const StockProgramName) = 0;
 };
 
 } /* bk */

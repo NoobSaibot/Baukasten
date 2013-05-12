@@ -1,10 +1,28 @@
 #include "graphics/inc/opengl/graphics_opengl.h"
 
+#include "graphics/Graphics"
 #include "graphics/IMesh"
+#include "graphics/IProgram"
 
 #include "graphics/inc/opengl/assert_opengl.h"
 
 namespace bk {
+
+static IProgram* s_mBasicRed     = nullptr;
+static IProgram* s_mvpBasicCol   = nullptr;
+static IProgram* s_mvpBasicTex   = nullptr;
+static IProgram* s_mvpBasicRed   = nullptr;
+static IProgram* s_skyBox        = nullptr;
+
+static IProgram*
+createStockProgram(const string& name, const string& vShader, const string& fShader)
+{
+	ShaderList shader;
+	shader.push_back( Graphics::createShaderFromSource("v."+name, vShader, ShaderType::VERTEX) );
+	shader.push_back( Graphics::createShaderFromSource("f."+name, fShader, ShaderType::FRAGMENT) );
+
+	return Graphics::createProgram("program." + name, shader);
+}
 
 /*!
  * \brief GraphicsOpenGLPrivate class declaration.
@@ -61,9 +79,193 @@ GraphicsOpenGL::~GraphicsOpenGL()
 }
 
 void
-GraphicsOpenGL::init(const u16 width, const u16 height, const string& name)
+GraphicsOpenGL::init()
 {
-	// TODO fenster und so
+	// m_basic_red {{{
+	s_mBasicRed = createStockProgram("shader.mvp_basic", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+		in vec3 bk_normal;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			gl_Position = transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
+
+	// mvp_basic_col {{{
+	s_mvpBasicCol = createStockProgram("shader.mvp_basic_col", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+		in vec3 bk_normal;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+		out vec3 bk_Normal;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			bk_Normal = bk_normal;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+		in vec3 bk_Normal;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
+
+	// mvp_basic_tex {{{
+	s_mvpBasicTex = createStockProgram("shader.mvp_basic_tex", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+		in vec3 bk_normal;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+		out vec3 bk_Normal;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			bk_Normal = bk_normal;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+		in vec3 bk_Normal;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = texture(tex,  (bk_texSize0 * bk_fragTex0) + bk_texOffset0);
+		}
+	)");
+	// }}}
+
+	// mvb_basic_red {{{
+	s_mvpBasicRed = createStockProgram("shader.mvp_basic", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+		in vec3 bk_color;
+		in vec3 bk_normal;
+
+		out vec2 bk_fragTex0;
+		out vec3 bk_Color;
+
+		void main() {
+			bk_fragTex0 = bk_texture0;
+			bk_Color = bk_color;
+			gl_Position = camera * transformation * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform sampler2D tex;
+		uniform vec2 bk_texOffset0;
+		uniform vec2 bk_texSize0;
+		in vec2 bk_fragTex0;
+		in vec3 bk_Color;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
+
+	// skyBox {{{
+	s_skyBox = createStockProgram("shader.skybox", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+
+		out vec3 bk_fragTex0;
+
+		void main() {
+			bk_fragTex0 = normalize(bk_vertex.xyz);
+			gl_Position = camera * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform samplerCube tex;
+		in vec3 bk_fragTex0;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = texture(tex,  bk_fragTex0);
+		}
+	)");
+	// }}}
 }
 
 void
@@ -153,6 +355,18 @@ void
 GraphicsOpenGL::setPolygonOffset(const f32 factor, const f32 units)
 {
 	m_impl->setPolygonOffset(factor, units);
+}
+
+IProgram*
+GraphicsOpenGL::stockProgram(const StockProgramName programName)
+{
+	switch ( programName ) {
+	case StockProgramName::M_BASIC_RED:   return s_mBasicRed;
+	case StockProgramName::MVP_BASIC_TEX: return s_mvpBasicTex;
+	case StockProgramName::MVP_BASIC_COL: return s_mvpBasicCol;
+	case StockProgramName::MVP_BASIC_RED: return s_mvpBasicRed;
+	case StockProgramName::SKYBOX:        return s_skyBox;
+	}
 }
 
 } /* bk */

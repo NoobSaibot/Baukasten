@@ -6,6 +6,8 @@
 
 namespace bk {
 
+class IProgram;
+
 /*!
  * \brief GraphicsOpenGL class declaration.
  */
@@ -14,7 +16,7 @@ public:
 	GraphicsOpenGL();
 	virtual ~GraphicsOpenGL();
 
-	void init(const u16, const u16, const string&);
+	void init();
 
 	void disable(GraphicsOption) override;
 	DisplayMode displayMode() const override;
@@ -23,6 +25,7 @@ public:
 	void set(const GraphicsOption, const bool) override;
 	void setDisplayMode(DisplayMode);
 	void setPolygonOffset(const f32, const f32) override;
+	IProgram* stockProgram(const StockProgramName) override;
 
 private:
 	BK_IMPL(GraphicsOpenGL);
