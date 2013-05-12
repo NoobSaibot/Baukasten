@@ -41,39 +41,7 @@ int main(int argc, char const *argv[])
 
 	auto program = Graphics::stockProgram(StockProgramName::MVP_BASIC_TEX);
 	auto pColor  = Graphics::stockProgram(StockProgramName::MVP_BASIC_COL);
-
-	ShaderList shader;
-	shader.emplace_back(Graphics::createShaderFromSource("s.v", R"(
-		#version 130
-
-		uniform mat4 projection;
-		uniform mat4 camera;
-		uniform mat4 transformation;
-
-		in vec4 bk_vertex;
-		in vec2 bk_texture0;
-
-		out vec3 bk_fragTex0;
-
-		void main() {
-			bk_fragTex0 = normalize(bk_vertex.xyz);
-			gl_Position = camera * bk_vertex;
-		}
-	)", ShaderType::VERTEX));
-	shader.emplace_back(Graphics::createShaderFromSource("s.f", R"(
-		#version 130
-
-		uniform samplerCube tex;
-		in vec3 bk_fragTex0;
-
-		out vec4 bk_FragColor;
-
-		void main() {
-			bk_FragColor = texture(tex,  bk_fragTex0);
-		}
-	)", ShaderType::FRAGMENT));
-
-	auto pSkyBox = Graphics::createProgram("program.skybox", shader);
+	auto pSkyBox = Graphics::stockProgram(StockProgramName::SKYBOX);
 
 	auto meshRamza = Graphics::createMesh("mesh.ramza");
 	meshRamza->setProgram(program);
