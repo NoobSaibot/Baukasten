@@ -55,9 +55,9 @@ Bitmap::flip(const BitmapFlipMode mode)
 		u8* row = m_pixels + _pixelOffset(0, rowIdx, m_width, m_height, m_format);
 		u8* oppositeRow = m_pixels + _pixelOffset(0, m_height - rowIdx - 1, m_width, m_height, m_format);
 
-		memcpy(rowBuffer, row, rowSize);
-		memcpy(row, oppositeRow, rowSize);
-		memcpy(oppositeRow, rowBuffer, rowSize);
+		std::copy(row, row + rowSize, rowBuffer);
+		std::copy(oppositeRow, oppositeRow + rowSize, row);
+		std::copy(rowBuffer, rowBuffer + rowSize, oppositeRow);
 	}
 
 	SAFE_DELETE( rowBuffer );

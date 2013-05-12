@@ -134,8 +134,8 @@ public:
 		auto sizeNew  = m_vertices.size + size;
 		auto dataNew  = new f32[sizeNew * sizeof(f32)];
 
-		memcpy(dataNew, m_vertices.data, m_vertices.size * sizeof(f32));
-		memcpy(dataNew + m_vertices.size, data, size * sizeof(f32));
+		std::copy(m_vertices.data, m_vertices.data + m_vertices.size, dataNew);
+		std::copy(data, data + size, dataNew + m_vertices.size);
 
 		setData( 0, dataNew, sizeNew, m_vertices.count );
 
