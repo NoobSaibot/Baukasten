@@ -27,6 +27,7 @@ static IProgram* s_mBasicRed     = nullptr;
 static IProgram* s_mvpBasicCol   = nullptr;
 static IProgram* s_mvpBasicTex   = nullptr;
 static IProgram* s_mvpBasicRed   = nullptr;
+static IProgram* s_skyBox        = nullptr;
 
 static IProgram*
 createStockProgram(const string& name, const string& vShader, const string& fShader)
@@ -195,6 +196,37 @@ Graphics::init(const u16 width, const u16 height, const bool fullScreen, const s
 
 		void main() {
 			bk_FragColor = vec4(1, 1, 1, texture(tex, bk_fragTex0).r) * vec4(bk_Color, 1.0);
+		}
+	)");
+	// }}}
+
+	// skyBox {{{
+	s_skyBox = createStockProgram("shader.skybox", R"(
+		#version 130
+
+		uniform mat4 projection;
+		uniform mat4 camera;
+		uniform mat4 transformation;
+
+		in vec4 bk_vertex;
+		in vec2 bk_texture0;
+
+		out vec3 bk_fragTex0;
+
+		void main() {
+			bk_fragTex0 = normalize(bk_vertex.xyz);
+			gl_Position = camera * bk_vertex;
+		}
+	)", R"(
+		#version 130
+
+		uniform samplerCube tex;
+		in vec3 bk_fragTex0;
+
+		out vec4 bk_FragColor;
+
+		void main() {
+			bk_FragColor = texture(tex,  bk_fragTex0);
 		}
 	)");
 	// }}}
@@ -601,6 +633,7 @@ Graphics::stockProgram(const StockProgramName progName)
 	case StockProgramName::MVP_BASIC_TEX: return s_mvpBasicTex;
 	case StockProgramName::MVP_BASIC_COL: return s_mvpBasicCol;
 	case StockProgramName::MVP_BASIC_RED: return s_mvpBasicRed;
+	case StockProgramName::SKYBOX:        return s_skyBox;
 	}
 }
 
