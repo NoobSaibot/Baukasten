@@ -183,6 +183,8 @@ public:
 	void activate(const IProgram& program) const
 	{
 		bind();
+		GLint location = program.constant("tex");
+		BK_GL_ASSERT(glUniform1i(location, 0));
 	}
 
 	void deactivate() const
