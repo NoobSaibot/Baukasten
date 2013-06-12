@@ -187,14 +187,14 @@ private:
 		// set everything to 0
 		memset(data, 0, size);
 
-		// copy the set data to the "data" container {{
+		// copy the set data to the "data" container {{{
 		std::copy(m_vertices.data, m_vertices.data + m_vertices.size, data);
 		std::copy(m_colors.data, m_colors.data + m_colors.size, data+m_vertices.size);
 		std::copy(m_texture.data, m_texture.data + m_texture.size,
 				data+m_vertices.size+m_colors.size);
 		std::copy(m_normals.data, m_normals.data + m_normals.size,
 				data+m_vertices.size+m_colors.size+m_texture.size);
-		// }}
+		// }}}
 
 		// upload the data to the graphics card and free the memory
 		BK_GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW) );
