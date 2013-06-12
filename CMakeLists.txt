@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+project(Baukasten)
 
 add_definitions(-std=gnu++0x -Wall -ggdb -DASSERTIONS_ENABLED)
 
