@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+#define BUFFER_OFFSET(offset) ((void *) (offset))
+
 namespace {
 template<typename T>
 struct Data {
@@ -37,7 +39,7 @@ _set_attrib(const bk::IProgram* program, Data<f32> d,
 	}
 
 	BK_GL_ASSERT(glVertexAttribPointer(
-		pos, d.count, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)(offset)
+		pos, d.count, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(offset)
 	));
 	BK_GL_ASSERT(glEnableVertexAttribArray(pos));
 }
