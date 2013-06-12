@@ -15,6 +15,7 @@ public:
 
 		glfwInit();
 
+		glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0);
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
 		glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
