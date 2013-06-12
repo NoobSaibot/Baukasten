@@ -185,7 +185,7 @@ private:
 		f32* data = new f32[size];
 
 		// set everything to 0
-		memset(data, 0, size);
+		//memset(data, 0, size);
 
 		// copy the set data to the "data" container {{{
 		std::copy(m_vertices.data, m_vertices.data + m_vertices.size, data);
