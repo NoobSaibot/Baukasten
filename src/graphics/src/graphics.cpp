@@ -109,7 +109,7 @@ Graphics::createRect(const string& name, IProgram* program, const f32 x,
 
 IMesh*
 Graphics::createCube(const string& name, IProgram* program, const u32 size,
-	const Vector3& color)
+	const vec3& color)
 {
 	IMesh *mesh = new MeshImpl(name);
 	mesh->setProgram(program);
@@ -264,7 +264,7 @@ Graphics::createCube(const string& name, IProgram* program, const u32 size,
 
 IMesh*
 Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
-	const u32 rings, const u32 segments, const Vector3& color)
+	const u32 rings, const u32 segments, const vec3& color)
 {
 	IMesh *mesh = new MeshImpl(name);
 	mesh->setProgram(program);
@@ -328,7 +328,7 @@ Graphics::createSphere(const string& name, IProgram* program, const u32 radius,
 
 IMesh*
 Graphics::createTorus(const string& name, IProgram* program, const f32 oRadius,
-	const f32 iRadius, const u32 rings, const u32 segments, const Vector3& color)
+	const f32 iRadius, const u32 rings, const u32 segments, const vec3& color)
 {
 	IMesh *mesh = new MeshImpl(name);
 	mesh->setProgram(program);

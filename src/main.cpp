@@ -18,7 +18,6 @@
 #include "io/Event"
 #include "io/EventManager"
 #include "io/InputEvent"
-#include "math/Vector3"
 #include "model/Action"
 #include "model/Actor"
 #include "model/ActorType"
@@ -49,7 +48,7 @@ int main(int argc, char const *argv[])
 		-1.0f,-1.0f, 0.0f, 1.0f,-1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f,
 	});
 
-	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 1.0, 50, 100, Vector3(0.5, 1.0, 0.0));
+	auto meshSphere = Graphics::createSphere("mesh.sphere", program, 1.0, 50, 100, vec3(0.5, 1.0, 0.0));
 	auto sphere = Model::createActor("actor.sphere",
 		Graphics::createForm("form.sphere", meshSphere, program, texFootball, display ));
 	sphere->form()->translate(0.0, 3.0, 0.0);
@@ -86,7 +85,7 @@ int main(int argc, char const *argv[])
 		return false;
 	});
 
-	auto meshTorus = Graphics::createTorus("mesh.torus", pColor, 2.0, 1.5, 40, 40, Vector3(0.5, 1.0, 0.0));
+	auto meshTorus = Graphics::createTorus("mesh.torus", pColor, 2.0, 1.5, 40, 40, vec3(0.5, 1.0, 0.0));
 	auto torus = Model::createActor("actor.torus",
 		Graphics::createForm("form.torus", meshTorus, pColor, nullptr, display ));
 	torus->form()->translate(-5.0, 3.0, 0.0);

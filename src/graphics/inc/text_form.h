@@ -10,7 +10,6 @@ class Camera;
 class Font;
 class IDisplay;
 class IProgram;
-class Vector3;
 
 /*!
  * \brief TextForm class declaration.
@@ -21,7 +20,7 @@ public:
 
 	void setText(const string&);
 	void setFont(Font&);
-	void setColor(const Vector3&);
+	void setColor(const vec3&);
 
 	void render(const Camera*, const f32) override;
 private:

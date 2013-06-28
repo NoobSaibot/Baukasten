@@ -10,7 +10,6 @@
 #include "graphics/IProgram"
 #include "graphics/ITexture"
 #include "graphics/IMesh"
-#include "math/Vector3"
 
 #include "graphics/inc/opengl/assert_opengl.h"
 
@@ -20,7 +19,7 @@ class TextFormPrivate {
 public:
 	TextFormPrivate(const string& text, Font* font, IProgram* program, TextForm* form) :
 		m_font(font), m_text(text), m_form(form), m_dirty(false),
-		m_color(Vector3(0.0, 0.0, 0.0))
+		m_color(vec3(0.0, 0.0, 0.0))
 	{
 		m_form->setProgram(program);
 
@@ -32,7 +31,7 @@ public:
 
 	TextFormPrivate(const string& text, Font* font, TextForm* form) :
 		m_font(font), m_text(text), m_form(form), m_dirty(false),
-		m_color(Vector3(0.0, 0.0, 0.0))
+		m_color(vec3(0.0, 0.0, 0.0))
 	{
 		initProgram();
 
@@ -60,7 +59,7 @@ public:
 		m_dirty = true;
 	}
 
-	void setColor(const Vector3& color)
+	void setColor(const vec3& color)
 	{
 		m_color = color;
 		m_dirty = true;
@@ -198,7 +197,7 @@ private:
 	TextForm* m_form;
 	IMesh* m_mesh;
 	bool m_dirty;
-	Vector3 m_color;
+	vec3 m_color;
 };
 
 TextForm::TextForm(const string& name, const string& text,
@@ -231,7 +230,7 @@ TextForm::setFont(Font& font)
 }
 
 void
-TextForm::setColor(const Vector3& color)
+TextForm::setColor(const vec3& color)
 {
 	m_impl->setColor(color);
 }
